@@ -2,9 +2,21 @@ name: Daily Threads Post
 
 on:
   schedule:
-    # 09:00 Asia/Hong_Kong is 01:00 UTC.
+    # 09:00 and 17:00 Asia/Hong_Kong send approval requests.
     - cron: "0 1 * * *"
+    - cron: "0 9 * * *"
+    # 12:00 and 20:00 Asia/Hong_Kong publish approved posts.
+    - cron: "0 4 * * *"
+    - cron: "0 12 * * *"
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "auto, approval, or publish"
+        required: false
+        default: "auto"
+      slot:
+        description: "12:00 or 20:00"
+        required: false
 
 permissions:
   contents: write
@@ -19,7 +31,7 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Publish today's post
+      - name: Run Threads workflow
         env:
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
           THREADS_USER_ID: ${{ secrets.THREADS_USER_ID || 'me' }}
@@ -27,13 +39,17 @@ jobs:
           TIME_ZONE: "Asia/Hong_Kong"
           CONTENT_SOURCE: ${{ secrets.CONTENT_SOURCE || 'local' }}
           GOOGLE_SHEET_CSV_URL: ${{ secrets.GOOGLE_SHEET_CSV_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ACTION_MODE: ${{ inputs.mode || 'auto' }}
+          TARGET_SLOT: ${{ inputs.slot }}
           DRY_RUN: "false"
-        run: npm run post:today
+        run: npm run workflow:run
 
-      - name: Commit publication log
+      - name: Commit workflow logs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/published.json data/errors.json
+          git add data/published.json data/errors.json data/approval-requests.json
           git diff --staged --quiet || git commit -m "Record Threads publication"
           git push

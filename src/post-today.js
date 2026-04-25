@@ -3,31 +3,9 @@ import { getRequiredConfig } from "./config.js";
 import { readJson, writeJson } from "./storage.js";
 import { loadPosts } from "./posts-source.js";
 import { publishTextPost } from "./threads-api.js";
+import { ERRORS_PATH, MAX_THREADS_TEXT_LENGTH, PUBLISHED_PATH, selectPost, validatePost } from "./post-utils.js";
 
 loadDotEnv();
-
-const PUBLISHED_PATH = "data/published.json";
-const ERRORS_PATH = "data/errors.json";
-const MAX_THREADS_TEXT_LENGTH = 500;
-
-function selectPost(posts, published, date) {
-  const publishedIds = new Set(published.map((item) => item.id));
-  return posts.find((post) => {
-    return post.date === date && post.status === "ready" && !publishedIds.has(post.id);
-  });
-}
-
-function validatePost(post) {
-  if (!post.id) {
-    throw new Error("Post is missing id.");
-  }
-  if (!post.text || !post.text.trim()) {
-    throw new Error(`Post ${post.id} is missing text.`);
-  }
-  if (post.text.length > MAX_THREADS_TEXT_LENGTH) {
-    throw new Error(`Post ${post.id} is ${post.text.length} characters. Threads text posts should be ${MAX_THREADS_TEXT_LENGTH} characters or fewer.`);
-  }
-}
 
 async function main() {
   const config = getRequiredConfig();

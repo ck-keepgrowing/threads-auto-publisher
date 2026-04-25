@@ -1,6 +1,6 @@
 # Threads Auto Publisher
 
-每日自動喺 Threads 發佈一篇文章嘅 MVP。內容可以放喺 `data/posts.json`，或者用 Google Sheet 發佈成 CSV。系統會揀日期等於今日、狀態係 `ready`、而且未發佈過嘅文章。
+每日自動喺 Threads 發佈文章嘅 MVP。內容可以放喺 `data/posts.json`，或者用 Google Sheet 發佈成 CSV。系統會喺香港時間 09:00 和 17:00 先送 Telegram approval，得到 approval 後先喺 12:00 和 20:00 發佈。
 
 ## 1. 本地測試
 
@@ -64,15 +64,49 @@ npm run post:today
 
 成功後會寫入 `data/published.json`，失敗會寫入 `data/errors.json`。GitHub Actions 會將呢兩個 log commit 返 repo，用嚟避免同一日 rerun 時重複發佈。
 
-## 4. 每日自動發佈
+## 4. 每日審批同自動發佈
 
 已經有 GitHub Actions workflow：`.github/workflows/daily-threads-post.yml`。
 
-預設每日香港時間 09:00 發佈。你需要喺 GitHub repo settings 加 secrets：
+預設每日香港時間：
+
+- 09:00：送 12:00 post 到 Telegram approval
+- 12:00：如 Telegram 有 `APPROVE post-id`，就發佈 12:00 post
+- 17:00：送 20:00 post 到 Telegram approval
+- 20:00：如 Telegram 有 `APPROVE post-id`，就發佈 20:00 post
+
+你需要喺 GitHub repo settings 加 secrets：
 
 - `THREADS_ACCESS_TOKEN`
+- `TELEGRAM_BOT_TOKEN`
+- `TELEGRAM_CHAT_ID`
 - `THREADS_USER_ID`，可選，預設 `me`
 - `THREADS_API_VERSION`，可選，預設 `v1.0`
+
+Telegram setup:
+
+1. 在 Telegram 找 `@BotFather`，建立 bot，取得 bot token。
+2. 對新 bot 發 `/start`。
+3. 本機 `.env` 填 `TELEGRAM_BOT_TOKEN=...`。
+4. 跑：
+
+```bash
+npm run telegram:chat-id
+```
+
+5. 將輸出入面嘅 `id` 放入 GitHub Secret `TELEGRAM_CHAT_ID`。
+
+Telegram 收到 approval message 後，直接回覆：
+
+```text
+APPROVE 2026-04-25-1200
+```
+
+或者拒絕：
+
+```text
+REJECT 2026-04-25-1200
+```
 
 ## 5. 內容格式
 
@@ -82,14 +116,25 @@ npm run post:today
 {
   "id": "unique-id",
   "date": "2026-04-25",
+  "slot": "12:00",
   "text": "要發佈嘅內容",
   "status": "ready"
 }
 ```
 
-注意：Threads 一般文字 post 建議保持 500 字或以下。要做長文 thread、圖片、Google Sheet 或 Notion 內容庫，可以喺呢個基礎上加 adaptor。
+`slot` 用 `12:00` 或 `20:00`。注意：Threads 一般文字 post 建議保持 500 字或以下。要做長文 thread、圖片、Google Sheet 或 Notion 內容庫，可以喺呢個基礎上加 adaptor。
 
-## 6. Google Sheet 內容庫
+## 6. 編輯內容提案
+
+呢個 branch 加咗一個簡單編輯 brief：
+
+```bash
+npm run editor:ideas
+```
+
+內容方向放喺 `data/editor-briefs.json`。你可以用佢作為每日寫文題目池，再將已選內容放入 `data/posts.json`。
+
+## 7. Google Sheet 內容庫
 
 Sheet 第一行用以下欄位：
 
