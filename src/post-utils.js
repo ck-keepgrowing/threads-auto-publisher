@@ -38,7 +38,7 @@ export async function recordError({ id, date, slot, message }) {
   await writeJson(ERRORS_PATH, errors);
 }
 
-export async function publishAndRecord({ config, post, slot }) {
+export async function publishAndRecord({ config, post, slot, approvalRequestId }) {
   const result = await publishTextPost({
     apiVersion: config.apiVersion,
     userId: config.userId,
@@ -51,6 +51,7 @@ export async function publishAndRecord({ config, post, slot }) {
     id: post.id,
     date: config.postDate,
     slot,
+    approvalRequestId,
     text: post.text,
     threadsResponse: result,
     publishedAt: new Date().toISOString()

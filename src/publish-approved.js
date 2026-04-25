@@ -8,9 +8,22 @@ import { generateRevisedPost, upsertPost } from "./editor-generator.js";
 
 loadDotEnv();
 
-function findLatestRequest(requests, post) {
+function getApprovalRequestId(request) {
+  if (!request) {
+    return undefined;
+  }
+  return `${request.id}:${request.telegramMessageId || request.requestedAt}`;
+}
+
+function findLatestRequestForPost(requests, post) {
   return requests
     .filter((request) => request.id === post.id)
+    .sort((left, right) => new Date(right.requestedAt) - new Date(left.requestedAt))[0];
+}
+
+function findLatestRequestForSlot(requests, date, slot) {
+  return requests
+    .filter((request) => request.date === date && request.slot === slot)
     .sort((left, right) => new Date(right.requestedAt) - new Date(left.requestedAt))[0];
 }
 
@@ -19,7 +32,13 @@ async function main() {
   const slot = process.env.TARGET_SLOT;
   const posts = await loadPosts();
   const published = await readJson(PUBLISHED_PATH, []);
-  const post = selectPost(posts, published, config.postDate, slot);
+  const requests = await readJson(APPROVAL_REQUESTS_PATH, []);
+  const latestSlotRequest = findLatestRequestForSlot(requests, config.postDate, slot);
+  const post = latestSlotRequest?.post
+    ? {
+        ...latestSlotRequest.post
+      }
+    : selectPost(posts, published, config.postDate, slot);
 
   if (!post) {
     console.log(`No ready post found for ${config.postDate} ${getSlotLabel(slot)}.`);
@@ -28,8 +47,8 @@ async function main() {
 
   validatePost(post);
 
-  const requests = await readJson(APPROVAL_REQUESTS_PATH, []);
-  const latestRequest = findLatestRequest(requests, post);
+  const latestRequest = latestSlotRequest || findLatestRequestForPost(requests, post);
+  const approvalRequestId = getApprovalRequestId(latestRequest);
   const approvedPost = latestRequest?.post
     ? {
         ...post,
@@ -38,6 +57,11 @@ async function main() {
     : post;
 
   validatePost(approvedPost);
+
+  if (approvalRequestId && published.some((item) => item.approvalRequestId === approvalRequestId)) {
+    console.log(`Approval request ${approvalRequestId} was already published.`);
+    return;
+  }
 
   if (config.dryRun) {
     console.log(`[DRY RUN] Would check Telegram approval and publish ${approvedPost.id} (${getSlotLabel(slot)}):`);
@@ -121,7 +145,7 @@ async function main() {
     return;
   }
 
-  await publishAndRecord({ config, post: approvedPost, slot });
+  await publishAndRecord({ config, post: approvedPost, slot, approvalRequestId });
   console.log(`Published approved post ${approvedPost.id}.`);
 }
 
