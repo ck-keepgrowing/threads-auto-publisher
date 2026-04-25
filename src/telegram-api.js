@@ -41,8 +41,8 @@ export async function sendApprovalMessage({ post, date, slot }) {
     "",
     post.text,
     "",
-    "Tap a button below, or reply with:",
-    "REVISE your edit instructions"
+    "Tap a button below.",
+    "Or reply: approve / reject / revise your edit instructions"
   ].join("\n");
 
   return requestTelegram("sendMessage", {
@@ -71,38 +71,58 @@ export async function getApprovalDecision({ postId, requestedAt }) {
   const requestedUnix = requestedAt ? Math.floor(new Date(requestedAt).getTime() / 1000) : 0;
 
   const callbackDecisions = result
-    .map((update) => update.callback_query)
-    .filter(Boolean)
-    .filter((query) => String(query.message?.chat?.id) === String(chatId))
-    .filter((query) => !requestedUnix || query.message?.date >= requestedUnix)
-    .filter((query) => query.data === `APPROVE:${postId}` || query.data === `REJECT:${postId}` || query.data === `REVISE:${postId}`)
-    .map((query) => ({
+    .filter((update) => update.callback_query)
+    .map((update) => ({
+      updateId: update.update_id,
+      query: update.callback_query
+    }))
+    .filter(({ query }) => String(query.message?.chat?.id) === String(chatId))
+    .filter(({ query }) => query.data === `APPROVE:${postId}` || query.data === `REJECT:${postId}` || query.data === `REVISE:${postId}`)
+    .map(({ updateId, query }) => ({
+      updateId,
       status: query.data.startsWith("APPROVE:") ? "approved" : query.data.startsWith("REJECT:") ? "rejected" : "revision_requested",
       messageId: query.message.message_id,
       decidedAt: new Date(query.message.date * 1000).toISOString()
     }));
 
   const textDecisions = result
-    .map((update) => update.message)
-    .filter(Boolean)
-    .filter((message) => String(message.chat?.id) === String(chatId))
-    .filter((message) => !requestedUnix || message.date >= requestedUnix)
-    .filter((message) => typeof message.text === "string")
-    .filter((message) => {
+    .filter((update) => update.message)
+    .map((update) => ({
+      updateId: update.update_id,
+      message: update.message
+    }))
+    .filter(({ message }) => String(message.chat?.id) === String(chatId))
+    .filter(({ message }) => !requestedUnix || message.date >= requestedUnix)
+    .filter(({ message }) => typeof message.text === "string")
+    .filter(({ message }) => {
       const normalized = message.text.trim().toUpperCase();
-      return normalized === `APPROVE ${postId}` || normalized === `REJECT ${postId}` || normalized.startsWith("REVISE ");
+      return normalized === "APPROVE"
+        || normalized === "APPROVED"
+        || normalized === `APPROVE ${postId}`
+        || normalized === "REJECT"
+        || normalized === "REJECTED"
+        || normalized === `REJECT ${postId}`
+        || normalized === "REVISE"
+        || normalized.startsWith("REVISE ");
     })
-    .map((message) => {
+    .map(({ updateId, message }) => {
       const normalized = message.text.trim().toUpperCase();
+      const isApproved = normalized === "APPROVE" || normalized === "APPROVED" || normalized.startsWith("APPROVE ");
+      const isRejected = normalized === "REJECT" || normalized === "REJECTED" || normalized.startsWith("REJECT ");
+      const revisionInstructions = normalized.startsWith("REVISE ")
+        ? message.text.trim().slice("REVISE ".length).trim()
+        : undefined;
+
       return {
-        status: normalized.startsWith("APPROVE ") ? "approved" : normalized.startsWith("REJECT ") ? "rejected" : "revision_requested",
+        updateId,
+        status: isApproved ? "approved" : isRejected ? "rejected" : "revision_requested",
         messageId: message.message_id,
         decidedAt: new Date(message.date * 1000).toISOString(),
-        revisionInstructions: normalized.startsWith("REVISE ") ? message.text.trim().slice("REVISE ".length).trim() : undefined
+        revisionInstructions
       };
     });
 
-  const latest = [...callbackDecisions, ...textDecisions].sort((left, right) => new Date(right.decidedAt) - new Date(left.decidedAt))[0];
+  const latest = [...callbackDecisions, ...textDecisions].sort((left, right) => right.updateId - left.updateId)[0];
   if (!latest) {
     return { status: "pending" };
   }
