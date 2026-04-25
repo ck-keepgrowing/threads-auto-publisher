@@ -26,6 +26,30 @@ DRY_RUN=false
 
 `THREADS_USER_ID` 可以先用 `me`。正式多帳號管理時先改成指定 user id。
 
+### OAuth helper
+
+`.env` 加入：
+
+```bash
+THREADS_APP_ID=...
+THREADS_APP_SECRET=...
+THREADS_REDIRECT_URI=https://localhost/callback
+```
+
+生成授權連結：
+
+```bash
+npm run token:url
+```
+
+登入 Threads 並授權後，瀏覽器會嘗試跳到 `https://localhost/callback?code=...`。頁面可能打唔開，正常；複製網址入面 `code=` 後面嗰段，然後：
+
+```bash
+npm run token:exchange -- "PASTE_CODE_HERE"
+```
+
+輸出嘅 long-lived token 就係 GitHub Secret `THREADS_ACCESS_TOKEN`。
+
 ## 3. 發佈
 
 ```bash

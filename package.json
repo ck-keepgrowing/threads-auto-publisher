@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "token:url": "node src/oauth-url.js",
+    "token:exchange": "node src/exchange-token.js",
     "post:today": "node src/post-today.js",
     "post:dry-run": "DRY_RUN=true node src/post-today.js",
     "validate": "node src/validate-config.js"
