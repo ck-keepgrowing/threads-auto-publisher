@@ -1,6 +1,6 @@
 # Threads Auto Publisher
 
-每日自動喺 Threads 發佈文章嘅 MVP。內容可以放喺 `data/posts.json`，或者用 Google Sheet 發佈成 CSV。系統會喺香港時間 09:00 和 17:00 先送 Telegram approval，得到 approval 後先喺 12:00 和 20:00 發佈。
+每日自動喺 Threads 發佈文章嘅 MVP。系統會喺香港時間 09:00 和 17:00 先根據編輯方向 call OpenAI 生成新草稿，再送 Telegram approval；得到 approval 後先喺 12:00 和 20:00 發佈。
 
 ## 1. 本地測試
 
@@ -74,6 +74,8 @@ npm run post:today
 - 12:00：如 Telegram 有 `APPROVE post-id`，就發佈 12:00 post
 - 17:00：送 20:00 post 到 Telegram approval
 - 20:00：如 Telegram 有 `APPROVE post-id`，就發佈 20:00 post
+
+Approval 前會先用 `data/editor-briefs.json` 和 `data/brand-guide.json` call OpenAI 生成新草稿，寫入 `data/posts.json`，再送 Telegram。若你按 `Revise` 或回覆修改方向，系統會再 call OpenAI 修正一次，然後重新送 approval。
 
 你需要喺 GitHub repo settings 加 secrets：
 
@@ -149,7 +151,7 @@ REJECT 2026-04-25-1200
 npm run editor:ideas
 ```
 
-內容方向放喺 `data/editor-briefs.json`。你可以用佢作為每日寫文題目池，再將已選內容放入 `data/posts.json`。
+內容方向放喺 `data/editor-briefs.json`；品牌定位、語氣、禁用位放喺 `data/brand-guide.json`。每日 approval 前會按呢兩個檔案自動生成新草稿，再寫入 `data/posts.json`。
 
 ## 7. Google Sheet 內容庫
 

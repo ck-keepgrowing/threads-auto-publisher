@@ -15,23 +15,26 @@ async function main() {
   const published = await readJson(PUBLISHED_PATH, []);
   let post = selectPost(posts, published, config.postDate, slot);
 
-  if (!post) {
-    if (process.env.CONTENT_SOURCE && process.env.CONTENT_SOURCE !== "local") {
-      console.log(`No ready post found for ${config.postDate} ${getSlotLabel(slot)}.`);
-      return;
-    }
-
+  if ((process.env.CONTENT_SOURCE || "local") === "local") {
     if (config.dryRun) {
-      console.log(`[DRY RUN] Would generate AI draft for ${config.postDate} ${getSlotLabel(slot)}.`);
+      console.log(`[DRY RUN] Would generate a fresh AI draft for ${config.postDate} ${getSlotLabel(slot)} before Telegram approval.`);
+      if (post) {
+        console.log("Existing post would be replaced:");
+        console.log(post.text);
+      }
       return;
     }
 
+    // Approval always starts with a fresh editor draft so the content follows the latest brief and brand guide.
     post = await generateDraftPost({
       date: config.postDate,
       slot
     });
     await upsertPost(post);
     posts = await loadPosts();
+  } else if (!post) {
+    console.log(`No ready post found for ${config.postDate} ${getSlotLabel(slot)}.`);
+    return;
   }
 
   validatePost(post);
