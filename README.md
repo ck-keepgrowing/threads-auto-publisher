@@ -84,6 +84,11 @@ Approval 前會先用 `data/editor-briefs.json` 和 `data/brand-guide.json` call
 - `TELEGRAM_CHAT_ID`
 - `OPENROUTER_API_KEY`
 - `OPENROUTER_MODEL`，可選，預設 `openai/gpt-5.4-mini`
+- `ENABLE_TRENDS_CONTEXT`，可選，預設 `true`
+- `GOOGLE_TRENDS_RSS_URL`，可選，預設 `https://trends.google.com/trending/rss?geo=HK`
+- `GOOGLE_TRENDS_LIMIT`，可選，預設 `10`
+
+生成草稿時，系統會讀取香港 Google Trends RSS，將 trending keywords 交俾 AI 判斷。只有當 trend 可以自然連到保險銷售、入行心理、AI 工作流、信任、風險、收入不穩、家庭責任或銷售系統時，先會用入文章；如果唔相關，就會忽略，避免硬抽水。
 - `THREADS_USER_ID`，可選，預設 `me`
 - `THREADS_API_VERSION`，可選，預設 `v1.0`
 

@@ -1,5 +1,6 @@
 import { readJson, writeJson } from "./storage.js";
 import { generateText } from "./openrouter-api.js";
+import { fetchHongKongTrends } from "./google-trends.js";
 
 const POSTS_PATH = "data/posts.json";
 const BRIEFS_PATH = "data/editor-briefs.json";
@@ -38,11 +39,23 @@ async function loadEditorialContext(date, slot) {
 
 export async function generateDraftPost({ date, slot }) {
   const { brief, brandGuide } = await loadEditorialContext(date, slot);
+  let googleTrends = [];
+
+  try {
+    googleTrends = await fetchHongKongTrends({
+      limit: Number(process.env.GOOGLE_TRENDS_LIMIT || 10)
+    });
+  } catch (error) {
+    console.warn(`Could not fetch Google Trends context: ${error.message}`);
+  }
 
   const instructions = [
     "You are the ghost editor for a Hong Kong Threads account targeting insurance agents and people considering joining insurance sales.",
     "Write in Hong Kong Cantonese.",
     "The persona is mysterious, insightful, clear, and emotionally precise.",
+    "Use Google Trends context only when a trend can be naturally connected to insurance sales, insurance career psychology, AI-assisted insurance work, trust, risk, income instability, public anxiety, family responsibility, or sales systems.",
+    "If no trend is relevant, ignore the trends completely. Do not force a trend, celebrity, news event, or keyword into the post.",
+    "Never imply false facts about insurance, income, or the trending topic.",
     "Output only the final Threads post text. Do not include title, hashtags, bullets unless naturally needed, or explanations."
   ].join("\n");
 
@@ -51,7 +64,8 @@ export async function generateDraftPost({ date, slot }) {
     date,
     slot,
     brand_guide: brandGuide,
-    editorial_angle: brief
+    editorial_angle: brief,
+    hong_kong_google_trends: googleTrends
   }, null, 2);
 
   const text = normalizeGeneratedPost(await generateText({ instructions, input }));
