@@ -30,10 +30,18 @@ async function main() {
 
   const requests = await readJson(APPROVAL_REQUESTS_PATH, []);
   const latestRequest = findLatestRequest(requests, post);
+  const approvedPost = latestRequest?.post
+    ? {
+        ...post,
+        ...latestRequest.post
+      }
+    : post;
+
+  validatePost(approvedPost);
 
   if (config.dryRun) {
-    console.log(`[DRY RUN] Would check Telegram approval and publish ${post.id} (${getSlotLabel(slot)}):`);
-    console.log(post.text);
+    console.log(`[DRY RUN] Would check Telegram approval and publish ${approvedPost.id} (${getSlotLabel(slot)}):`);
+    console.log(approvedPost.text);
     return;
   }
 
@@ -68,12 +76,12 @@ async function main() {
 
   if (decision.status === "revision_requested") {
     const revisedText = await generateRevisedPost({
-      post,
+      post: approvedPost,
       revisionInstructions: decision.revisionInstructions
     });
 
     const revisedPost = await upsertPost({
-      ...post,
+      ...approvedPost,
       text: revisedText,
       status: "ready",
       revisedAt: new Date().toISOString(),
@@ -91,6 +99,18 @@ async function main() {
       id: revisedPost.id,
       date: config.postDate,
       slot,
+      post: {
+        id: revisedPost.id,
+        date: revisedPost.date,
+        slot: revisedPost.slot,
+        text: revisedPost.text,
+        status: revisedPost.status,
+        source: revisedPost.source,
+        pillar: revisedPost.pillar,
+        generatedAt: revisedPost.generatedAt,
+        revisedAt: revisedPost.revisedAt,
+        revisionInstructions: revisedPost.revisionInstructions
+      },
       telegramMessageId: message.message_id,
       requestedAt: new Date().toISOString(),
       reason: "revision"
@@ -101,8 +121,8 @@ async function main() {
     return;
   }
 
-  await publishAndRecord({ config, post, slot });
-  console.log(`Published approved post ${post.id}.`);
+  await publishAndRecord({ config, post: approvedPost, slot });
+  console.log(`Published approved post ${approvedPost.id}.`);
 }
 
 main().catch(async (error) => {

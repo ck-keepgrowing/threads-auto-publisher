@@ -56,6 +56,18 @@ async function main() {
     id: post.id,
     date: config.postDate,
     slot,
+    post: {
+      id: post.id,
+      date: post.date,
+      slot: post.slot,
+      text: post.text,
+      status: post.status,
+      source: post.source,
+      pillar: post.pillar,
+      generatedAt: post.generatedAt,
+      revisedAt: post.revisedAt,
+      revisionInstructions: post.revisionInstructions
+    },
     telegramMessageId: message.message_id,
     requestedAt: new Date().toISOString()
   });
