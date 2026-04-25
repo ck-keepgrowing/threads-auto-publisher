@@ -5,5 +5,12 @@
     "slot": "12:00",
     "message": "Post 2026-04-25-1200 was rejected in Telegram.",
     "failedAt": "2026-04-25T05:04:01.859Z"
+  },
+  {
+    "id": "2026-04-25-2000",
+    "date": "2026-04-25",
+    "slot": "20:00",
+    "message": "Post 2026-04-25-2000 was not published because no Telegram approval was found.",
+    "failedAt": "2026-04-25T06:10:00.761Z"
   }
 ]
