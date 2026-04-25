@@ -1,0 +1,14 @@
+{
+  "name": "threads-auto-publisher",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "post:today": "node src/post-today.js",
+    "post:dry-run": "DRY_RUN=true node src/post-today.js",
+    "validate": "node src/validate-config.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
