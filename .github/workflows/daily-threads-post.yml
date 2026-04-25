@@ -27,7 +27,7 @@ jobs:
           TIME_ZONE: "Asia/Hong_Kong"
           CONTENT_SOURCE: ${{ secrets.CONTENT_SOURCE || 'local' }}
           GOOGLE_SHEET_CSV_URL: ${{ secrets.GOOGLE_SHEET_CSV_URL }}
-          DRY_RUN: "true"
+          DRY_RUN: "false"
         run: npm run post:today
 
       - name: Commit publication log
