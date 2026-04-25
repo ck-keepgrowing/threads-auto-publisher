@@ -41,26 +41,48 @@ export async function sendApprovalMessage({ post, date, slot }) {
     "",
     post.text,
     "",
-    `Approve: APPROVE ${post.id}`,
-    `Reject: REJECT ${post.id}`
+    "Tap a button below, or reply with:",
+    "REVISE your edit instructions"
   ].join("\n");
 
   return requestTelegram("sendMessage", {
     chat_id: chatId,
     text,
-    disable_web_page_preview: true
+    disable_web_page_preview: true,
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "Approve", callback_data: `APPROVE:${post.id}` },
+          { text: "Reject", callback_data: `REJECT:${post.id}` },
+          { text: "Revise", callback_data: `REVISE:${post.id}` }
+        ]
+      ]
+    }
   });
 }
 
 export async function getApprovalDecision({ postId, requestedAt }) {
   const { chatId } = requireTelegramConfig();
   const result = await requestTelegram("getUpdates", {
-    allowed_updates: ["message"],
+    allowed_updates: ["message", "callback_query"],
     timeout: 0
   });
 
   const requestedUnix = requestedAt ? Math.floor(new Date(requestedAt).getTime() / 1000) : 0;
-  const matchingMessages = result
+
+  const callbackDecisions = result
+    .map((update) => update.callback_query)
+    .filter(Boolean)
+    .filter((query) => String(query.message?.chat?.id) === String(chatId))
+    .filter((query) => !requestedUnix || query.message?.date >= requestedUnix)
+    .filter((query) => query.data === `APPROVE:${postId}` || query.data === `REJECT:${postId}` || query.data === `REVISE:${postId}`)
+    .map((query) => ({
+      status: query.data.startsWith("APPROVE:") ? "approved" : query.data.startsWith("REJECT:") ? "rejected" : "revision_requested",
+      messageId: query.message.message_id,
+      decidedAt: new Date(query.message.date * 1000).toISOString()
+    }));
+
+  const textDecisions = result
     .map((update) => update.message)
     .filter(Boolean)
     .filter((message) => String(message.chat?.id) === String(chatId))
@@ -68,19 +90,22 @@ export async function getApprovalDecision({ postId, requestedAt }) {
     .filter((message) => typeof message.text === "string")
     .filter((message) => {
       const normalized = message.text.trim().toUpperCase();
-      return normalized === `APPROVE ${postId}` || normalized === `REJECT ${postId}`;
+      return normalized === `APPROVE ${postId}` || normalized === `REJECT ${postId}` || normalized.startsWith("REVISE ");
     })
-    .sort((left, right) => right.date - left.date);
+    .map((message) => {
+      const normalized = message.text.trim().toUpperCase();
+      return {
+        status: normalized.startsWith("APPROVE ") ? "approved" : normalized.startsWith("REJECT ") ? "rejected" : "revision_requested",
+        messageId: message.message_id,
+        decidedAt: new Date(message.date * 1000).toISOString(),
+        revisionInstructions: normalized.startsWith("REVISE ") ? message.text.trim().slice("REVISE ".length).trim() : undefined
+      };
+    });
 
-  const latest = matchingMessages[0];
+  const latest = [...callbackDecisions, ...textDecisions].sort((left, right) => new Date(right.decidedAt) - new Date(left.decidedAt))[0];
   if (!latest) {
     return { status: "pending" };
   }
 
-  const normalized = latest.text.trim().toUpperCase();
-  return {
-    status: normalized.startsWith("APPROVE ") ? "approved" : "rejected",
-    messageId: latest.message_id,
-    decidedAt: new Date(latest.date * 1000).toISOString()
-  };
+  return latest;
 }

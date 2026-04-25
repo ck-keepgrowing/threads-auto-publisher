@@ -1,9 +1,10 @@
 import { loadDotEnv } from "./load-env.js";
 import { getRequiredConfig } from "./config.js";
 import { loadPosts } from "./posts-source.js";
-import { readJson } from "./storage.js";
+import { readJson, writeJson } from "./storage.js";
 import { APPROVAL_REQUESTS_PATH, PUBLISHED_PATH, getSlotLabel, publishAndRecord, recordError, selectPost, validatePost } from "./post-utils.js";
-import { getApprovalDecision } from "./telegram-api.js";
+import { getApprovalDecision, sendApprovalMessage } from "./telegram-api.js";
+import { generateRevisedPost, upsertPost } from "./editor-generator.js";
 
 loadDotEnv();
 
@@ -62,6 +63,41 @@ async function main() {
       message
     });
     console.log(message);
+    return;
+  }
+
+  if (decision.status === "revision_requested") {
+    const revisedText = await generateRevisedPost({
+      post,
+      revisionInstructions: decision.revisionInstructions
+    });
+
+    const revisedPost = await upsertPost({
+      ...post,
+      text: revisedText,
+      status: "ready",
+      revisedAt: new Date().toISOString(),
+      revisionInstructions: decision.revisionInstructions || "Button revise requested"
+    });
+
+    const message = await sendApprovalMessage({
+      post: revisedPost,
+      date: config.postDate,
+      slot: getSlotLabel(slot)
+    });
+
+    const requests = await readJson(APPROVAL_REQUESTS_PATH, []);
+    requests.push({
+      id: revisedPost.id,
+      date: config.postDate,
+      slot,
+      telegramMessageId: message.message_id,
+      requestedAt: new Date().toISOString(),
+      reason: "revision"
+    });
+    await writeJson(APPROVAL_REQUESTS_PATH, requests);
+
+    console.log(`Revised post ${post.id} with AI and sent it for approval again.`);
     return;
   }
 

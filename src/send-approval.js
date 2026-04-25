@@ -4,19 +4,34 @@ import { loadPosts } from "./posts-source.js";
 import { readJson, writeJson } from "./storage.js";
 import { APPROVAL_REQUESTS_PATH, PUBLISHED_PATH, getSlotLabel, selectPost, validatePost } from "./post-utils.js";
 import { sendApprovalMessage } from "./telegram-api.js";
+import { generateDraftPost, upsertPost } from "./editor-generator.js";
 
 loadDotEnv();
 
 async function main() {
   const config = getConfig();
   const slot = process.env.TARGET_SLOT;
-  const posts = await loadPosts();
+  let posts = await loadPosts();
   const published = await readJson(PUBLISHED_PATH, []);
-  const post = selectPost(posts, published, config.postDate, slot);
+  let post = selectPost(posts, published, config.postDate, slot);
 
   if (!post) {
-    console.log(`No ready post found for ${config.postDate} ${getSlotLabel(slot)}.`);
-    return;
+    if (process.env.CONTENT_SOURCE && process.env.CONTENT_SOURCE !== "local") {
+      console.log(`No ready post found for ${config.postDate} ${getSlotLabel(slot)}.`);
+      return;
+    }
+
+    if (config.dryRun) {
+      console.log(`[DRY RUN] Would generate AI draft for ${config.postDate} ${getSlotLabel(slot)}.`);
+      return;
+    }
+
+    post = await generateDraftPost({
+      date: config.postDate,
+      slot
+    });
+    await upsertPost(post);
+    posts = await loadPosts();
   }
 
   validatePost(post);

@@ -80,6 +80,8 @@ npm run post:today
 - `THREADS_ACCESS_TOKEN`
 - `TELEGRAM_BOT_TOKEN`
 - `TELEGRAM_CHAT_ID`
+- `OPENAI_API_KEY`
+- `OPENAI_MODEL`，可選，預設 `gpt-5.4-mini`
 - `THREADS_USER_ID`，可選，預設 `me`
 - `THREADS_API_VERSION`，可選，預設 `v1.0`
 
@@ -96,15 +98,30 @@ npm run telegram:chat-id
 
 5. 將輸出入面嘅 `id` 放入 GitHub Secret `TELEGRAM_CHAT_ID`。
 
-Telegram 收到 approval message 後，直接回覆：
+Telegram 收到 approval message 後，可以直接撳：
+
+```text
+Approve
+```
+
+或者：
+
+```text
+Reject
+```
+
+如果想改文，撳 `Revise`，或者回覆：
+
+```text
+REVISE 這篇太硬銷，改得更神秘、更像講中心事
+```
+
+`Revise` 會用 AI 根據你嘅修改方向重寫，然後重新送一條 Telegram approval message。
+
+舊格式仍然支援：
 
 ```text
 APPROVE 2026-04-25-1200
-```
-
-或者拒絕：
-
-```text
 REJECT 2026-04-25-1200
 ```
 
