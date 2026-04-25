@@ -33,7 +33,7 @@ DRY_RUN=false
 ```bash
 THREADS_APP_ID=...
 THREADS_APP_SECRET=...
-THREADS_REDIRECT_URI=https://localhost/callback
+THREADS_REDIRECT_URI=https://ck-keepgrowing.github.io/threads-auto-publisher/callback/
 ```
 
 生成授權連結：
@@ -42,7 +42,7 @@ THREADS_REDIRECT_URI=https://localhost/callback
 npm run token:url
 ```
 
-登入 Threads 並授權後，瀏覽器會嘗試跳到 `https://localhost/callback?code=...`。頁面可能打唔開，正常；複製網址入面 `code=` 後面嗰段，然後：
+登入 Threads 並授權後，瀏覽器會跳到 callback page 並顯示 `code`。複製嗰段 code，然後：
 
 ```bash
 npm run token:exchange -- "PASTE_CODE_HERE"
