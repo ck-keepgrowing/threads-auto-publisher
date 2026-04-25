@@ -1,5 +1,5 @@
 import { readJson, writeJson } from "./storage.js";
-import { generateText } from "./openai-api.js";
+import { generateText } from "./openrouter-api.js";
 
 const POSTS_PATH = "data/posts.json";
 const BRIEFS_PATH = "data/editor-briefs.json";

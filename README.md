@@ -1,6 +1,6 @@
 # Threads Auto Publisher
 
-每日自動喺 Threads 發佈文章嘅 MVP。系統會喺香港時間 09:00 和 17:00 先根據編輯方向 call OpenAI 生成新草稿，再送 Telegram approval；得到 approval 後先喺 12:00 和 20:00 發佈。
+每日自動喺 Threads 發佈文章嘅 MVP。系統會喺香港時間 09:00 和 17:00 先根據編輯方向 call OpenRouter 生成新草稿，再送 Telegram approval；得到 approval 後先喺 12:00 和 20:00 發佈。
 
 ## 1. 本地測試
 
@@ -75,15 +75,15 @@ npm run post:today
 - 17:00：送 20:00 post 到 Telegram approval
 - 20:00：如 Telegram 有 `APPROVE post-id`，就發佈 20:00 post
 
-Approval 前會先用 `data/editor-briefs.json` 和 `data/brand-guide.json` call OpenAI 生成新草稿，寫入 `data/posts.json`，再送 Telegram。若你按 `Revise` 或回覆修改方向，系統會再 call OpenAI 修正一次，然後重新送 approval。
+Approval 前會先用 `data/editor-briefs.json` 和 `data/brand-guide.json` call OpenRouter 生成新草稿，寫入 `data/posts.json`，再送 Telegram。若你按 `Revise` 或回覆修改方向，系統會再 call OpenRouter 修正一次，然後重新送 approval。
 
 你需要喺 GitHub repo settings 加 secrets：
 
 - `THREADS_ACCESS_TOKEN`
 - `TELEGRAM_BOT_TOKEN`
 - `TELEGRAM_CHAT_ID`
-- `OPENAI_API_KEY`
-- `OPENAI_MODEL`，可選，預設 `gpt-5.4-mini`
+- `OPENROUTER_API_KEY`
+- `OPENROUTER_MODEL`，可選，預設 `openai/gpt-5.4-mini`
 - `THREADS_USER_ID`，可選，預設 `me`
 - `THREADS_API_VERSION`，可選，預設 `v1.0`
 
