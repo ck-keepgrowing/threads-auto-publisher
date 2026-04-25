@@ -12,5 +12,12 @@
     "slot": "12:00",
     "telegramMessageId": 10,
     "requestedAt": "2026-04-25T05:58:36.461Z"
+  },
+  {
+    "id": "2026-04-25-2000",
+    "date": "2026-04-25",
+    "slot": "20:00",
+    "telegramMessageId": 11,
+    "requestedAt": "2026-04-25T06:08:31.961Z"
   }
 ]
