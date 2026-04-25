@@ -50,6 +50,12 @@ npm run token:exchange -- "PASTE_CODE_HERE"
 
 輸出嘅 long-lived token 就係 GitHub Secret `THREADS_ACCESS_TOKEN`。
 
+Useful public URLs for Meta app settings:
+
+- Privacy policy: `https://ck-keepgrowing.github.io/threads-auto-publisher/privacy/`
+- Data deletion: `https://ck-keepgrowing.github.io/threads-auto-publisher/data-deletion/`
+- OAuth callback: `https://ck-keepgrowing.github.io/threads-auto-publisher/callback/`
+
 ## 3. 發佈
 
 ```bash
