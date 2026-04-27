@@ -32,7 +32,20 @@ async function requestTelegram(method, payload) {
   return result.result;
 }
 
-export async function sendApprovalMessage({ post, date, slot }) {
+function buildCallbackData(action, postId, approvalToken) {
+  return approvalToken ? `${action}:${postId}:${approvalToken}` : `${action}:${postId}`;
+}
+
+function parseCallbackData(data) {
+  const [action, postId, approvalToken] = String(data || "").split(":");
+  if (!["APPROVE", "REJECT", "REVISE"].includes(action) || !postId) {
+    return undefined;
+  }
+
+  return { action, postId, approvalToken };
+}
+
+export async function sendApprovalMessage({ post, date, slot, approvalToken }) {
   const { chatId } = requireTelegramConfig();
   const text = [
     `Threads approval request (${date} ${slot} HKT)`,
@@ -52,19 +65,20 @@ export async function sendApprovalMessage({ post, date, slot }) {
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "Approve", callback_data: `APPROVE:${post.id}` },
-          { text: "Reject", callback_data: `REJECT:${post.id}` },
-          { text: "Revise", callback_data: `REVISE:${post.id}` }
+          { text: "Approve", callback_data: buildCallbackData("APPROVE", post.id, approvalToken) },
+          { text: "Reject", callback_data: buildCallbackData("REJECT", post.id, approvalToken) },
+          { text: "Revise", callback_data: buildCallbackData("REVISE", post.id, approvalToken) }
         ]
       ]
     }
   });
 }
 
-export async function getApprovalDecision({ postId, requestedAt }) {
+export async function getApprovalDecision({ postId, requestedAt, telegramMessageId, approvalToken }) {
   const { chatId } = requireTelegramConfig();
   const result = await requestTelegram("getUpdates", {
     allowed_updates: ["message", "callback_query"],
+    offset: -100,
     timeout: 0
   });
 
@@ -77,12 +91,26 @@ export async function getApprovalDecision({ postId, requestedAt }) {
       query: update.callback_query
     }))
     .filter(({ query }) => String(query.message?.chat?.id) === String(chatId))
-    .filter(({ query }) => query.data === `APPROVE:${postId}` || query.data === `REJECT:${postId}` || query.data === `REVISE:${postId}`)
     .map(({ updateId, query }) => ({
       updateId,
-      status: query.data.startsWith("APPROVE:") ? "approved" : query.data.startsWith("REJECT:") ? "rejected" : "revision_requested",
+      query,
+      parsed: parseCallbackData(query.data)
+    }))
+    .filter(({ parsed }) => parsed?.postId === postId)
+    .filter(({ parsed, query }) => {
+      if (approvalToken) {
+        return parsed.approvalToken === approvalToken;
+      }
+      if (telegramMessageId) {
+        return Number(query.message?.message_id) === Number(telegramMessageId);
+      }
+      return true;
+    })
+    .map(({ updateId, query, parsed }) => ({
+      updateId,
+      status: parsed.action === "APPROVE" ? "approved" : parsed.action === "REJECT" ? "rejected" : "revision_requested",
       messageId: query.message.message_id,
-      decidedAt: new Date(query.message.date * 1000).toISOString()
+      decidedAt: new Date((query.message.date || Math.floor(Date.now() / 1000)) * 1000).toISOString()
     }));
 
   const textDecisions = result

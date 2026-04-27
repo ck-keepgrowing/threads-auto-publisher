@@ -77,7 +77,9 @@ async function main() {
 
   const decision = await getApprovalDecision({
     postId: post.id,
-    requestedAt: latestRequest?.requestedAt
+    requestedAt: latestRequest?.requestedAt,
+    telegramMessageId: latestRequest?.telegramMessageId,
+    approvalToken: latestRequest?.approvalToken
   });
 
   if (decision.status === "pending") {
@@ -118,10 +120,12 @@ async function main() {
       revisionInstructions: decision.revisionInstructions || "Button revise requested"
     });
 
+    const approvalToken = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
     const message = await sendApprovalMessage({
       post: revisedPost,
       date: config.postDate,
-      slot: getSlotLabel(slot)
+      slot: getSlotLabel(slot),
+      approvalToken
     });
 
     const requests = await readJson(APPROVAL_REQUESTS_PATH, []);
@@ -141,6 +145,7 @@ async function main() {
         revisedAt: revisedPost.revisedAt,
         revisionInstructions: revisedPost.revisionInstructions
       },
+      approvalToken,
       telegramMessageId: message.message_id,
       requestedAt: new Date().toISOString(),
       reason: "revision"

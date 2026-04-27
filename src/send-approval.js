@@ -8,6 +8,10 @@ import { generateDraftPost, upsertPost } from "./editor-generator.js";
 
 loadDotEnv();
 
+function createApprovalToken() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+}
+
 async function main() {
   const config = getConfig();
   const slot = process.env.TARGET_SLOT;
@@ -45,10 +49,12 @@ async function main() {
     return;
   }
 
+  const approvalToken = createApprovalToken();
   const message = await sendApprovalMessage({
     post,
     date: config.postDate,
-    slot: getSlotLabel(slot)
+    slot: getSlotLabel(slot),
+    approvalToken
   });
 
   const requests = await readJson(APPROVAL_REQUESTS_PATH, []);
@@ -68,6 +74,7 @@ async function main() {
       revisedAt: post.revisedAt,
       revisionInstructions: post.revisionInstructions
     },
+    approvalToken,
     telegramMessageId: message.message_id,
     requestedAt: new Date().toISOString()
   });
