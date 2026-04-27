@@ -69,6 +69,12 @@ async function main() {
     return;
   }
 
+  if (String(process.env.FORCE_APPROVED || "false").toLowerCase() === "true") {
+    await publishAndRecord({ config, post: approvedPost, slot, approvalRequestId });
+    console.log(`Force published approved post ${approvedPost.id}.`);
+    return;
+  }
+
   const decision = await getApprovalDecision({
     postId: post.id,
     requestedAt: latestRequest?.requestedAt
