@@ -17,12 +17,16 @@ on:
       slot:
         description: "12:00 or 20:00"
         required: false
+  push:
+    branches:
+      - main
 
 permissions:
   contents: write
 
 jobs:
   publish:
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-social-workflow]')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -46,8 +50,8 @@ jobs:
           ENABLE_TRENDS_CONTEXT: ${{ secrets.ENABLE_TRENDS_CONTEXT || 'true' }}
           GOOGLE_TRENDS_RSS_URL: ${{ secrets.GOOGLE_TRENDS_RSS_URL || 'https://trends.google.com/trending/rss?geo=HK' }}
           GOOGLE_TRENDS_LIMIT: ${{ secrets.GOOGLE_TRENDS_LIMIT || '10' }}
-          ACTION_MODE: ${{ inputs.mode || 'auto' }}
-          TARGET_SLOT: ${{ inputs.slot }}
+          ACTION_MODE: ${{ inputs.mode || (github.event_name == 'push' && 'approval') || 'auto' }}
+          TARGET_SLOT: ${{ inputs.slot || (github.event_name == 'push' && '20:00') || '' }}
           SCHEDULE_CRON: ${{ github.event.schedule }}
           DRY_RUN: "false"
         run: npm run workflow:run
