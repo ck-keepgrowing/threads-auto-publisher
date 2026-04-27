@@ -8,6 +8,13 @@ export const PUBLISH_HOUR_TO_SLOT = {
   "20": "20:00"
 };
 
+export const SCHEDULE_CRON_TO_ACTION = {
+  "0 1 * * *": { mode: "approval", slot: "12:00" },
+  "0 9 * * *": { mode: "approval", slot: "20:00" },
+  "0 4 * * *": { mode: "publish", slot: "12:00" },
+  "0 12 * * *": { mode: "publish", slot: "20:00" }
+};
+
 export function getHongKongTimeParts(date = new Date()) {
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Hong_Kong",
@@ -27,9 +34,13 @@ export function getHongKongTimeParts(date = new Date()) {
   };
 }
 
-export function resolveWorkflowAction({ mode, slot }) {
+export function resolveWorkflowAction({ mode, slot, scheduleCron }) {
   if (mode && mode !== "auto") {
     return { mode, slot };
+  }
+
+  if (scheduleCron && SCHEDULE_CRON_TO_ACTION[scheduleCron]) {
+    return SCHEDULE_CRON_TO_ACTION[scheduleCron];
   }
 
   const current = getHongKongTimeParts();

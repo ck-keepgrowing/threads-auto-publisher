@@ -5,7 +5,8 @@ loadDotEnv();
 
 const action = resolveWorkflowAction({
   mode: process.env.ACTION_MODE,
-  slot: process.env.TARGET_SLOT
+  slot: process.env.TARGET_SLOT,
+  scheduleCron: process.env.SCHEDULE_CRON
 });
 
 if (action.slot) {

@@ -48,6 +48,7 @@ jobs:
           GOOGLE_TRENDS_LIMIT: ${{ secrets.GOOGLE_TRENDS_LIMIT || '10' }}
           ACTION_MODE: ${{ inputs.mode || 'auto' }}
           TARGET_SLOT: ${{ inputs.slot }}
+          SCHEDULE_CRON: ${{ github.event.schedule }}
           DRY_RUN: "false"
         run: npm run workflow:run
 
