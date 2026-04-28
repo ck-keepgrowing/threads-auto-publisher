@@ -27,7 +27,7 @@ permissions:
 
 jobs:
   publish:
-    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-social-workflow]') || contains(github.event.head_commit.message, '[approval-1200-social-workflow]') || contains(github.event.head_commit.message, '[approval-2000-social-workflow]') || contains(github.event.head_commit.message, '[publish-1200-social-workflow]') || contains(github.event.head_commit.message, '[publish-social-workflow]') || contains(github.event.head_commit.message, '[force-publish-social-workflow]')
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-social-workflow]') || contains(github.event.head_commit.message, '[approval-1200-social-workflow]') || contains(github.event.head_commit.message, '[approval-2000-social-workflow]') || contains(github.event.head_commit.message, '[publish-1200-social-workflow]') || contains(github.event.head_commit.message, '[publish-social-workflow]') || contains(github.event.head_commit.message, '[force-publish-social-workflow]') || contains(github.event.head_commit.message, '[debug-telegram-social-workflow]')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -37,6 +37,7 @@ jobs:
           node-version: "20"
 
       - name: Run Threads workflow
+        if: ${{ !contains(github.event.head_commit.message, '[debug-telegram-social-workflow]') }}
         env:
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
           THREADS_USER_ID: ${{ secrets.THREADS_USER_ID || 'me' }}
@@ -58,10 +59,17 @@ jobs:
           DRY_RUN: "false"
         run: npm run workflow:run
 
+      - name: Debug Telegram updates
+        if: ${{ contains(github.event.head_commit.message, '[debug-telegram-social-workflow]') }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: npm run telegram:debug
+
       - name: Commit workflow logs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/posts.json data/published.json data/errors.json data/approval-requests.json
+          git add data/posts.json data/published.json data/errors.json data/approval-requests.json data/telegram-debug.json
           git diff --staged --quiet || git commit -m "Record Threads publication"
           git push

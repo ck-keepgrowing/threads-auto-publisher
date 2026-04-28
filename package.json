@@ -9,6 +9,7 @@
     "approval:send": "node src/send-approval.js",
     "approval:publish": "node src/publish-approved.js",
     "workflow:run": "node src/workflow-runner.js",
+    "telegram:debug": "node src/debug-telegram.js",
     "telegram:chat-id": "node src/telegram-chat-id.js",
     "editor:ideas": "node src/editor-ideas.js",
     "post:today": "node src/post-today.js",
