@@ -10,9 +10,13 @@ export const PUBLISH_HOUR_TO_SLOT = {
 
 export const SCHEDULE_CRON_TO_ACTION = {
   "0 1 * * *": { mode: "approval", slot: "12:00" },
+  "0,15,30,45 1 * * *": { mode: "approval", slot: "12:00" },
   "0 9 * * *": { mode: "approval", slot: "20:00" },
+  "0,15,30,45 9 * * *": { mode: "approval", slot: "20:00" },
   "0 4 * * *": { mode: "publish", slot: "12:00" },
-  "0 12 * * *": { mode: "publish", slot: "20:00" }
+  "0,15,30,45 4 * * *": { mode: "publish", slot: "12:00" },
+  "0 12 * * *": { mode: "publish", slot: "20:00" },
+  "0,15,30,45 12 * * *": { mode: "publish", slot: "20:00" }
 };
 
 export function getHongKongTimeParts(date = new Date()) {

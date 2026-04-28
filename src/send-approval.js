@@ -17,6 +17,13 @@ async function main() {
   const slot = process.env.TARGET_SLOT;
   let posts = await loadPosts();
   const published = await readJson(PUBLISHED_PATH, []);
+  const requests = await readJson(APPROVAL_REQUESTS_PATH, []);
+  const existingRequest = requests.find((request) => request.date === config.postDate && request.slot === slot);
+  if (existingRequest && String(process.env.FORCE_APPROVAL || "false").toLowerCase() !== "true") {
+    console.log(`Approval request already exists for ${config.postDate} ${getSlotLabel(slot)}.`);
+    return;
+  }
+
   let post = selectPost(posts, published, config.postDate, slot);
 
   if ((process.env.CONTENT_SOURCE || "local") === "local") {
@@ -57,7 +64,6 @@ async function main() {
     approvalToken
   });
 
-  const requests = await readJson(APPROVAL_REQUESTS_PATH, []);
   requests.push({
     id: post.id,
     date: config.postDate,
