@@ -131,14 +131,18 @@ export async function getApprovalDecision({ postId, requestedAt, telegramMessage
         || normalized === "REJECTED"
         || normalized === `REJECT ${postId}`
         || normalized === "REVISE"
-        || normalized.startsWith("REVISE ");
+        || normalized.startsWith("REVISE ")
+        || normalized.startsWith("修改")
+        || normalized.startsWith("更改")
+        || normalized.startsWith("改")
+        || normalized.includes("REVISE");
     })
     .map(({ updateId, message }) => {
       const normalized = message.text.trim().toUpperCase();
       const isApproved = normalized === "APPROVE" || normalized === "APPROVED" || normalized.startsWith("APPROVE ");
       const isRejected = normalized === "REJECT" || normalized === "REJECTED" || normalized.startsWith("REJECT ");
-      const revisionInstructions = normalized.startsWith("REVISE ")
-        ? message.text.trim().slice("REVISE ".length).trim()
+      const revisionInstructions = normalized.startsWith("REVISE")
+        ? message.text.trim().replace(/^revise\s*/i, "").trim()
         : undefined;
 
       return {
@@ -146,7 +150,7 @@ export async function getApprovalDecision({ postId, requestedAt, telegramMessage
         status: isApproved ? "approved" : isRejected ? "rejected" : "revision_requested",
         messageId: message.message_id,
         decidedAt: new Date(message.date * 1000).toISOString(),
-        revisionInstructions
+        revisionInstructions: revisionInstructions || message.text.trim()
       };
     });
 

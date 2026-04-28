@@ -35,6 +35,9 @@ function classifyText(text) {
   if (normalized === "REVISE" || normalized.startsWith("REVISE ")) {
     return "revise";
   }
+  if (normalized.startsWith("修改") || normalized.startsWith("更改") || normalized.startsWith("改") || normalized.includes("REVISE")) {
+    return "revise";
+  }
   return "other";
 }
 
