@@ -27,7 +27,7 @@ permissions:
 
 jobs:
   publish:
-    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-social-workflow]') || contains(github.event.head_commit.message, '[approval-1200-social-workflow]') || contains(github.event.head_commit.message, '[approval-2000-social-workflow]') || contains(github.event.head_commit.message, '[publish-1200-social-workflow]') || contains(github.event.head_commit.message, '[publish-social-workflow]') || contains(github.event.head_commit.message, '[force-publish-social-workflow]') || contains(github.event.head_commit.message, '[debug-telegram-social-workflow]')
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-social-workflow]') || contains(github.event.head_commit.message, '[approval-1200-social-workflow]') || contains(github.event.head_commit.message, '[approval-2000-social-workflow]') || contains(github.event.head_commit.message, '[publish-1200-social-workflow]') || contains(github.event.head_commit.message, '[publish-social-workflow]') || contains(github.event.head_commit.message, '[force-publish-1200-social-workflow]') || contains(github.event.head_commit.message, '[force-publish-social-workflow]') || contains(github.event.head_commit.message, '[debug-telegram-social-workflow]')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -52,10 +52,10 @@ jobs:
           ENABLE_TRENDS_CONTEXT: ${{ secrets.ENABLE_TRENDS_CONTEXT || 'true' }}
           GOOGLE_TRENDS_RSS_URL: ${{ secrets.GOOGLE_TRENDS_RSS_URL || 'https://trends.google.com/trending/rss?geo=HK' }}
           GOOGLE_TRENDS_LIMIT: ${{ secrets.GOOGLE_TRENDS_LIMIT || '10' }}
-          ACTION_MODE: ${{ inputs.mode || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-1200-social-workflow]') && 'publish') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-social-workflow]') && 'publish') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[force-publish-social-workflow]') && 'publish') || (github.event_name == 'push' && 'approval') || 'auto' }}
-          TARGET_SLOT: ${{ inputs.slot || (github.event_name == 'push' && contains(github.event.head_commit.message, '[approval-1200-social-workflow]') && '12:00') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-1200-social-workflow]') && '12:00') || (github.event_name == 'push' && '20:00') || '' }}
+          ACTION_MODE: ${{ inputs.mode || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-1200-social-workflow]') && 'publish') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-social-workflow]') && 'publish') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[force-publish-1200-social-workflow]') && 'publish') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[force-publish-social-workflow]') && 'publish') || (github.event_name == 'push' && 'approval') || 'auto' }}
+          TARGET_SLOT: ${{ inputs.slot || (github.event_name == 'push' && contains(github.event.head_commit.message, '[approval-1200-social-workflow]') && '12:00') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[publish-1200-social-workflow]') && '12:00') || (github.event_name == 'push' && contains(github.event.head_commit.message, '[force-publish-1200-social-workflow]') && '12:00') || (github.event_name == 'push' && '20:00') || '' }}
           SCHEDULE_CRON: ${{ github.event.schedule }}
-          FORCE_APPROVED: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[force-publish-social-workflow]') }}
+          FORCE_APPROVED: ${{ github.event_name == 'push' && (contains(github.event.head_commit.message, '[force-publish-social-workflow]') || contains(github.event.head_commit.message, '[force-publish-1200-social-workflow]')) }}
           DRY_RUN: "false"
         run: npm run workflow:run
 
