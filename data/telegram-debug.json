@@ -1,6 +1,31 @@
 {
-  "checkedAt": "2026-04-28T04:53:18.784Z",
-  "updateCount": 0,
-  "matchingChatCount": 0,
-  "latest": []
+  "checkedAt": "2026-04-28T08:29:16.276Z",
+  "updateCount": 3,
+  "matchingChatCount": 3,
+  "latest": [
+    {
+      "updateId": 2578203,
+      "type": "message",
+      "chatMatches": true,
+      "messageId": 3,
+      "messageDate": "2026-04-28T08:18:08.000Z",
+      "textClass": "other"
+    },
+    {
+      "updateId": 2578204,
+      "type": "message",
+      "chatMatches": true,
+      "messageId": 4,
+      "messageDate": "2026-04-28T08:18:16.000Z",
+      "textClass": "other"
+    },
+    {
+      "updateId": 2578207,
+      "type": "message",
+      "chatMatches": true,
+      "messageId": 6,
+      "messageDate": "2026-04-28T08:26:39.000Z",
+      "textClass": "other"
+    }
+  ]
 }
