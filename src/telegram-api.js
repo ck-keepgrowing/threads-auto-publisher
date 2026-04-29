@@ -54,25 +54,16 @@ export async function sendApprovalMessage({ post, date, slot, approvalToken }) {
     "",
     post.text,
     "",
-    "Tap a button below.",
-    "Or reply: approve / reject / revise your edit instructions"
+    "Reply with one of these:",
+    "approve",
+    "reject",
+    "revise your edit instructions"
   ].join("\n");
 
   return requestTelegram("sendMessage", {
     chat_id: chatId,
     text,
-    disable_web_page_preview: true,
-    reply_markup: {
-      keyboard: [
-        [
-          { text: "Approve" },
-          { text: "Reject" },
-          { text: "Revise" }
-        ]
-      ],
-      resize_keyboard: true,
-      one_time_keyboard: true
-    }
+    disable_web_page_preview: true
   });
 }
 
