@@ -63,7 +63,7 @@ async function main() {
     },
     body: JSON.stringify({
       allowed_updates: ["message", "callback_query"],
-      offset: -100,
+      limit: 100,
       timeout: 0
     })
   });

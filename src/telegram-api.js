@@ -78,7 +78,7 @@ export async function getApprovalDecision({ postId, requestedAt, telegramMessage
   const { chatId } = requireTelegramConfig();
   const result = await requestTelegram("getUpdates", {
     allowed_updates: ["message", "callback_query"],
-    offset: -100,
+    limit: 100,
     timeout: 0
   });
 
