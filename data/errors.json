@@ -47,5 +47,12 @@
     "slot": "12:00",
     "message": "Post 2026-04-29-1200 was not published because no Telegram approval was found.",
     "failedAt": "2026-04-29T06:15:03.951Z"
+  },
+  {
+    "id": "2026-04-29-2000",
+    "date": "2026-04-29",
+    "slot": "20:00",
+    "message": "Post 2026-04-29-2000 was not published because no Telegram approval was found.",
+    "failedAt": "2026-04-29T13:24:04.250Z"
   }
 ]
