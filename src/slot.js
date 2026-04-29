@@ -1,20 +1,32 @@
 export const APPROVAL_TO_PUBLISH_SLOT = {
+  "07": "10:00",
   "09": "12:00",
+  "13": "16:00",
   "17": "20:00"
 };
 
 export const PUBLISH_HOUR_TO_SLOT = {
+  "10": "10:00",
   "12": "12:00",
+  "16": "16:00",
   "20": "20:00"
 };
 
 export const SCHEDULE_CRON_TO_ACTION = {
+  "0 23 * * *": { mode: "approval", slot: "10:00" },
+  "0,15,30,45 23 * * *": { mode: "approval", slot: "10:00" },
   "0 1 * * *": { mode: "approval", slot: "12:00" },
   "0,15,30,45 1 * * *": { mode: "approval", slot: "12:00" },
+  "0 5 * * *": { mode: "approval", slot: "16:00" },
+  "0,15,30,45 5 * * *": { mode: "approval", slot: "16:00" },
   "0 9 * * *": { mode: "approval", slot: "20:00" },
   "0,15,30,45 9 * * *": { mode: "approval", slot: "20:00" },
+  "0 2 * * *": { mode: "publish", slot: "10:00" },
+  "0,15,30,45 2 * * *": { mode: "publish", slot: "10:00" },
   "0 4 * * *": { mode: "publish", slot: "12:00" },
   "0,15,30,45 4 * * *": { mode: "publish", slot: "12:00" },
+  "0 8 * * *": { mode: "publish", slot: "16:00" },
+  "0,15,30,45 8 * * *": { mode: "publish", slot: "16:00" },
   "0 12 * * *": { mode: "publish", slot: "20:00" },
   "0,15,30,45 12 * * *": { mode: "publish", slot: "20:00" }
 };

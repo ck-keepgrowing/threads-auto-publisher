@@ -63,13 +63,15 @@ export async function sendApprovalMessage({ post, date, slot, approvalToken }) {
     text,
     disable_web_page_preview: true,
     reply_markup: {
-      inline_keyboard: [
+      keyboard: [
         [
-          { text: "Approve", callback_data: buildCallbackData("APPROVE", post.id, approvalToken) },
-          { text: "Reject", callback_data: buildCallbackData("REJECT", post.id, approvalToken) },
-          { text: "Revise", callback_data: buildCallbackData("REVISE", post.id, approvalToken) }
+          { text: "Approve" },
+          { text: "Reject" },
+          { text: "Revise" }
         ]
-      ]
+      ],
+      resize_keyboard: true,
+      one_time_keyboard: true
     }
   });
 }

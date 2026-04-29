@@ -26,17 +26,13 @@ async function main() {
 
   let post = selectPost(posts, published, config.postDate, slot);
 
-  if ((process.env.CONTENT_SOURCE || "local") === "local") {
+  if ((process.env.CONTENT_SOURCE || "local") === "local" && !post) {
     if (config.dryRun) {
       console.log(`[DRY RUN] Would generate a fresh AI draft for ${config.postDate} ${getSlotLabel(slot)} before Telegram approval.`);
-      if (post) {
-        console.log("Existing post would be replaced:");
-        console.log(post.text);
-      }
       return;
     }
 
-    // Approval always starts with a fresh editor draft so the content follows the latest brief and brand guide.
+    // If no prepared post exists for this slot, start approval with a fresh editor draft.
     post = await generateDraftPost({
       date: config.postDate,
       slot
