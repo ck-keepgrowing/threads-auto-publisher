@@ -3,7 +3,7 @@ import { getRequiredConfig } from "./config.js";
 import { loadPosts } from "./posts-source.js";
 import { readJson, writeJson } from "./storage.js";
 import { APPROVAL_REQUESTS_PATH, PUBLISHED_PATH, getSlotLabel, publishAndRecord, recordError, selectPost, validatePost } from "./post-utils.js";
-import { getApprovalDecision, sendApprovalMessage } from "./telegram-api.js";
+import { getApprovalDecision, sendApprovalMessage, sendTelegramMessage } from "./telegram-api.js";
 import { generateRevisedPost, upsertPost } from "./editor-generator.js";
 
 loadDotEnv();
@@ -25,6 +25,14 @@ function findLatestRequestForSlot(requests, date, slot) {
   return requests
     .filter((request) => request.date === date && request.slot === slot)
     .sort((left, right) => new Date(right.requestedAt) - new Date(left.requestedAt))[0];
+}
+
+async function notifyTelegram(text) {
+  try {
+    await sendTelegramMessage(text);
+  } catch (error) {
+    console.warn(`Telegram notification failed: ${error.message}`);
+  }
 }
 
 async function main() {
@@ -70,7 +78,14 @@ async function main() {
   }
 
   if (String(process.env.FORCE_APPROVED || "false").toLowerCase() === "true") {
-    await publishAndRecord({ config, post: approvedPost, slot, approvalRequestId });
+    const result = await publishAndRecord({ config, post: approvedPost, slot, approvalRequestId });
+    await notifyTelegram([
+      "Threads post published.",
+      "",
+      `Post ID: ${approvedPost.id}`,
+      `Scheduled time: ${config.postDate} ${getSlotLabel(slot)} HKT`,
+      `Threads ID: ${result.id || "unknown"}`
+    ].join("\n"));
     console.log(`Force published approved post ${approvedPost.id}.`);
     return;
   }
@@ -102,6 +117,12 @@ async function main() {
       slot,
       message
     });
+    await notifyTelegram([
+      "Rejected. This Threads post will not be published.",
+      "",
+      `Post ID: ${post.id}`,
+      `Scheduled time: ${config.postDate} ${getSlotLabel(slot)} HKT`
+    ].join("\n"));
     console.log(message);
     return;
   }
@@ -156,7 +177,22 @@ async function main() {
     return;
   }
 
-  await publishAndRecord({ config, post: approvedPost, slot, approvalRequestId });
+  await notifyTelegram([
+    "Approval received.",
+    "",
+    `Post ID: ${approvedPost.id}`,
+    `Scheduled time: ${config.postDate} ${getSlotLabel(slot)} HKT`,
+    "Publishing now."
+  ].join("\n"));
+
+  const result = await publishAndRecord({ config, post: approvedPost, slot, approvalRequestId });
+  await notifyTelegram([
+    "Threads post published.",
+    "",
+    `Post ID: ${approvedPost.id}`,
+    `Scheduled time: ${config.postDate} ${getSlotLabel(slot)} HKT`,
+    `Threads ID: ${result.id || "unknown"}`
+  ].join("\n"));
   console.log(`Published approved post ${approvedPost.id}.`);
 }
 

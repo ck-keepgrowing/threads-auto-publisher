@@ -67,6 +67,15 @@ export async function sendApprovalMessage({ post, date, slot, approvalToken }) {
   });
 }
 
+export async function sendTelegramMessage(text) {
+  const { chatId } = requireTelegramConfig();
+  return requestTelegram("sendMessage", {
+    chat_id: chatId,
+    text,
+    disable_web_page_preview: true
+  });
+}
+
 export async function getApprovalDecision({ postId, requestedAt, telegramMessageId, approvalToken }) {
   const { chatId } = requireTelegramConfig();
   const result = await requestTelegram("getUpdates", {
