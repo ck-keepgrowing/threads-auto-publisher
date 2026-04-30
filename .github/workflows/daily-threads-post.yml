@@ -2,17 +2,9 @@ name: Daily Threads Post
 
 on:
   schedule:
-    # 07:00-07:45, 09:00-09:45, 13:00-13:45, and 17:00-17:45 Asia/Hong_Kong send approval requests.
-    # Multiple attempts make the workflow resilient when GitHub skips or delays a scheduled run.
-    - cron: "0,15,30,45 23 * * *"
-    - cron: "0,15,30,45 1 * * *"
-    - cron: "0,15,30,45 5 * * *"
-    - cron: "0,15,30,45 9 * * *"
-    # 10:00-10:45, 12:00-12:45, 16:00-16:45, and 20:00-20:45 Asia/Hong_Kong publish approved posts.
-    - cron: "0,15,30,45 2 * * *"
-    - cron: "0,15,30,45 4 * * *"
-    - cron: "0,15,30,45 8 * * *"
-    - cron: "0,15,30,45 12 * * *"
+    # Poll every 15 minutes, away from the top of the hour.
+    # The runner decides what is due in Asia/Hong_Kong time and catches up approved posts after their target slot.
+    - cron: "7,22,37,52 * * * *"
   workflow_dispatch:
     inputs:
       mode:
@@ -20,7 +12,7 @@ on:
         required: false
         default: "auto"
       slot:
-        description: "12:00 or 20:00"
+        description: "15:00, 17:00, 19:00, or 21:00"
         required: false
   push:
     branches:

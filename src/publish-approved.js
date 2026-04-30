@@ -2,7 +2,7 @@ import { loadDotEnv } from "./load-env.js";
 import { getRequiredConfig } from "./config.js";
 import { loadPosts } from "./posts-source.js";
 import { readJson, writeJson } from "./storage.js";
-import { APPROVAL_REQUESTS_PATH, PUBLISHED_PATH, getSlotLabel, publishAndRecord, recordError, selectPost, validatePost } from "./post-utils.js";
+import { APPROVAL_REQUESTS_PATH, PUBLISHED_PATH, getSlotLabel, publishAndRecord, recordError, selectPost, splitThreadText, validatePost } from "./post-utils.js";
 import { getApprovalDecision, sendApprovalMessage, sendTelegramMessage } from "./telegram-api.js";
 import { generateRevisedPost, upsertPost } from "./editor-generator.js";
 
@@ -35,9 +35,9 @@ async function notifyTelegram(text) {
   }
 }
 
-async function main() {
+export async function publishApprovedForSlot({ slot: requestedSlot, recordPendingError = true } = {}) {
   const config = getRequiredConfig();
-  const slot = process.env.TARGET_SLOT;
+  const slot = requestedSlot || process.env.TARGET_SLOT;
   const posts = await loadPosts();
   const published = await readJson(PUBLISHED_PATH, []);
   const requests = await readJson(APPROVAL_REQUESTS_PATH, []);
@@ -73,20 +73,23 @@ async function main() {
 
   if (config.dryRun) {
     console.log(`[DRY RUN] Would check Telegram approval and publish ${approvedPost.id} (${getSlotLabel(slot)}):`);
-    console.log(approvedPost.text);
+    splitThreadText(approvedPost.text).forEach((part, index) => {
+      console.log(`\n--- Thread part ${index + 1} ---\n${part}`);
+    });
     return;
   }
 
-  if (String(process.env.FORCE_APPROVED || "false").toLowerCase() === "true") {
+  if (approvedPost.autoPublish || String(process.env.FORCE_APPROVED || "false").toLowerCase() === "true") {
     const result = await publishAndRecord({ config, post: approvedPost, slot, approvalRequestId });
     await notifyTelegram([
       "Threads post published.",
       "",
       `Post ID: ${approvedPost.id}`,
       `Scheduled time: ${config.postDate} ${getSlotLabel(slot)} HKT`,
-      `Threads ID: ${result.id || "unknown"}`
+      `Threads ID: ${result.id || "unknown"}`,
+      `Thread parts: ${result.threadParts?.length || 1}`
     ].join("\n"));
-    console.log(`Force published approved post ${approvedPost.id}.`);
+    console.log(`${approvedPost.autoPublish ? "Auto" : "Force"} published approved post ${approvedPost.id}.`);
     return;
   }
 
@@ -99,12 +102,14 @@ async function main() {
 
   if (decision.status === "pending") {
     const message = `Post ${post.id} was not published because no Telegram approval was found.`;
-    await recordError({
-      id: post.id,
-      date: config.postDate,
-      slot,
-      message
-    });
+    if (recordPendingError) {
+      await recordError({
+        id: post.id,
+        date: config.postDate,
+        slot,
+        message
+      });
+    }
     console.log(message);
     return;
   }
@@ -191,12 +196,15 @@ async function main() {
     "",
     `Post ID: ${approvedPost.id}`,
     `Scheduled time: ${config.postDate} ${getSlotLabel(slot)} HKT`,
-    `Threads ID: ${result.id || "unknown"}`
+    `Threads ID: ${result.id || "unknown"}`,
+    `Thread parts: ${result.threadParts?.length || 1}`
   ].join("\n"));
   console.log(`Published approved post ${approvedPost.id}.`);
 }
 
-main().catch(async (error) => {
-  console.error(error.message);
-  process.exitCode = 1;
-});
+if (import.meta.url === `file://${process.argv[1]}`) {
+  publishApprovedForSlot().catch(async (error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+  });
+}

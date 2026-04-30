@@ -2,7 +2,7 @@ import { loadDotEnv } from "./load-env.js";
 import { getConfig } from "./config.js";
 import { loadPosts } from "./posts-source.js";
 import { readJson, writeJson } from "./storage.js";
-import { APPROVAL_REQUESTS_PATH, PUBLISHED_PATH, getSlotLabel, selectPost, validatePost } from "./post-utils.js";
+import { APPROVAL_REQUESTS_PATH, PUBLISHED_PATH, getSlotLabel, selectPost, splitThreadText, validatePost } from "./post-utils.js";
 import { sendApprovalMessage } from "./telegram-api.js";
 import { generateDraftPost, upsertPost } from "./editor-generator.js";
 
@@ -12,9 +12,9 @@ function createApprovalToken() {
   return `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 }
 
-async function main() {
+export async function sendApprovalForSlot({ slot: requestedSlot } = {}) {
   const config = getConfig();
-  const slot = process.env.TARGET_SLOT;
+  const slot = requestedSlot || process.env.TARGET_SLOT;
   let posts = await loadPosts();
   const published = await readJson(PUBLISHED_PATH, []);
   const requests = await readJson(APPROVAL_REQUESTS_PATH, []);
@@ -46,9 +46,16 @@ async function main() {
 
   validatePost(post);
 
+  if (post.autoPublish) {
+    console.log(`Post ${post.id} is marked autoPublish, so Telegram approval is skipped.`);
+    return;
+  }
+
   if (config.dryRun) {
     console.log(`[DRY RUN] Would send Telegram approval for ${post.id} (${getSlotLabel(slot)}):`);
-    console.log(post.text);
+    splitThreadText(post.text).forEach((part, index) => {
+      console.log(`\n--- Thread part ${index + 1} ---\n${part}`);
+    });
     return;
   }
 
@@ -85,7 +92,9 @@ async function main() {
   console.log(`Sent Telegram approval request for ${post.id}.`);
 }
 
-main().catch((error) => {
-  console.error(error.message);
-  process.exitCode = 1;
-});
+if (import.meta.url === `file://${process.argv[1]}`) {
+  sendApprovalForSlot().catch((error) => {
+    console.error(error.message);
+    process.exitCode = 1;
+  });
+}

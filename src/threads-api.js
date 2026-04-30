@@ -19,15 +19,21 @@ async function postForm(url, body) {
   return payload;
 }
 
-export async function publishTextPost({ apiVersion, userId, accessToken, text }) {
+export async function publishTextPost({ apiVersion, userId, accessToken, text, replyToId }) {
   const createUrl = `${BASE_URL}/${apiVersion}/${userId}/threads`;
   const publishUrl = `${BASE_URL}/${apiVersion}/${userId}/threads_publish`;
 
-  const creation = await postForm(createUrl, {
+  const createBody = {
     media_type: "TEXT",
     text,
     access_token: accessToken
-  });
+  };
+
+  if (replyToId) {
+    createBody.reply_to_id = replyToId;
+  }
+
+  const creation = await postForm(createUrl, createBody);
 
   const creationId = creation.id || creation.creation_id;
   if (!creationId) {

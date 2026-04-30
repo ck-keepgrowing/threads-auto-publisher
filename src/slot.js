@@ -1,16 +1,18 @@
 export const APPROVAL_TO_PUBLISH_SLOT = {
-  "07": "10:00",
-  "09": "12:00",
-  "13": "16:00",
-  "17": "20:00"
+  "12": "15:00",
+  "14": "17:00",
+  "16": "19:00",
+  "18": "21:00"
 };
 
 export const PUBLISH_HOUR_TO_SLOT = {
-  "10": "10:00",
-  "12": "12:00",
-  "16": "16:00",
-  "20": "20:00"
+  "15": "15:00",
+  "17": "17:00",
+  "19": "19:00",
+  "21": "21:00"
 };
+
+export const PUBLISH_SLOTS = ["15:00", "17:00", "19:00", "21:00"];
 
 export const SCHEDULE_CRON_TO_ACTION = {
   "0 23 * * *": { mode: "approval", slot: "10:00" },
@@ -46,8 +48,41 @@ export function getHongKongTimeParts(date = new Date()) {
   return {
     date: `${values.year}-${values.month}-${values.day}`,
     hour: values.hour,
+    minute: values.minute,
     time: `${values.hour}:${values.minute}`
   };
+}
+
+function minutesSinceMidnight(time) {
+  const [hour, minute] = time.split(":").map(Number);
+  return hour * 60 + minute;
+}
+
+export function resolveAutoWorkflowActions(date = new Date()) {
+  const current = getHongKongTimeParts(date);
+  const actions = [];
+
+  if (APPROVAL_TO_PUBLISH_SLOT[current.hour]) {
+    actions.push({
+      mode: "approval",
+      slot: APPROVAL_TO_PUBLISH_SLOT[current.hour]
+    });
+  }
+
+  const currentMinutes = minutesSinceMidnight(current.time);
+  for (const slot of PUBLISH_SLOTS) {
+    if (minutesSinceMidnight(slot) <= currentMinutes) {
+      actions.push({
+        mode: "publish",
+        slot,
+        recordPendingError: false
+      });
+    }
+  }
+
+  return actions.length > 0
+    ? actions
+    : [{ mode: "noop", slot: current.time }];
 }
 
 export function resolveWorkflowAction({ mode, slot, scheduleCron }) {

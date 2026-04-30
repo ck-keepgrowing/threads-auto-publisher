@@ -2,8 +2,7 @@ import { loadDotEnv } from "./load-env.js";
 import { getRequiredConfig } from "./config.js";
 import { readJson, writeJson } from "./storage.js";
 import { loadPosts } from "./posts-source.js";
-import { publishTextPost } from "./threads-api.js";
-import { ERRORS_PATH, MAX_THREADS_TEXT_LENGTH, PUBLISHED_PATH, selectPost, validatePost } from "./post-utils.js";
+import { ERRORS_PATH, PUBLISHED_PATH, publishThreadText, selectPost, splitThreadText, validatePost } from "./post-utils.js";
 
 loadDotEnv();
 
@@ -22,23 +21,25 @@ async function main() {
 
   if (config.dryRun) {
     console.log(`[DRY RUN] Would publish post ${post.id}:`);
-    console.log(post.text);
+    splitThreadText(post.text).forEach((part, index) => {
+      console.log(`\n--- Thread part ${index + 1} ---\n${part}`);
+    });
     return;
   }
 
   try {
-    const result = await publishTextPost({
-      apiVersion: config.apiVersion,
-      userId: config.userId,
-      accessToken: config.accessToken,
-      text: post.text
-    });
+    const threadResults = await publishThreadText({ config, text: post.text });
 
     published.push({
       id: post.id,
       date: config.postDate,
       text: post.text,
-      threadsResponse: result,
+      threadParts: threadResults.map((part) => ({
+        index: part.index,
+        text: part.text,
+        threadsResponse: part.threadsResponse
+      })),
+      threadsResponse: threadResults[0]?.threadsResponse,
       publishedAt: new Date().toISOString()
     });
 

@@ -70,10 +70,13 @@ npm run post:today
 
 預設每日香港時間：
 
-- 09:00：送 12:00 post 到 Telegram approval
-- 12:00：如 Telegram 有 `APPROVE post-id`，就發佈 12:00 post
-- 17:00：送 20:00 post 到 Telegram approval
-- 20:00：如 Telegram 有 `APPROVE post-id`，就發佈 20:00 post
+- 12:00 左右：送 15:00 post 到 Telegram approval
+- 14:00 左右：送 17:00 post 到 Telegram approval
+- 16:00 左右：送 19:00 post 到 Telegram approval
+- 18:00 左右：送 21:00 post 到 Telegram approval
+- 每 15 分鐘檢查一次到期 post；只要 Telegram 已 approve，而且該 slot 未發佈，就會補發。
+
+GitHub Actions schedule 可能會延遲或被略過，所以 workflow 用輪詢式設計：cron 每 15 分鐘跑一次，並避開每小時 00 分；程式再按香港時間判斷邊個 approval 或 publish 動作到期。即使你遲咗 approve，系統都會喺下一次輪詢補發，而唔會只限於原本固定 45 分鐘嘅窗口。
 
 Approval 前會先用 `data/editor-briefs.json` 和 `data/brand-guide.json` call OpenRouter 生成新草稿，寫入 `data/posts.json`，再送 Telegram。若你按 `Revise` 或回覆修改方向，系統會再 call OpenRouter 修正一次，然後重新送 approval。
 
