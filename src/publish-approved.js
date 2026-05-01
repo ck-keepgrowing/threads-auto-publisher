@@ -42,11 +42,13 @@ export async function publishApprovedForSlot({ slot: requestedSlot, recordPendin
   const published = await readJson(PUBLISHED_PATH, []);
   const requests = await readJson(APPROVAL_REQUESTS_PATH, []);
   const latestSlotRequest = findLatestRequestForSlot(requests, config.postDate, slot);
+  const currentPost = selectPost(posts, published, config.postDate, slot);
   const post = latestSlotRequest?.post
     ? {
-        ...latestSlotRequest.post
+        ...latestSlotRequest.post,
+        ...currentPost
       }
-    : selectPost(posts, published, config.postDate, slot);
+    : currentPost;
 
   if (!post) {
     console.log(`No ready post found for ${config.postDate} ${getSlotLabel(slot)}.`);
@@ -59,8 +61,8 @@ export async function publishApprovedForSlot({ slot: requestedSlot, recordPendin
   const approvalRequestId = getApprovalRequestId(latestRequest);
   const approvedPost = latestRequest?.post
     ? {
-        ...post,
-        ...latestRequest.post
+        ...latestRequest.post,
+        ...post
       }
     : post;
 

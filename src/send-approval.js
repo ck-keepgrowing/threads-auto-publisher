@@ -46,11 +46,6 @@ export async function sendApprovalForSlot({ slot: requestedSlot } = {}) {
 
   validatePost(post);
 
-  if (post.autoPublish) {
-    console.log(`Post ${post.id} is marked autoPublish, so Telegram approval is skipped.`);
-    return;
-  }
-
   if (config.dryRun) {
     console.log(`[DRY RUN] Would send Telegram approval for ${post.id} (${getSlotLabel(slot)}):`);
     splitThreadText(post.text).forEach((part, index) => {
@@ -64,7 +59,8 @@ export async function sendApprovalForSlot({ slot: requestedSlot } = {}) {
     post,
     date: config.postDate,
     slot: getSlotLabel(slot),
-    approvalToken
+    approvalToken,
+    autoPublish: post.autoPublish
   });
 
   requests.push({

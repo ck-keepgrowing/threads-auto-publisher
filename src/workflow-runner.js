@@ -1,7 +1,39 @@
 import { loadDotEnv } from "./load-env.js";
-import { resolveAutoWorkflowActions, resolveWorkflowAction } from "./slot.js";
+import { getConfig } from "./config.js";
+import { generateDraftPost, upsertPost } from "./editor-generator.js";
+import { loadPosts } from "./posts-source.js";
+import { PUBLISH_SLOTS, resolveAutoWorkflowActions, resolveWorkflowAction } from "./slot.js";
 
 loadDotEnv();
+
+async function ensureTodayPostsForSlots() {
+  if ((process.env.CONTENT_SOURCE || "local") !== "local") {
+    return;
+  }
+
+  const config = getConfig();
+  const posts = await loadPosts();
+  const existingSlots = new Set(
+    posts
+      .filter((post) => post.date === config.postDate)
+      .map((post) => post.slot)
+  );
+
+  for (const slot of PUBLISH_SLOTS) {
+    if (existingSlots.has(slot)) {
+      continue;
+    }
+    const post = await generateDraftPost({
+      date: config.postDate,
+      slot
+    });
+    await upsertPost({
+      ...post,
+      autoPublish: true
+    });
+    console.log(`Generated auto-publish draft ${post.id}.`);
+  }
+}
 
 async function runAction(action) {
   if (action.slot) {
@@ -23,8 +55,16 @@ async function runAction(action) {
 }
 
 if (!process.env.ACTION_MODE || process.env.ACTION_MODE === "auto") {
-  const actions = resolveAutoWorkflowActions();
-  for (const action of actions) {
+  await ensureTodayPostsForSlots();
+
+  for (const slot of PUBLISH_SLOTS) {
+    await runAction({
+      mode: "approval",
+      slot
+    });
+  }
+
+  for (const action of resolveAutoWorkflowActions().filter((item) => item.mode === "publish" || item.mode === "noop")) {
     await runAction(action);
   }
 } else {

@@ -38,7 +38,7 @@ export async function generateText({ instructions, input }) {
           content: input
         }
       ],
-      max_tokens: 700,
+      max_tokens: Number(process.env.OPENROUTER_MAX_TOKENS || 2200),
       temperature: 0.8
     })
   });
