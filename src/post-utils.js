@@ -154,6 +154,7 @@ export async function publishAndRecord({ config, post, slot, approvalRequestId }
     id: post.id,
     date: config.postDate,
     slot,
+    pillar: post.pillar || null,
     approvalRequestId,
     text: post.text,
     threadParts: threadResults.map((part) => ({

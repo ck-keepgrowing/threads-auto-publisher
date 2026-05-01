@@ -6,14 +6,6 @@ const POSTS_PATH = "data/posts.json";
 const BRIEFS_PATH = "data/editor-briefs.json";
 const BRAND_GUIDE_PATH = "data/brand-guide.json";
 
-function stableIndex(value, length) {
-  let hash = 0;
-  for (const char of value) {
-    hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
-  }
-  return hash % length;
-}
-
 function normalizeGeneratedPost(text) {
   return text
     .replace(/^["'「『]+|["'」』]+$/g, "")
@@ -25,15 +17,41 @@ function getPostId(date, slot) {
   return `${date}-${slot.replace(":", "")}`;
 }
 
+function selectBrief(briefs, recentUsage = [], pillarStats = {}) {
+  const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const recentPillars = new Set(recentUsage.filter((u) => u.date >= cutoff).map((u) => u.pillar));
+
+  const weights = briefs.map((brief) => {
+    let weight = 1.0;
+    if (recentPillars.has(brief.pillar)) weight *= 0.15;
+    const stats = pillarStats[brief.pillar];
+    if (stats?.avgEngagement != null) {
+      weight *= 1 + Math.min(stats.avgEngagement / 30, 0.4);
+    }
+    return Math.max(weight, 0.01);
+  });
+
+  const total = weights.reduce((a, b) => a + b, 0);
+  let rand = Math.random() * total;
+  for (let i = 0; i < briefs.length; i++) {
+    rand -= weights[i];
+    if (rand <= 0) return briefs[i];
+  }
+  return briefs[briefs.length - 1];
+}
+
 async function loadEditorialContext(date, slot) {
-  const briefs = await readJson(BRIEFS_PATH, []);
-  const brandGuide = await readJson(BRAND_GUIDE_PATH, {});
+  const [briefs, brandGuide, topicMemory] = await Promise.all([
+    readJson(BRIEFS_PATH, []),
+    readJson(BRAND_GUIDE_PATH, {}),
+    readJson("data/topic-memory.json", { recentUsage: [], pillarStats: {} }),
+  ]);
 
   if (briefs.length === 0) {
     throw new Error("No editorial briefs found.");
   }
 
-  const brief = briefs[stableIndex(`${date}-${slot}`, briefs.length)];
+  const brief = selectBrief(briefs, topicMemory.recentUsage, topicMemory.pillarStats);
   return { brief, brandGuide };
 }
 
