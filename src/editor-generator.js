@@ -93,7 +93,7 @@ export async function generateDraftPost({ date, slot }) {
     status: "ready",
     source: "ai_editor",
     pillar: brief.pillar,
-    autoPublish: String(process.env.AUTO_PUBLISH_DRAFTS || "true").toLowerCase() === "true",
+    autoPublish: String(process.env.AUTO_PUBLISH_DRAFTS || "false").toLowerCase() === "true",
     generatedAt: new Date().toISOString()
   };
 }

@@ -48,19 +48,16 @@ function parseCallbackData(data) {
 export async function sendApprovalMessage({ post, date, slot, approvalToken, autoPublish = false }) {
   const { chatId } = requireTelegramConfig();
   const text = [
-    `${autoPublish ? "Threads auto-publish preview" : "Threads approval request"} (${date} ${slot} HKT)`,
+    `Threads approval request (${date} ${slot} HKT)`,
     "",
     `Post ID: ${post.id}`,
-    autoPublish ? "Status: auto-publish is ON. This will publish automatically at the scheduled slot." : "",
     "",
     post.text,
     "",
-    autoPublish
-      ? "No approval is needed for this post."
-      : "Reply with one of these:",
-    autoPublish ? "" : "approve",
-    autoPublish ? "" : "reject",
-    autoPublish ? "" : "revise your edit instructions"
+    "Reply with one of these:",
+    "approve",
+    "reject",
+    "revise your edit instructions"
   ].filter((line) => line !== "").join("\n");
 
   return requestTelegram("sendMessage", {

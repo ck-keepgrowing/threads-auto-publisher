@@ -33,9 +33,9 @@ async function ensureTodayPostsForSlots() {
     });
     await upsertPost({
       ...post,
-      autoPublish: true
+      autoPublish: String(process.env.AUTO_PUBLISH_DRAFTS || "false").toLowerCase() === "true"
     });
-    console.log(`Generated auto-publish draft ${post.id}.`);
+    console.log(`Generated draft ${post.id}.`);
   }
 }
 

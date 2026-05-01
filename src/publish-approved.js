@@ -81,7 +81,7 @@ export async function publishApprovedForSlot({ slot: requestedSlot, recordPendin
     return;
   }
 
-  if (approvedPost.autoPublish || String(process.env.FORCE_APPROVED || "false").toLowerCase() === "true") {
+  if (String(process.env.FORCE_APPROVED || "false").toLowerCase() === "true") {
     const result = await publishAndRecord({ config, post: approvedPost, slot, approvalRequestId });
     await notifyTelegram([
       "Threads post published.",
@@ -91,7 +91,7 @@ export async function publishApprovedForSlot({ slot: requestedSlot, recordPendin
       `Threads ID: ${result.id || "unknown"}`,
       `Thread parts: ${result.threadParts?.length || 1}`
     ].join("\n"));
-    console.log(`${approvedPost.autoPublish ? "Auto" : "Force"} published approved post ${approvedPost.id}.`);
+    console.log(`Force published approved post ${approvedPost.id}.`);
     return;
   }
 
