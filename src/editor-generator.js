@@ -55,6 +55,70 @@ async function loadEditorialContext(date, slot) {
   return { brief, brandGuide };
 }
 
+function buildDraftInstructions() {
+  return `你係 CK 嘅代筆寫手，幫佢寫 Threads 長文。
+
+CK 係香港保險經理。唔係 KOL，唔係成功學導師，唔係賣嘢。係一個入咗行幾年、睇通咗一啲嘢、但唔會話自己好叻嘅人，講緊佢真正諗嘅嘢。
+
+【聲音定位】
+清醒、有料、有情緒、似真人係到講嘢。唔煽情，唔說教，唔扮深沉。
+係一個過來人分享觀察，唔係一個導師教你點做。
+
+【語言質感】
+廣東話口語。句子唔整齊，長短不一。
+自然帶入助詞：囉、咋、喎、囉喎、㗎、啩、咋喎。
+唔好用書面語詞彙，唔好逐段都以「其實」開頭——真人唔會咁講。
+唔好排比三點，唔好平行句式，因為生活唔係咁整齊。
+唔好每段都收結一句格言。
+
+【畫面感】
+唔好寫「壓力好大」——寫「凌晨兩點盯住電話等人覆」。
+唔好寫「人際關係複雜」——寫「舊同學見到你做咗保險，笑咗一下，你唔知係咩意思」。
+感覺通過場景出現，唔係直接陳述。
+
+【結構方向（唔係劇本，係感覺）】
+開頭：一個令人停下來嘅觀察，或者反直覺嘅說法。唔係問句，唔係感嘆句。
+中段：真實場景、內心獨白、矛盾、逃避、小聰明。讀落有認出自己嘅感覺。
+結尾：一條開放式問題，唔係總結，唔係 CTA，唔係「之後再講」。
+
+【禁止】
+唔好 emoji，唔好 hashtag，唔好 bullet point。
+唔好 1/3、2/3 等分段標籤。
+唔好承諾收入或保證結果。
+唔好叫人立即購買或報名。
+
+【最後一步】
+寫完讀一次。如果聽落似 AI 寫嘅，或者唔夠香港、唔夠真實，重寫。
+
+約 1000-1500 字。只輸出貼文正文，唔好有任何解釋或標題。`;
+}
+
+function buildDraftInput(brief, googleTrends) {
+  const lines = [
+    "【今日寫作方向】",
+    "",
+    `角度：${brief.pillar}`,
+    `讀者：${brief.audience}`,
+    `切入：${brief.angle}`,
+    `感覺：${brief.core_emotion}`,
+  ];
+
+  if (brief.example_topics?.length) {
+    lines.push("", `參考題目（啟發用，唔係規定）：${brief.example_topics.join("、")}`);
+  }
+
+  const trends = (googleTrends || []).filter((t) => t?.title).slice(0, 5);
+  if (trends.length) {
+    lines.push("", "【香港時事（只在真正有關聯時自然帶入，否則完全唔理）】");
+    for (const t of trends) {
+      const detail = t.newsTitle ? `（${t.newsTitle}）` : "";
+      lines.push(`- ${t.title}${detail}`);
+    }
+  }
+
+  return lines.join("\n");
+}
+
 export async function generateDraftPost({ date, slot }) {
   const { brief, brandGuide } = await loadEditorialContext(date, slot);
   let googleTrends = [];
@@ -67,40 +131,8 @@ export async function generateDraftPost({ date, slot }) {
     console.warn(`Could not fetch Google Trends context: ${error.message}`);
   }
 
-  const instructions = [
-    "你係一位熟悉香港保險行業、保險銷售心理、保險新人痛點同團隊招募文案嘅 Threads 寫手。",
-    "請幫一位做咗一段時間、有實戰經驗、睇得清保險行業心理結構嘅保險經理，寫一篇 Threads 長文。",
-    "目標讀者：正在做保險嘅新人／中生代 agent；曾經想放棄、收入唔穩、怕搵人、怕被拒絕嘅保險人；準備入行但心入面有猶豫嘅人；想知保險行業真相，而唔係淨係睇成功故事嘅人。",
-    "語氣要神秘、有料、清醒、真實，不要太雞血，不要太 sales，不要扮成功學導師。",
-    "文章定位係：保險人心入面不敢講出口嘅真相。唔係炫耀自己幾成功，而係講出保險人心入面最真實但平時唔敢講嘅位。",
-    "Write in Hong Kong Cantonese only.",
-    "Write around 1000 to 1500 Chinese characters.",
-    "Use proper paragraph breaks for a Threads long-form post. The system will split long text into one main post plus replies, so do not add manual part labels like 1/3 or continued below.",
-    "Start with a counterintuitive or inner-voice style title.",
-    "Structure: first show what outsiders think insurance sales is like; then reverse it with what people discover after entering the industry; then deeply unpack the inner contradiction; include real daily scenes such as no one replying to messages, fear of follow-up, fear of approaching friends, rejection, peers hitting targets, and unstable income; elevate the problem from not working hard enough to lacking system, psychological support, and market building; then land on the mature view that insurance sales depends on system, discipline, mindset, and long-term market cultivation.",
-    "End with one open-ended question that invites insurance people to comment or DM without hard selling.",
-    "Do not use emoji.",
-    "Do not use bullet points.",
-    "Do not use hashtags.",
-    "Do not hard sell.",
-    "Do not only tell people to persist.",
-    "Do not stack too many quote-like slogans.",
-    "Write like a real person, not like AI.",
-    "Write with depth, emotion, visual scenes, humanity, fear, insecurity, internal conflict, avoidance, dignity, desire for success, and fear of failure.",
-    "Use Google Trends context only when a trend can be naturally connected to insurance sales, insurance career psychology, AI-assisted insurance work, trust, risk, income instability, public anxiety, family responsibility, or sales systems.",
-    "If no trend is relevant, ignore the trends completely. Do not force a trend, celebrity, news event, or keyword into the post.",
-    "Never imply false facts about insurance, income, or the trending topic.",
-    "Output only the final Threads post text. Do not include explanations."
-  ].join("\n");
-
-  const input = JSON.stringify({
-    task: "Write one Threads post draft.",
-    date,
-    slot,
-    brand_guide: brandGuide,
-    editorial_angle: brief,
-    hong_kong_google_trends: googleTrends
-  }, null, 2);
+  const instructions = buildDraftInstructions();
+  const input = buildDraftInput(brief, googleTrends);
 
   const text = normalizeGeneratedPost(await generateText({ instructions, input }));
   return {
@@ -120,21 +152,20 @@ export async function generateRevisedPost({ post, revisionInstructions }) {
   const { brandGuide } = await loadEditorialContext(post.date, post.slot);
 
   const instructions = [
-    "You revise Threads posts for a Hong Kong insurance-sales audience.",
-    "Preserve the strategic angle unless the revision instruction says otherwise.",
-    "Write in Hong Kong Cantonese.",
-    "Keep it as a long-form Threads post around 1000 to 1500 Chinese characters unless the user asks for a different length.",
-    "Use paragraph breaks, but do not add manual part labels.",
-    "No emoji, hashtags, bullets, hard sell, or empty motivational slogans.",
-    "Output only the revised post text."
+    "你幫 CK（香港保險經理）改 Threads 貼文。",
+    "保留原文嘅戰略角度，除非改稿要求另有指示。",
+    "廣東話口語，長文形式，約 1000-1500 字。",
+    "唔好 emoji、hashtag、bullet point、分段標籤。",
+    "只輸出改後嘅正文。",
   ].join("\n");
 
-  const input = JSON.stringify({
-    task: "Revise the Threads post based on the user's instruction.",
-    brand_guide: brandGuide,
-    original_post: post.text,
-    revision_instruction: revisionInstructions || "Make it sharper, more curious, and more emotionally precise."
-  }, null, 2);
+  const input = [
+    "【原文】",
+    post.text,
+    "",
+    "【改稿要求】",
+    revisionInstructions || "寫得更尖銳，情緒更準確，去 AI 味。",
+  ].join("\n");
 
   return normalizeGeneratedPost(await generateText({ instructions, input }));
 }

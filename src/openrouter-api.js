@@ -12,7 +12,7 @@ function extractText(response) {
 
 export async function generateText({ instructions, input }) {
   const apiKey = process.env.OPENROUTER_API_KEY;
-  const model = process.env.OPENROUTER_MODEL || "openai/gpt-5.4-mini";
+  const model = process.env.OPENROUTER_MODEL || "openai/gpt-4o-mini";
 
   if (!apiKey) {
     throw new Error("OPENROUTER_API_KEY is required for AI draft generation.");
@@ -38,8 +38,8 @@ export async function generateText({ instructions, input }) {
           content: input
         }
       ],
-      max_tokens: Number(process.env.OPENROUTER_MAX_TOKENS || 2200),
-      temperature: 0.8
+      max_tokens: Number(process.env.OPENROUTER_MAX_TOKENS || 3000),
+      temperature: 0.9
     })
   });
 
