@@ -101,6 +101,7 @@ export async function publishThreadText({ config, text }) {
   const threadParts = splitThreadText(text);
   const results = [];
   let replyToId;
+  let rootPostId;
 
   for (const [index, part] of threadParts.entries()) {
     const result = await publishTextPost({
@@ -116,7 +117,11 @@ export async function publishThreadText({ config, text }) {
       text: part,
       threadsResponse: result
     });
-    replyToId = result.id || result.post_id || result.thread_id || result.media_id;
+    const publishedPostId = result.id || result.post_id || result.thread_id || result.media_id;
+    if (index === 0) {
+      rootPostId = publishedPostId;
+    }
+    replyToId = rootPostId;
     if (index < threadParts.length - 1 && !replyToId) {
       throw new Error(`Threads API did not return a post id for thread part ${index + 1}. Cannot publish continuation replies.`);
     }

@@ -13,10 +13,13 @@ async function ensureTodayPostsForSlots() {
 
   const config = getConfig();
   const posts = await loadPosts();
+  const { readJson } = await import("./storage.js");
+  const published = await readJson("data/published.json", []);
   const existingSlots = new Set(
-    posts
-      .filter((post) => post.date === config.postDate)
-      .map((post) => post.slot)
+    [
+      ...posts.filter((post) => post.date === config.postDate),
+      ...published.filter((post) => post.date === config.postDate)
+    ].map((post) => post.slot)
   );
 
   for (const slot of PUBLISH_SLOTS) {

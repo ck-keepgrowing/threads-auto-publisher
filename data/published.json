@@ -169,5 +169,16 @@
       "id": "18213409882325276"
     },
     "publishedAt": "2026-05-01T12:19:09.592Z"
+  },
+  {
+    "id": "2026-05-01-1700",
+    "date": "2026-05-01",
+    "slot": "17:00",
+    "text": "Published by GitHub Actions run 66 before that run failed while publishing the next slot. Full generated text was not committed because the job stopped before the log commit step.",
+    "threadsResponse": {
+      "id": "unknown-run-66"
+    },
+    "publishedAt": "2026-05-01T12:21:43.540Z",
+    "note": "Marker added to prevent duplicate auto-publish for this already-posted slot."
   }
 ]
