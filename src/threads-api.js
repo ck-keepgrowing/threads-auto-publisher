@@ -19,6 +19,10 @@ async function postForm(url, body) {
   return payload;
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export async function publishTextPost({ apiVersion, userId, accessToken, text, replyToId }) {
   const createUrl = `${BASE_URL}/${apiVersion}/${userId}/threads`;
   const publishUrl = `${BASE_URL}/${apiVersion}/${userId}/threads_publish`;
@@ -33,15 +37,37 @@ export async function publishTextPost({ apiVersion, userId, accessToken, text, r
     createBody.reply_to_id = replyToId;
   }
 
-  const creation = await postForm(createUrl, createBody);
+  let creation;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      creation = await postForm(createUrl, createBody);
+      break;
+    } catch (error) {
+      const canRetryReply = replyToId && /requested resource does not exist/i.test(error.message);
+      if (!canRetryReply || attempt === 3) {
+        throw error;
+      }
+      await sleep(5000 * attempt);
+    }
+  }
 
   const creationId = creation.id || creation.creation_id;
   if (!creationId) {
     throw new Error("Threads API did not return a creation id.");
   }
 
-  return postForm(publishUrl, {
-    creation_id: creationId,
-    access_token: accessToken
-  });
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      return await postForm(publishUrl, {
+        creation_id: creationId,
+        access_token: accessToken
+      });
+    } catch (error) {
+      const canRetryReply = replyToId && /requested resource does not exist/i.test(error.message);
+      if (!canRetryReply || attempt === 3) {
+        throw error;
+      }
+      await sleep(5000 * attempt);
+    }
+  }
 }

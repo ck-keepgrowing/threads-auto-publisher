@@ -18,6 +18,10 @@ export async function sendApprovalForSlot({ slot: requestedSlot } = {}) {
   let posts = await loadPosts();
   const published = await readJson(PUBLISHED_PATH, []);
   const requests = await readJson(APPROVAL_REQUESTS_PATH, []);
+  if (published.some((item) => item.date === config.postDate && item.slot === slot)) {
+    console.log(`Post for ${config.postDate} ${getSlotLabel(slot)} was already published.`);
+    return;
+  }
   const existingRequest = requests.find((request) => request.date === config.postDate && request.slot === slot);
   if (existingRequest && String(process.env.FORCE_APPROVAL || "false").toLowerCase() !== "true") {
     console.log(`Approval request already exists for ${config.postDate} ${getSlotLabel(slot)}.`);

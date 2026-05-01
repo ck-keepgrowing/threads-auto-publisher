@@ -176,9 +176,20 @@
     "slot": "17:00",
     "text": "Published by GitHub Actions run 66 before that run failed while publishing the next slot. Full generated text was not committed because the job stopped before the log commit step.",
     "threadsResponse": {
-      "id": "unknown-run-66"
+      "id": "18073568789343910"
     },
     "publishedAt": "2026-05-01T12:21:43.540Z",
+    "note": "Marker added to prevent duplicate auto-publish for this already-posted slot."
+  },
+  {
+    "id": "2026-05-01-1900",
+    "date": "2026-05-01",
+    "slot": "19:00",
+    "text": "First part was published by GitHub Actions run 67 before the reply step failed. Full generated text was not committed because the job stopped before the log commit step.",
+    "threadsResponse": {
+      "id": "18047016260773601"
+    },
+    "publishedAt": "2026-05-01T12:24:25.000Z",
     "note": "Marker added to prevent duplicate auto-publish for this already-posted slot."
   }
 ]

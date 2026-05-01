@@ -104,6 +104,10 @@ export async function publishThreadText({ config, text }) {
   let rootPostId;
 
   for (const [index, part] of threadParts.entries()) {
+    if (replyToId) {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+    }
+
     const result = await publishTextPost({
       apiVersion: config.apiVersion,
       userId: config.userId,

@@ -2,6 +2,7 @@ import { loadDotEnv } from "./load-env.js";
 import { getConfig } from "./config.js";
 import { generateDraftPost, upsertPost } from "./editor-generator.js";
 import { loadPosts } from "./posts-source.js";
+import { recordError } from "./post-utils.js";
 import { PUBLISH_SLOTS, resolveAutoWorkflowActions, resolveWorkflowAction } from "./slot.js";
 
 loadDotEnv();
@@ -61,14 +62,34 @@ if (!process.env.ACTION_MODE || process.env.ACTION_MODE === "auto") {
   await ensureTodayPostsForSlots();
 
   for (const slot of PUBLISH_SLOTS) {
-    await runAction({
-      mode: "approval",
-      slot
-    });
+    try {
+      await runAction({
+        mode: "approval",
+        slot
+      });
+    } catch (error) {
+      await recordError({
+        id: `${getConfig().postDate}-${slot.replace(":", "")}`,
+        date: getConfig().postDate,
+        slot,
+        message: `Approval action failed: ${error.message}`
+      });
+      console.error(`Approval action failed for ${slot}: ${error.message}`);
+    }
   }
 
   for (const action of resolveAutoWorkflowActions().filter((item) => item.mode === "publish" || item.mode === "noop")) {
-    await runAction(action);
+    try {
+      await runAction(action);
+    } catch (error) {
+      await recordError({
+        id: `${getConfig().postDate}-${action.slot.replace(":", "")}`,
+        date: getConfig().postDate,
+        slot: action.slot,
+        message: `Publish action failed: ${error.message}`
+      });
+      console.error(`Publish action failed for ${action.slot}: ${error.message}`);
+    }
   }
 } else {
   const action = resolveWorkflowAction({
