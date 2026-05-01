@@ -61,24 +61,7 @@ async function runAction(action) {
 if (!process.env.ACTION_MODE || process.env.ACTION_MODE === "auto") {
   await ensureTodayPostsForSlots();
 
-  for (const slot of PUBLISH_SLOTS) {
-    try {
-      await runAction({
-        mode: "approval",
-        slot
-      });
-    } catch (error) {
-      await recordError({
-        id: `${getConfig().postDate}-${slot.replace(":", "")}`,
-        date: getConfig().postDate,
-        slot,
-        message: `Approval action failed: ${error.message}`
-      });
-      console.error(`Approval action failed for ${slot}: ${error.message}`);
-    }
-  }
-
-  for (const action of resolveAutoWorkflowActions().filter((item) => item.mode === "publish" || item.mode === "noop")) {
+  for (const action of resolveAutoWorkflowActions()) {
     try {
       await runAction(action);
     } catch (error) {
@@ -86,9 +69,9 @@ if (!process.env.ACTION_MODE || process.env.ACTION_MODE === "auto") {
         id: `${getConfig().postDate}-${action.slot.replace(":", "")}`,
         date: getConfig().postDate,
         slot: action.slot,
-        message: `Publish action failed: ${error.message}`
+        message: `${action.mode} action failed: ${error.message}`
       });
-      console.error(`Publish action failed for ${action.slot}: ${error.message}`);
+      console.error(`${action.mode} action failed for ${action.slot}: ${error.message}`);
     }
   }
 } else {

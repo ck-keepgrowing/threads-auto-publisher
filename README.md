@@ -1,6 +1,6 @@
 # Threads Auto Publisher
 
-每日自動喺 Threads 發佈文章嘅 MVP。系統會喺香港時間 09:00 和 17:00 先根據編輯方向 call OpenRouter 生成新草稿，再送 Telegram approval；得到 approval 後先喺 12:00 和 20:00 發佈。
+每日自動喺 Threads 發佈文章嘅 MVP。系統會喺出 post 前兩個鐘，根據編輯方向 call OpenRouter 生成新草稿，再送 Telegram approval；得到 approval 後先按原定時間發佈。
 
 ## 1. 本地測試
 
@@ -70,13 +70,13 @@ npm run post:today
 
 預設每日香港時間：
 
-- 12:00 左右：送 15:00 post 到 Telegram approval
-- 14:00 左右：送 17:00 post 到 Telegram approval
-- 16:00 左右：送 19:00 post 到 Telegram approval
-- 18:00 左右：送 21:00 post 到 Telegram approval
+- 09:00 左右：送 11:00 post 到 Telegram approval
+- 12:00 左右：送 14:00 post 到 Telegram approval
+- 16:00 左右：送 18:00 post 到 Telegram approval
+- 19:00 左右：送 21:00 post 到 Telegram approval
 - 每 15 分鐘檢查一次到期 post；只要 Telegram 已 approve，而且該 slot 未發佈，就會補發。
 
-GitHub Actions schedule 可能會延遲或被略過，所以 workflow 用輪詢式設計：cron 每 15 分鐘跑一次，並避開每小時 00 分；程式再按香港時間判斷邊個 approval 或 publish 動作到期。即使你遲咗 approve，系統都會喺下一次輪詢補發，而唔會只限於原本固定 45 分鐘嘅窗口。
+GitHub Actions schedule 可能會延遲或被略過，所以 workflow 用輪詢式設計：cron 每 15 分鐘跑一次，並避開每小時 00 分；程式再按香港時間判斷邊個 approval 或 publish 動作到期。如果你早過出 post 時間 approve，系統會等到原定時間先出；如果過咗原定時間先 approve，系統會喺下一次輪詢即時補發。
 
 Approval 前會先用 `data/editor-briefs.json` 和 `data/brand-guide.json` call OpenRouter 生成新草稿，寫入 `data/posts.json`，再送 Telegram。若你按 `Revise` 或回覆修改方向，系統會再 call OpenRouter 修正一次，然後重新送 approval。
 
@@ -143,13 +143,13 @@ REJECT 2026-04-25-1200
 {
   "id": "unique-id",
   "date": "2026-04-25",
-  "slot": "12:00",
+  "slot": "11:00",
   "text": "要發佈嘅內容",
   "status": "ready"
 }
 ```
 
-`slot` 用 `12:00` 或 `20:00`。注意：Threads 一般文字 post 建議保持 500 字或以下。要做長文 thread、圖片、Google Sheet 或 Notion 內容庫，可以喺呢個基礎上加 adaptor。
+`slot` 用 `11:00`、`14:00`、`18:00` 或 `21:00`。系統會自動將長文切成主 post 加下面 reply。
 
 ## 6. 編輯內容提案
 
