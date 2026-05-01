@@ -15,6 +15,7 @@
     "post:today": "node src/post-today.js",
     "post:dry-run": "DRY_RUN=true node src/post-today.js",
     "collect:engagement": "node src/collect-engagement.js",
+    "evolve:briefs": "node src/evolve-briefs.js",
     "validate": "node src/validate-config.js"
   },
   "engines": {
