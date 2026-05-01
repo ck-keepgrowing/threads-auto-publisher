@@ -1,16 +1,1 @@
-[
-  {
-    "id": "2026-05-01-1500",
-    "date": "2026-05-01",
-    "slot": "15:00",
-    "message": "Approval action failed: fetch failed",
-    "failedAt": "2026-05-01T12:45:02.603Z"
-  },
-  {
-    "id": "2026-05-01-1700",
-    "date": "2026-05-01",
-    "slot": "17:00",
-    "message": "Publish action failed: Threads API error 400: The requested resource does not exist",
-    "failedAt": "2026-05-01T12:45:35.696Z"
-  }
-]
+[]
