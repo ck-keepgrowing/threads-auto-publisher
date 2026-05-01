@@ -7,7 +7,7 @@
     "status": "ready",
     "source": "ai_editor",
     "pillar": "收入波動",
-    "autoPublish": true,
+    "autoPublish": false,
     "generatedAt": "2026-05-01T12:44:40.270Z"
   },
   {
@@ -18,7 +18,7 @@
     "status": "ready",
     "source": "ai_editor",
     "pillar": "放假罪惡感",
-    "autoPublish": true,
+    "autoPublish": false,
     "generatedAt": "2026-05-01T12:44:47.422Z"
   },
   {
@@ -29,7 +29,7 @@
     "status": "ready",
     "source": "ai_editor",
     "pillar": "人脈不是市場",
-    "autoPublish": true,
+    "autoPublish": false,
     "generatedAt": "2026-05-01T12:44:55.118Z"
   },
   {
@@ -40,7 +40,7 @@
     "status": "ready",
     "source": "ai_editor",
     "pillar": "延遲懲罰",
-    "autoPublish": true,
+    "autoPublish": false,
     "generatedAt": "2026-05-01T12:45:02.333Z"
   }
 ]
