@@ -1,7 +1,7 @@
 import { callPrompt } from "./openrouter.js";
 import { publishApprovedDraft } from "./publish.js";
 import { getTelegramUpdates, sendDraftForReview, sendTelegramMessage } from "./telegram.js";
-import { appendJsonArray, findDraftPath, isMainModule, moveFile, nowIso, readJson, writeJson } from "./utils.js";
+import { findDraftPath, isMainModule, moveFile, nowIso, readJson, writeJson } from "./utils.js";
 
 function parseCommand(text) {
   const trimmed = String(text || "").trim();
@@ -112,6 +112,7 @@ export async function checkTelegramCommands() {
   const state = await readJson("data/telegram_state.json", { last_update_id: 0, review_decisions: [] });
   const updates = await getTelegramUpdates(Number(state.last_update_id || 0) + 1);
   let latestUpdateId = Number(state.last_update_id || 0);
+  let processedCommands = 0;
 
   for (const update of updates) {
     latestUpdateId = Math.max(latestUpdateId, Number(update.update_id || 0));
@@ -130,25 +131,23 @@ export async function checkTelegramCommands() {
 
     if (parsed.command === "approve") {
       await approveDraft(parsed.draftId, parsed.rest);
+      processedCommands += 1;
     } else if (parsed.command === "rewrite") {
       await rewriteDraft(parsed.draftId, parsed.rest);
+      processedCommands += 1;
     } else if (parsed.command === "reject") {
       await rejectDraft(parsed.draftId, parsed.rest);
+      processedCommands += 1;
     }
   }
 
-  const nextState = await readJson("data/telegram_state.json", { last_update_id: 0, review_decisions: [] });
-  nextState.last_update_id = latestUpdateId;
-  await writeJson("data/telegram_state.json", nextState);
-  await appendJsonArray("logs/ai_calls.json", {
-    prompt_name: "telegram_command_poll",
-    model: "none",
-    timestamp: nowIso(),
-    input_summary: `updates:${updates.length}`,
-    output_summary: `last_update_id:${latestUpdateId}`,
-    success: true
-  });
-  console.log(`Checked Telegram commands. Updates: ${updates.length}.`);
+  if (latestUpdateId !== Number(state.last_update_id || 0)) {
+    const nextState = await readJson("data/telegram_state.json", { last_update_id: 0, review_decisions: [] });
+    nextState.last_update_id = latestUpdateId;
+    await writeJson("data/telegram_state.json", nextState);
+  }
+
+  console.log(`Checked Telegram commands. Updates: ${updates.length}. Commands processed: ${processedCommands}.`);
 }
 
 if (isMainModule(import.meta.url)) {

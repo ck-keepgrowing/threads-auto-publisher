@@ -32,4 +32,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add content-engine
           git diff --staged --quiet || git commit -m "Collect insurance coach metrics"
+          git pull --rebase origin main
           git push
