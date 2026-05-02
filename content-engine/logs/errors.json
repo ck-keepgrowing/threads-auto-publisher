@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "timestamp": "2026-05-02T16:05:13.837Z",
+    "context": "threads:metrics",
+    "message": "Threads API error 400: Unsupported get request. Object with ID '18092842454243994' does not exist, cannot be loaded due to missing permissions, or does not support this operation",
+    "stack": "Error: Threads API error 400: Unsupported get request. Object with ID '18092842454243994' does not exist, cannot be loaded due to missing permissions, or does not support this operation\n    at getJson (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:27:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async fetchThreadsMetrics (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:174:12)\n    at async collectMetrics (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/collectMetrics.js:33:21)",
+    "postId": "18092842454243994"
+  }
+]

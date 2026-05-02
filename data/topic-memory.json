@@ -1,4 +1,18 @@
 {
-  "recentUsage": [],
-  "pillarStats": {}
+  "recentUsage": [
+    {
+      "pillar": "系統與情緒",
+      "date": "2026-05-01",
+      "postId": "2026-05-01-now-2122"
+    }
+  ],
+  "pillarStats": {
+    "系統與情緒": {
+      "useCount": 1,
+      "totalScore": 0,
+      "scoredCount": 0,
+      "avgEngagement": null,
+      "lastUsed": "2026-05-01"
+    }
+  }
 }
