@@ -1,4 +1,4 @@
-import { publishTextToThreads } from "./threads.js";
+import { publishThreadToThreads } from "./threads.js";
 import { sendTelegramMessage } from "./telegram.js";
 import { appendJsonArray, findDraftPath, isMainModule, moveFile, nowIso, readJson, writeJson } from "./utils.js";
 
@@ -13,15 +13,17 @@ export async function publishApprovedDraft(draftId) {
     throw new Error(`Draft ${draftId} has status ${draft.status}; only approved drafts can be published.`);
   }
 
-  const threadsResponse = await publishTextToThreads(draft.post);
-  const postId = threadsResponse.id || threadsResponse.post_id || threadsResponse.thread_id || threadsResponse.media_id || null;
+  const threadParts = await publishThreadToThreads(draft.post);
+  const threadsResponse = threadParts[0]?.threads_response || {};
+  const postId = threadParts[0]?.threads_post_id || null;
   const publishedAt = nowIso();
   const publishedRecord = {
     ...draft,
     status: "published",
     published_at: publishedAt,
     threads_post_id: postId,
-    threads_response: threadsResponse
+    threads_response: threadsResponse,
+    thread_parts: threadParts
   };
 
   await writeJson(draftPath, publishedRecord);
@@ -42,14 +44,16 @@ export async function publishApprovedDraft(draftId) {
     practical_advice_type: draft.practical_advice_type || draft.labels?.practical_advice_type || "",
     published_at: publishedAt,
     threads_post_id: postId,
-    threads_response: threadsResponse
+    threads_response: threadsResponse,
+    thread_parts: threadParts
   });
 
   await sendTelegramMessage([
     "Threads post published.",
     "",
     `Draft ID: ${draft.id}`,
-    postId ? `Threads Post ID: ${postId}` : "Threads Post ID: not returned by API"
+    postId ? `Threads Post ID: ${postId}` : "Threads Post ID: not returned by API",
+    `Thread parts: ${threadParts.length}`
   ].join("\n"));
 
   console.log(`Published approved draft ${draft.id}.`);
