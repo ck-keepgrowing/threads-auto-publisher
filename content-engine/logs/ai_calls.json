@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "prompt_name": "01_topic_generator",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-02T02:07:02.428Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "{\"topics\":[{\"topic\":\"你的大腦不是CRM：停止用記憶力去經營客戶關係\",\"category\":\"System thinking\",\"core_pain_point\":\"成日唔記得同客講過啲咩，follow-up甩漏，感覺自己好亂好唔專業，錯失機會。\",\"hidden_psychology\":\"高估自己記憶力，低估系統化嘅威力。覺得用工具好麻煩，或者潛意識想逃避有系統地跟進嘅壓力。\",\"coaching_value\":\"教你點樣用免費工具（例如Notion/Google Sheets）建立一個『客戶第二大腦』，記錄對話重點、家庭狀況、興趣、下次跟進日期。將記憶嘅功夫交俾系統，將腦力用喺建立關係同策略上。提供一個簡單嘅template俾讀者複製使用。\",\"why_reader_cares\":\"Save: 具體工具教學同template，可以即刻用，解決混亂問題。Share: 分享俾同樣覺得自己『金魚記憶』嘅同事，一齊提升專業度。\",\"freshness_score\":8,\"shareability_score\":7,\"practical_value_score\":10}...",
+    "success": true,
+    "retry_index": 0
+  },
+  {
+    "prompt_name": "02_topic_scorer",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-02T02:07:57.578Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "{\"selected_topics\":[{\"topic\":\"『假勤力』陷阱：點解你日日好忙，但月月冇單？\",\"score\":10,\"reason\":\"This is a perfect diagnostic topic. It addresses a deep, universal pain point for agents—the feeling of being busy without being productive. It perfectly embodies the 'coach' persona by challenging a flawed behavior pattern and providing a concrete system (the IPA checklist) for self-correction. It's a foundational piece that builds trust by showing you understand their real struggle, not just the surface-level problems.\"...",
+    "success": true,
+    "retry_index": 0
+  },
+  {
+    "prompt_name": "03_angle_expander",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-02T02:08:40.206Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "{\"topic\":\"『假勤力』陷阱：點解你日日好忙，但月月冇單？\",\"surface_problem\":\"每日時間表排得好滿，不停開會、上堂、做文件、覆message，外人睇覺得你好勤力，但自己知月尾埋數時，根本無乜實質業績。\",\"hidden_pain\":\"一種「努力但無力」嘅感覺。因為已經好「忙」，所以唔可以話自己懶，但又冇成績，於是陷入更深層次嘅自我懷疑同焦慮。驚俾人知自己只係「扮忙」，內心對收入不穩嘅恐懼與日俱增。\",\"why_it_happens\":\"1. 將「活動」與「產出」混淆：花大量時間喺安全、低風險但唔直接產生收入嘅事上，例如過度準備、內部會議、無了期嘅培訓。 2. 逃避被拒絕嘅恐懼： prospecting、打電話約見、要求簽單呢啲高回報活動，同時亦係被拒絕風險最高嘅活動。潛意識會用「忙住做準備」嚟逃避呢啲唔舒服嘅行動。 3. 缺乏系統：無意識分辨「創收活動」(Income-Producing Activities, IPA) 同「支援性工作」，導致精力分散，每日跟住感覺走，而唔係跟住系統走。\",\"common_misunderstanding\":\"讀者通常以為解決...",
+    "success": true,
+    "retry_index": 0
+  },
+  {
+    "prompt_name": "04_coach_writer",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-02T02:09:20.354Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "{\"hook\":\"如果勤力有用，點解你仲未掂？可能你努力嘅方式，由一開始就錯咗。\",\"post\":\"我知你唔係懶。你個 schedule 可能排得好滿，開會、上堂、覆 message、整 plan，外人睇覺得你好搏殺。但你自己心裡面最清楚，月尾埋數嗰陣，有幾多係真正嘅業績。呢種「窮忙」嘅感覺，其實仲辛苦過hea做，因為你連話自己唔夠努力嘅藉口都無。\\n\\n呢個情況有個名，叫「假勤力」。我哋會不自覺將時間填滿啲安全、低風險嘅「支援性工作」，因為做呢啲嘢唔會俾人拒絕，感覺良好。但真正會帶嚟收入嘅「創收活動」，例如主動搵客、打電話約見、要求成交，因為伴隨住被拒絕嘅壓力，我哋嘅潛意識會想盡辦法逃避。結果，你就用「忙住準備」嚟麻醉自己對業績嘅焦慮。\\n\\n所以，問題唔係你唔夠努力，而係你嘅勤力用錯咗地方。專業嘅銷售唔係追求「忙碌」，而係追求「有效」。我哋要做嘅唔係增加工時，而係重新校準你嘅時間，將精力集中喺真正會推動生意嘅事上面。\\n\\n不如試下做一次「時間審計」。用一個星期，記低你每日做過啲乜。夜晚用兩種顏色筆，將「創收活動」同「非創收活動」分開。個結果可能會嚇你一跳。然後，每日設立一個「黃金...",
+    "success": true,
+    "retry_index": 0
+  },
+  {
+    "prompt_name": "05_critic",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-02T02:09:46.108Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "{\"score\":9,\"problems\":[\"The conclusion is a reflective question, which is good, but it misses the opportunity to include the highly practical and low-friction 'small_action_today' that was planned in the angle section. The ending feels slightly less actionable than it could be.\"],\"must_fix\":[\"The post is publishable as is, but for maximum impact, the ending should be revised. Instead of just a reflective question, add a clear, simple, and immediate call to action.\"],\"rewrite_direction\":\"Keep the...",
+    "success": true,
+    "retry_index": 0
+  },
+  {
+    "prompt_name": "08_telegram_review_message",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-02T02:10:04.440Z",
+    "input_summary": "{\"draft\":{\"id\":\"2026-05-02-假勤力-陷阱-點解你日日好忙-但月月冇單-unav5i\",\"topic\":\"『假勤力』陷阱：點解你日日好忙，但月月冇單？\",\"category\":\"\",\"core_pain_point\":\"Feeling busy and hardworking but not achieving sales results, leading to deep self-doubt and anxiety about income stability.\",\"hidden_psychology\":\"1. 將「活動」與「產出」混淆：花大量時間喺安全、低風險但唔直接產生收入嘅事上，例如過度準備、內部會議、無了期嘅培訓。 2. 逃避被拒絕嘅恐懼： prospecting、打電話約見、要求簽單呢啲高回報活動，同時亦係被拒絕風險最高嘅活動。潛意識會用「忙住做準備」嚟逃避呢啲唔舒服嘅行動。 3. 缺乏系統：無意識分辨「創收活動」(Income-Producing Activities, IPA) 同「支援性工作」，導致精力分散，每日跟住感覺走，而唔係跟住系統走。\"...",
+    "output_summary": "**Draft for Review**\n\n**Draft ID:** 2026-05-02-假勤力-陷阱-點解你日日好忙-但月月冇單-unav5i\n\n**Topic:** 『假勤力』陷阱：點解你日日好忙，但月月冇單？\n\n**Core Pain Point:** Feeling busy and hardworking but not achieving sales results, leading to deep self-doubt and anxiety about income stability.\n\n**Coaching Advice Summary:** Stop confusing busyness with productivity. Audit your time to identify Income-Producing Activities (IPAs), dedicate a daily 'Power Hour' exclusively to them, and set strict time limits on preparatory work to overc...",
+    "success": true,
+    "retry_index": 0
+  }
+]
