@@ -1,11 +1,17 @@
 {
-  "last_update_id": 2578218,
+  "last_update_id": 2578219,
   "review_decisions": [
     {
       "draft_id": "2026-05-02-假勤力-陷阱-點解你日日好忙-但月月冇單-unav5i",
       "decision": "rewrite",
       "instruction": "創收活動同非創修活動改為生產力活動同埋非生產力活動",
       "timestamp": "2026-05-02T02:26:52.159Z"
+    },
+    {
+      "draft_id": "2026-05-02-假勤力-陷阱-點解你日日好忙-但月月冇單-unav5i",
+      "decision": "approved",
+      "reason": "",
+      "timestamp": "2026-05-02T02:37:37.426Z"
     }
   ]
 }
