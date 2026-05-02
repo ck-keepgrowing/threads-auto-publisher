@@ -52,5 +52,23 @@
     "output_summary": "**Draft for Review**\n\n**Draft ID:** 2026-05-02-假勤力-陷阱-點解你日日好忙-但月月冇單-unav5i\n\n**Topic:** 『假勤力』陷阱：點解你日日好忙，但月月冇單？\n\n**Core Pain Point:** Feeling busy and hardworking but not achieving sales results, leading to deep self-doubt and anxiety about income stability.\n\n**Coaching Advice Summary:** Stop confusing busyness with productivity. Audit your time to identify Income-Producing Activities (IPAs), dedicate a daily 'Power Hour' exclusively to them, and set strict time limits on preparatory work to overc...",
     "success": true,
     "retry_index": 0
+  },
+  {
+    "prompt_name": "06_rewriter_human_feedback",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-02T02:26:18.915Z",
+    "input_summary": "{\"draft\":{\"id\":\"2026-05-02-假勤力-陷阱-點解你日日好忙-但月月冇單-unav5i\",\"topic\":\"『假勤力』陷阱：點解你日日好忙，但月月冇單？\",\"category\":\"\",\"core_pain_point\":\"Feeling busy and hardworking but not achieving sales results, leading to deep self-doubt and anxiety about income stability.\",\"hidden_psychology\":\"1. 將「活動」與「產出」混淆：花大量時間喺安全、低風險但唔直接產生收入嘅事上，例如過度準備、內部會議、無了期嘅培訓。 2. 逃避被拒絕嘅恐懼： prospecting、打電話約見、要求簽單呢啲高回報活動，同時亦係被拒絕風險最高嘅活動。潛意識會用「忙住做準備」嚟逃避呢啲唔舒服嘅行動。 3. 缺乏系統：無意識分辨「創收活動」(Income-Producing Activities, IPA) 同「支援性工作」，導致精力分散，每日跟住感覺走，而唔係跟住系統走。\"...",
+    "output_summary": "{\"final_hook\":\"你每日 schedule 爆滿，比邊個都勤力。但月尾一拉 report，個心有幾涼，你自己最清楚。如果勤力真係有用，點解你仲未掂？\",\"final_post\":\"好多人都陷入咗呢個「窮忙」陷阱。你唔係懶，你甚至覺得自己好搏殺。但呢種「有努力、無成績」嘅感覺，其實仲難受過hea做，因為你連話自己唔夠努力嘅藉口都冇，淨係得返深深嘅自我懷疑。\\n\\n問題核心，係我哋不自覺將時間填滿晒啲安全、低風險嘅「非生產力活動」，例如無止境嘅資料搜集、內部會議、整靚份 plan。做呢啲嘢好有「做緊嘢」嘅感覺，又唔會有人拒絕你，非常安全。\\n\\n但真正能推動事業嘅「生產力活動」——主動接觸新朋友、打電話約見、跟進個案——往往伴隨住被拒絕嘅壓力。我哋嘅大腦為咗逃避呢種唔舒服，就會用「我好忙，我仲準備緊」嚟麻醉自己對業績嘅焦慮。\\n\\n所以你睇，關鍵唔係要做得更多，而係要做得更「準」。專業，就係要將精力集中喺最有價值嘅事上面。\\n\\n想改變？試下做一次「時間審計」。用一個星期，記低你每日做過啲乜。夜晚用兩種顏色筆，將「生產力活動」同「非生產力活動」分開。個結果可能會嚇你一跳，原來真...",
+    "success": true,
+    "retry_index": 0
+  },
+  {
+    "prompt_name": "08_telegram_review_message",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-02T02:26:52.160Z",
+    "input_summary": "{\"draft\":{\"id\":\"2026-05-02-假勤力-陷阱-點解你日日好忙-但月月冇單-unav5i\",\"topic\":\"『假勤力』陷阱：點解你日日好忙，但月月冇單？\",\"category\":\"\",\"core_pain_point\":\"Feeling busy and hardworking but not achieving sales results, leading to deep self-doubt and anxiety about income stability.\",\"hidden_psychology\":\"1. 將「活動」與「產出」混淆：花大量時間喺安全、低風險但唔直接產生收入嘅事上，例如過度準備、內部會議、無了期嘅培訓。 2. 逃避被拒絕嘅恐懼： prospecting、打電話約見、要求簽單呢啲高回報活動，同時亦係被拒絕風險最高嘅活動。潛意識會用「忙住做準備」嚟逃避呢啲唔舒服嘅行動。 3. 缺乏系統：無意識分辨「創收活動」(Income-Producing Activities, IPA) 同「支援性工作」，導致精力分散，每日跟住感覺走，而唔係跟住系統走。\"...",
+    "output_summary": "**Draft for Review**\n\n**Draft ID**:\n2026-05-02-假勤力-陷阱-點解你日日好忙-但月月冇單-unav5i\n\n**Topic**:\n『假勤力』陷阱：點解你日日好忙，但月月冇單？\n\n**Core Pain Point**:\nFeeling busy and hardworking but not achieving sales results, leading to deep self-doubt and anxiety.\n\n**Coaching Advice Summary**:\nStop confusing busyness with output. Do a 'time audit' to distinguish true 'productive activities'. Then, set a daily 'golden hour' for these tasks and set time limits on prep work to overcome the habit of 'fake work'.\n\n**Hook**:\n你每日 sc...",
+    "success": true,
+    "retry_index": 0
   }
 ]
