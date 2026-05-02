@@ -11,6 +11,11 @@ Requirements:
 - Keep the coaching tone
 - Do not hard sell
 - End with reflection
+- Preserve or improve the post length unless the human explicitly asks for shorter
+- Target length: 900-1400 Chinese characters in the "final_post" field
+- Do not compress the rewrite into a short summary
+- Keep the middle coaching explanation and practical action fully developed
+- The final post must be complete enough to be split into a Threads thread
 
 Output JSON only:
 

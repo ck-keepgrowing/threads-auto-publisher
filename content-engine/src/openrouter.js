@@ -1,6 +1,20 @@
 import { appendJsonArray, logError, readText, stripCodeFence, summarize } from "./utils.js";
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
+const DEFAULT_MAX_TOKENS = 2200;
+
+function resolveMaxTokens(promptName) {
+  const explicit = process.env.OPENROUTER_MAX_TOKENS;
+  if (explicit) {
+    return Number(explicit);
+  }
+
+  if (/coach_writer|rewriter|telegram_review_message|prompt_optimizer/i.test(promptName)) {
+    return Number(process.env.OPENROUTER_LONG_MAX_TOKENS || "4500");
+  }
+
+  return Number(process.env.OPENROUTER_SHORT_MAX_TOKENS || DEFAULT_MAX_TOKENS);
+}
 
 function parseJsonContent(content) {
   const cleaned = stripCodeFence(content);
@@ -16,7 +30,7 @@ function parseJsonContent(content) {
   }
 }
 
-async function requestOpenRouter({ model, messages, jsonMode }) {
+async function requestOpenRouter({ model, messages, jsonMode, maxTokens }) {
   const response = await fetch(OPENROUTER_URL, {
     method: "POST",
     headers: {
@@ -29,6 +43,7 @@ async function requestOpenRouter({ model, messages, jsonMode }) {
       model,
       messages,
       temperature: Number(process.env.OPENROUTER_TEMPERATURE || "0.7"),
+      max_tokens: maxTokens,
       ...(jsonMode ? { response_format: { type: "json_object" } } : {})
     })
   });
@@ -50,6 +65,7 @@ export async function callPrompt({ promptName, promptPath, input, json = true })
   const prompt = await readText(promptPath);
   const primaryModel = process.env.OPENROUTER_MODEL || "openai/gpt-5.4-mini";
   const fallbackModel = process.env.OPENROUTER_FALLBACK_MODEL || primaryModel;
+  const maxTokens = resolveMaxTokens(promptName);
   const messages = [
     { role: "system", content: prompt },
     { role: "user", content: JSON.stringify(input, null, 2) }
@@ -60,7 +76,7 @@ export async function callPrompt({ promptName, promptPath, input, json = true })
 
   for (const [index, model] of models.entries()) {
     try {
-      const content = await requestOpenRouter({ model, messages, jsonMode: json });
+      const content = await requestOpenRouter({ model, messages, jsonMode: json, maxTokens });
       const output = json ? parseJsonContent(content) : content.trim();
       await appendJsonArray("logs/ai_calls.json", {
         prompt_name: promptName,
@@ -68,6 +84,7 @@ export async function callPrompt({ promptName, promptPath, input, json = true })
         timestamp: startedAt,
         input_summary: summarize(input),
         output_summary: summarize(output),
+        max_tokens: maxTokens,
         success: true,
         retry_index: index
       });
@@ -79,6 +96,7 @@ export async function callPrompt({ promptName, promptPath, input, json = true })
         timestamp: startedAt,
         input_summary: summarize(input),
         output_summary: "",
+        max_tokens: maxTokens,
         success: false,
         retry_index: index,
         error: error.message

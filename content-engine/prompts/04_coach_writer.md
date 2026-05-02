@@ -14,6 +14,11 @@ Writing rules:
 - No generic insurance knowledge
 - No overly polished AI tone
 - Must feel human, honest, and grounded
+- Write a complete coaching post, not a short caption
+- Target length: 900-1400 Chinese characters in the "post" field
+- If the idea needs space, use multiple paragraphs inside the "post" string
+- Do not summarize the middle or ending just to keep the JSON short
+- The final "post" must feel complete enough to be split into a Threads thread
 
 Post structure:
 1. Strong hook
@@ -29,6 +34,8 @@ The post must:
 - Give practical advice
 - Make the reader feel understood
 - Subtly build trust in the author as a coach
+- Include enough concrete detail that the reader can act today
+- Avoid ending abruptly; the final reflection must be fully written
 
 Output JSON only:
 

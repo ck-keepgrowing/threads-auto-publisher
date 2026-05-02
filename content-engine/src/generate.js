@@ -26,6 +26,14 @@ function labelsFrom(writer, rewrite) {
   };
 }
 
+function minPostLength() {
+  return Number(process.env.COACH_MIN_POST_CHARS || "800");
+}
+
+function postLength(text) {
+  return String(text || "").replace(/\s/g, "").length;
+}
+
 async function generateDraftAttempt(context, previousDuplicate = null) {
   const topics = await callPrompt({
     promptName: "01_topic_generator",
@@ -78,6 +86,29 @@ async function generateDraftAttempt(context, previousDuplicate = null) {
     finalAdvice = rewrite.final_coaching_advice || finalAdvice;
   }
 
+  if (postLength(finalPost) < minPostLength()) {
+    rewrite = await callPrompt({
+      promptName: "06_rewriter_length_expansion",
+      promptPath: "prompts/06_rewriter.md",
+      input: {
+        ...context,
+        selected_topic: selectedTopic,
+        angle,
+        draft: {
+          ...writer,
+          hook: finalHook,
+          post: finalPost,
+          coaching_advice_summary: finalAdvice
+        },
+        critic,
+        length_feedback: `The post is too short (${postLength(finalPost)} non-space characters). Expand it to at least ${minPostLength()} non-space Chinese characters while keeping it natural, practical, and complete.`
+      }
+    });
+    finalHook = rewrite.final_hook || finalHook;
+    finalPost = rewrite.final_post || finalPost;
+    finalAdvice = rewrite.final_coaching_advice || finalAdvice;
+  }
+
   const draft = {
     id: makeDraftId(selectedTopic.topic || angle.topic),
     topic: selectedTopic.topic || angle.topic || "",
@@ -102,6 +133,8 @@ async function generateDraftAttempt(context, previousDuplicate = null) {
       selected_topic: selectedTopic,
       angle,
       critic,
+      final_post_chars: postLength(finalPost),
+      min_post_chars: minPostLength(),
       rewrite_applied: Boolean(rewrite)
     }
   };
