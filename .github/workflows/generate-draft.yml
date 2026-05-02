@@ -5,12 +5,16 @@ on:
     # Once per day at 08:10 HKT.
     - cron: "10 0 * * *"
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: write
 
 jobs:
   generate:
+    if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-coach-generate]')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
