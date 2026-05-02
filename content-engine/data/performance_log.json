@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "id": "2026-05-02-假勤力-陷阱-點解你日日好忙-但月月冇單-unav5i",
+    "collected_at": "2026-05-02T16:05:13.839Z",
+    "threads_post_id": "18092842454243994",
+    "topic": "『假勤力』陷阱：點解你日日好忙，但月月冇單？",
+    "category": "",
+    "core_pain_point": "Feeling busy and hardworking but not achieving sales results, leading to deep self-doubt and anxiety about income stability.",
+    "hidden_psychology": "1. 將「活動」與「產出」混淆：花大量時間喺安全、低風險但唔直接產生收入嘅事上，例如過度準備、內部會議、無了期嘅培訓。 2. 逃避被拒絕嘅恐懼： prospecting、打電話約見、要求簽單呢啲高回報活動，同時亦係被拒絕風險最高嘅活動。潛意識會用「忙住做準備」嚟逃避呢啲唔舒服嘅行動。 3. 缺乏系統：無意識分辨「創收活動」(Income-Producing Activities, IPA) 同「支援性工作」，導致精力分散，每日跟住感覺走，而唔係跟住系統走。",
+    "coaching_advice_summary": "別再混淆忙碌與產出。先做一次『時間審計』，分清楚哪些是真正推動事業的『生產力活動』。然後，每日設定專注執行的『黃金一小時』，並為準備工作設下時限，克服用『扮忙』來逃避高價值任務的慣性。",
+    "hook": "你每日 schedule 爆滿，比邊個都勤力。但月尾一拉 report，個心有幾涼，你自己最清楚。如果勤力真係有用，點解你仲未掂？",
+    "hook_type": "Challenging Question",
+    "content_type": "Behavioral Diagnosis & System Building",
+    "target_reader": "Stuck/New Insurance Agents",
+    "emotional_trigger": "Self-Doubt / Inefficacy",
+    "practical_advice_type": "Productivity System / Self-Audit",
+    "metrics": {
+      "error": "Threads API error 400: Unsupported get request. Object with ID '18092842454243994' does not exist, cannot be loaded due to missing permissions, or does not support this operation"
+    },
+    "engagement_score": 0
+  }
+]
