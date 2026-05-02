@@ -125,17 +125,21 @@ export async function publishThreadToThreads(text) {
   let replyToId = null;
 
   for (const [index, part] of parts.entries()) {
+    if (replyToId) {
+      await sleep(30000);
+    }
+
     let result;
-    for (let attempt = 1; attempt <= 3; attempt += 1) {
+    for (let attempt = 1; attempt <= 5; attempt += 1) {
       try {
         result = await publishTextToThreads(part, { replyToId });
         break;
       } catch (error) {
         const canRetryReply = replyToId && /requested resource does not exist/i.test(error.message);
-        if (!canRetryReply || attempt === 3) {
+        if (!canRetryReply || attempt === 5) {
           throw error;
         }
-        await sleep(5000 * attempt);
+        await sleep(30000 * attempt);
       }
     }
 
