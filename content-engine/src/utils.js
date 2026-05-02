@@ -134,6 +134,29 @@ export async function findDraftPath(draftId, folders = ["pending_review", "appro
   return null;
 }
 
+export async function listDrafts(folder = "pending_review") {
+  const dir = resolveEnginePath("drafts", folder);
+  let entries = [];
+  try {
+    entries = await fs.readdir(dir);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  }
+
+  const drafts = [];
+  for (const entry of entries.filter((name) => name.endsWith(".json"))) {
+    const relativePath = `drafts/${folder}/${entry}`;
+    drafts.push({
+      path: relativePath,
+      draft: await readJson(relativePath)
+    });
+  }
+  return drafts;
+}
+
 export async function logError(context, error, extra = {}) {
   await appendJsonArray("logs/errors.json", {
     timestamp: nowIso(),

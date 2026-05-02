@@ -1,18 +1,52 @@
 import { callPrompt } from "./openrouter.js";
 import { publishApprovedDraft } from "./publish.js";
 import { getTelegramUpdates, sendDraftForReview, sendTelegramMessage } from "./telegram.js";
-import { findDraftPath, isMainModule, moveFile, nowIso, readJson, writeJson } from "./utils.js";
+import { findDraftPath, isMainModule, listDrafts, moveFile, nowIso, readJson, writeJson } from "./utils.js";
 
-function parseCommand(text) {
+async function findDraftIdFromReply(message) {
+  const replyMessageId = message?.reply_to_message?.message_id;
+  if (!replyMessageId) {
+    return "";
+  }
+
+  const pendingDrafts = await listDrafts("pending_review");
+  const match = pendingDrafts.find(({ draft }) => String(draft.telegram_message_id) === String(replyMessageId));
+  return match?.draft?.id || "";
+}
+
+async function parseCommand(message) {
+  const text = message?.text || "";
   const trimmed = String(text || "").trim();
   const match = trimmed.match(/^\/(approve|rewrite|reject)(?:@\w+)?\s+(\S+)(?:\s+([\s\S]+))?$/i);
-  if (!match) {
+  if (match) {
+    return {
+      command: match[1].toLowerCase(),
+      draftId: match[2],
+      rest: (match[3] || "").trim()
+    };
+  }
+
+  const replyDraftId = await findDraftIdFromReply(message);
+  if (!replyDraftId) {
     return null;
   }
+
+  const replyMatch = trimmed.match(/^\/?(approve|approved|ok|yes|continue|繼續|批准|通過|rewrite|revise|改|重寫|reject|rejected|唔要|不要)(?:\s+([\s\S]+))?$/i);
+  if (!replyMatch) {
+    return null;
+  }
+
+  const rawCommand = replyMatch[1].toLowerCase();
+  const command = ["approve", "approved", "ok", "yes", "continue", "繼續", "批准", "通過"].includes(rawCommand)
+    ? "approve"
+    : ["reject", "rejected", "唔要", "不要"].includes(rawCommand)
+      ? "reject"
+      : "rewrite";
+
   return {
-    command: match[1].toLowerCase(),
-    draftId: match[2],
-    rest: (match[3] || "").trim()
+    command,
+    draftId: replyDraftId,
+    rest: (replyMatch[2] || "").trim()
   };
 }
 
@@ -124,7 +158,7 @@ export async function checkTelegramCommands() {
       continue;
     }
 
-    const parsed = parseCommand(message.text);
+    const parsed = await parseCommand(message);
     if (!parsed) {
       continue;
     }
