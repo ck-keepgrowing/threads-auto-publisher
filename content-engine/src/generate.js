@@ -1,5 +1,6 @@
 import { checkDuplicate } from "./duplicateChecker.js";
 import { callPrompt } from "./openrouter.js";
+import { COACH_SCHEDULE, getHongKongTimeParts, getSlotForReview, hasDraftForSlot } from "./schedule.js";
 import { sendDraftForReview } from "./telegram.js";
 import { isMainModule, makeDraftId, nowIso, readJson, writeJson } from "./utils.js";
 
@@ -108,7 +109,36 @@ async function generateDraftAttempt(context, previousDuplicate = null) {
   return draft;
 }
 
+function resolveGenerationSlot() {
+  const current = getHongKongTimeParts();
+  const requestedSlot = process.env.TARGET_SLOT;
+  if (requestedSlot) {
+    const scheduleItem = COACH_SCHEDULE.find((item) => item.slot === requestedSlot);
+    if (!scheduleItem) {
+      throw new Error(`Unknown TARGET_SLOT: ${requestedSlot}`);
+    }
+    return { date: process.env.TARGET_DATE || current.date, ...scheduleItem };
+  }
+
+  const reviewSlot = getSlotForReview();
+  if (!reviewSlot) {
+    return null;
+  }
+  return { date: current.date, ...reviewSlot };
+}
+
 export async function generateDraft() {
+  const slotInfo = resolveGenerationSlot();
+  if (!slotInfo) {
+    console.log("No coach draft is due for review now.");
+    return null;
+  }
+
+  if (await hasDraftForSlot(slotInfo.date, slotInfo.slot)) {
+    console.log(`Draft already exists for ${slotInfo.date} ${slotInfo.slot}.`);
+    return null;
+  }
+
   const context = await loadContext();
   let draft = await generateDraftAttempt(context);
   let duplicate = await checkDuplicate(draft);
@@ -124,6 +154,10 @@ export async function generateDraft() {
   }
 
   const draftPath = `drafts/pending_review/${draft.id}.json`;
+  draft.scheduled_date = slotInfo.date;
+  draft.scheduled_slot = slotInfo.slot;
+  draft.review_due_at_hkt = `${slotInfo.date} ${slotInfo.reviewTime}`;
+  draft.publish_due_at_hkt = `${slotInfo.date} ${slotInfo.slot}`;
   await writeJson(draftPath, draft);
 
   const telegramResult = await sendDraftForReview(draft);

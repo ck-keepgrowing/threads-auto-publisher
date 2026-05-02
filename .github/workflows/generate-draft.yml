@@ -2,8 +2,9 @@ name: Generate Insurance Coach Draft
 
 on:
   schedule:
-    # Once per day at 08:10 HKT.
-    - cron: "10 0 * * *"
+    # Poll every 15 minutes. The script generates only during review windows:
+    # 07:00 for 10:00, 12:00 for 15:00, and 18:00 for 21:00 HKT.
+    - cron: "*/15 * * * *"
   workflow_dispatch:
   push:
     branches:

@@ -1,7 +1,7 @@
 import { logError, requireEnv } from "./utils.js";
 
 const BASE_URL = "https://graph.threads.net";
-const MAX_THREADS_TEXT_LENGTH = 500;
+const MAX_THREADS_TEXT_LENGTH = 480;
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));

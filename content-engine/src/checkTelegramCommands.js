@@ -1,5 +1,6 @@
 import { callPrompt } from "./openrouter.js";
 import { publishApprovedDraft } from "./publish.js";
+import { isPublishDue } from "./schedule.js";
 import { getTelegramUpdates, sendDraftForReview, sendTelegramMessage } from "./telegram.js";
 import { findDraftPath, isMainModule, listDrafts, moveFile, nowIso, readJson, writeJson } from "./utils.js";
 
@@ -65,8 +66,13 @@ async function approveDraft(draftId, reason) {
   if (!draftPath) {
     const approvedPath = await findDraftPath(draftId, ["approved"]);
     if (approvedPath) {
-      await sendTelegramMessage(`Draft ${draftId} is already approved. Publishing now.`);
-      await publishApprovedDraft(draftId);
+      const approvedDraft = await readJson(approvedPath);
+      if (isPublishDue(approvedDraft)) {
+        await sendTelegramMessage(`Draft ${draftId} is already approved. Publishing now.`);
+        await publishApprovedDraft(draftId);
+      } else {
+        await sendTelegramMessage(`Draft ${draftId} is already approved and scheduled for ${approvedDraft.publish_due_at_hkt || approvedDraft.scheduled_slot} HKT.`);
+      }
       return;
     }
     await sendTelegramMessage(`Cannot approve ${draftId}: pending review draft not found.`);
@@ -82,8 +88,13 @@ async function approveDraft(draftId, reason) {
   await writeJson(draftPath, draft);
   await moveFile(draftPath, `drafts/approved/${draft.id}.json`);
   await recordDecision({ draft_id: draft.id, decision: "approved", reason: reason || "", timestamp: nowIso() });
-  await sendTelegramMessage(`Approved ${draft.id}. Publishing now.`);
-  await publishApprovedDraft(draft.id);
+
+  if (isPublishDue(draft)) {
+    await sendTelegramMessage(`Approved ${draft.id}. Publishing now.`);
+    await publishApprovedDraft(draft.id);
+  } else {
+    await sendTelegramMessage(`Approved ${draft.id}. It will publish at ${draft.publish_due_at_hkt || draft.scheduled_slot} HKT.`);
+  }
 }
 
 async function rejectDraft(draftId, reason) {
@@ -145,6 +156,22 @@ async function rewriteDraft(draftId, instruction) {
   await writeJson(draftPath, draft);
 }
 
+async function publishDueApprovedDrafts() {
+  const approvedDrafts = await listDrafts("approved");
+  let publishedCount = 0;
+
+  for (const { draft } of approvedDrafts) {
+    if (!isPublishDue(draft)) {
+      continue;
+    }
+    await sendTelegramMessage(`Scheduled time reached. Publishing ${draft.id}.`);
+    await publishApprovedDraft(draft.id);
+    publishedCount += 1;
+  }
+
+  return publishedCount;
+}
+
 export async function checkTelegramCommands() {
   const state = await readJson("data/telegram_state.json", { last_update_id: 0, review_decisions: [] });
   const updates = await getTelegramUpdates(Number(state.last_update_id || 0) + 1);
@@ -178,13 +205,15 @@ export async function checkTelegramCommands() {
     }
   }
 
+  const scheduledPublished = await publishDueApprovedDrafts();
+
   if (latestUpdateId !== Number(state.last_update_id || 0)) {
     const nextState = await readJson("data/telegram_state.json", { last_update_id: 0, review_decisions: [] });
     nextState.last_update_id = latestUpdateId;
     await writeJson("data/telegram_state.json", nextState);
   }
 
-  console.log(`Checked Telegram commands. Updates: ${updates.length}. Commands processed: ${processedCommands}.`);
+  console.log(`Checked Telegram commands. Updates: ${updates.length}. Commands processed: ${processedCommands}. Scheduled published: ${scheduledPublished}.`);
 }
 
 if (isMainModule(import.meta.url)) {
