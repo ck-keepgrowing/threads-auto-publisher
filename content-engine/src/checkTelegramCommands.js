@@ -14,6 +14,11 @@ async function findDraftIdFromReply(message) {
   return match?.draft?.id || "";
 }
 
+async function findOnlyPendingDraftId() {
+  const pendingDrafts = await listDrafts("pending_review");
+  return pendingDrafts.length === 1 ? pendingDrafts[0].draft.id : "";
+}
+
 async function parseCommand(message) {
   const text = message?.text || "";
   const trimmed = String(text || "").trim();
@@ -27,12 +32,10 @@ async function parseCommand(message) {
   }
 
   const replyDraftId = await findDraftIdFromReply(message);
-  if (!replyDraftId) {
-    return null;
-  }
+  const fallbackDraftId = replyDraftId || await findOnlyPendingDraftId();
 
   const replyMatch = trimmed.match(/^\/?(approve|approved|ok|yes|continue|繼續|批准|通過|rewrite|revise|改|重寫|reject|rejected|唔要|不要)(?:\s+([\s\S]+))?$/i);
-  if (!replyMatch) {
+  if (!replyMatch || !fallbackDraftId) {
     return null;
   }
 
@@ -45,7 +48,7 @@ async function parseCommand(message) {
 
   return {
     command,
-    draftId: replyDraftId,
+    draftId: fallbackDraftId,
     rest: (replyMatch[2] || "").trim()
   };
 }
