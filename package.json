@@ -14,7 +14,12 @@
     "editor:ideas": "node src/editor-ideas.js",
     "post:today": "node src/post-today.js",
     "post:dry-run": "DRY_RUN=true node src/post-today.js",
-    "validate": "node src/validate-config.js"
+    "validate": "node src/validate-config.js",
+    "coach:generate": "node content-engine/src/generate.js",
+    "coach:check-telegram": "node content-engine/src/checkTelegramCommands.js",
+    "coach:publish": "node content-engine/src/publish.js",
+    "coach:collect-metrics": "node content-engine/src/collectMetrics.js",
+    "coach:optimize-prompts": "node content-engine/src/optimizePrompt.js"
   },
   "engines": {
     "node": ">=20"
