@@ -58,5 +58,23 @@
     "telegramMessageId": 42,
     "requestedAt": "2026-05-02T07:58:46.285Z",
     "reason": "revision"
+  },
+  {
+    "id": "2026-05-02-1800",
+    "date": "2026-05-02",
+    "slot": "18:00",
+    "post": {
+      "id": "2026-05-02-1800",
+      "date": "2026-05-02",
+      "slot": "18:00",
+      "text": "做咗呢行幾年，見得最多嘅，唔係跑唔郁放棄嘅人，而係用盡力氣、跑死自己、但一直留喺原地嘅人。\n\n佢哋個 schedule mark 到五顏六色，朝早 team meeting，晏晝 product training，黃昏去聽個 FinTech talk。返到屋企十一點，再開電腦整個 post，話「機會係留俾有準備嘅人」，然後碌 IG 碌到凌晨兩點，睇吓邊個去咗旅行、邊個又買咗新車。個個都好似過得好好，除咗自己。\n\n個 file 疊到山咁高，個個 prospect 都做足 research，送份 proposal 之前晚晚改到三點。度埋人哋仔女讀大學條數，計埋退休之後去邊度旅行。你覺得自己付出咗好多，好專業，好體貼。但係 send 咗出去之後，個電話就靜到好似壞咗咁。你唔敢追，驚人哋覺得你煩。你唯有安慰自己，粒種子撒咗出去，總有一日會發芽㗎啩。\n\n最攞命係，你真係覺得自己好努力。你冇偷懶。你朋友約食飯你話唔得閒，屋企人叫你早啲返嚟你話要開會。你放棄咗好多嘢，換嚟嘅係個客已讀不回嘅藍剔，同埋月尾望住張 statement 嗰種心慌。你望住 team 入面個 top sales，佢好似日日都好 chill 咁，但月月都爆 target。你開始懷疑人生，係咪自己唔夠運？定係人哋有父幹？定係我個樣生得唔夠討好？\n\n有一日同個 senior manager 食飯，佢冇講咩大道理。佢淨係問",
+      "status": "ready",
+      "source": "ai_editor",
+      "pillar": "努力不夠",
+      "generatedAt": "2026-05-01T16:35:52.302Z"
+    },
+    "approvalToken": "moo4p5po9oi1",
+    "telegramMessageId": 44,
+    "requestedAt": "2026-05-02T09:17:46.951Z"
   }
 ]
