@@ -2,7 +2,7 @@ import { callPrompt } from "./openrouter.js";
 import { publishApprovedDraft } from "./publish.js";
 import { isPublishDue } from "./schedule.js";
 import { getTelegramUpdates, sendDraftForReview, sendTelegramMessage } from "./telegram.js";
-import { findDraftPath, isMainModule, listDrafts, moveFile, nowIso, readJson, writeJson } from "./utils.js";
+import { appendJsonArray, findDraftPath, isMainModule, listDrafts, moveFile, nowIso, readJson, writeJson } from "./utils.js";
 
 async function findDraftIdFromReply(message) {
   const replyMessageId = message?.reply_to_message?.message_id;
@@ -61,7 +61,31 @@ async function recordDecision(decision) {
   await writeJson("data/telegram_state.json", state);
 }
 
-async function approveDraft(draftId, reason) {
+async function recordHumanFeedback({ draft, decision, instruction = "", reason = "", rawMessage = "" }) {
+  await appendJsonArray("data/human_feedback.json", {
+    draft_id: draft.id,
+    decision,
+    instruction,
+    reason,
+    raw_message: rawMessage,
+    timestamp: nowIso(),
+    topic: draft.topic || "",
+    category: draft.category || "",
+    hook: draft.hook || "",
+    post_excerpt: String(draft.post || "").slice(0, 900),
+    core_pain_point: draft.core_pain_point || "",
+    hidden_psychology: draft.hidden_psychology || "",
+    coaching_advice_summary: draft.coaching_advice_summary || "",
+    labels: draft.labels || {},
+    hook_type: draft.hook_type || draft.labels?.hook_type || "",
+    content_type: draft.content_type || draft.labels?.content_type || draft.category || "",
+    target_reader: draft.target_reader || draft.labels?.target_reader || "",
+    emotional_trigger: draft.emotional_trigger || draft.labels?.emotional_trigger || "",
+    practical_advice_type: draft.practical_advice_type || draft.labels?.practical_advice_type || ""
+  });
+}
+
+async function approveDraft(draftId, reason, rawMessage = "") {
   const draftPath = await findDraftPath(draftId, ["pending_review"]);
   if (!draftPath) {
     const approvedPath = await findDraftPath(draftId, ["approved"]);
@@ -85,6 +109,7 @@ async function approveDraft(draftId, reason) {
   if (reason) {
     draft.review_notes.push({ type: "approve_reason", text: reason, timestamp: nowIso() });
   }
+  await recordHumanFeedback({ draft, decision: "approved", reason, rawMessage });
   await writeJson(draftPath, draft);
   await moveFile(draftPath, `drafts/approved/${draft.id}.json`);
   await recordDecision({ draft_id: draft.id, decision: "approved", reason: reason || "", timestamp: nowIso() });
@@ -97,7 +122,7 @@ async function approveDraft(draftId, reason) {
   }
 }
 
-async function rejectDraft(draftId, reason) {
+async function rejectDraft(draftId, reason, rawMessage = "") {
   const draftPath = await findDraftPath(draftId, ["pending_review"]);
   if (!draftPath) {
     await sendTelegramMessage(`Cannot reject ${draftId}: pending review draft not found.`);
@@ -107,13 +132,14 @@ async function rejectDraft(draftId, reason) {
   draft.status = "rejected";
   draft.rejected_at = nowIso();
   draft.rejection_reason = reason || "";
+  await recordHumanFeedback({ draft, decision: "rejected", reason, rawMessage });
   await writeJson(draftPath, draft);
   await moveFile(draftPath, `drafts/rejected/${draft.id}.json`);
   await recordDecision({ draft_id: draft.id, decision: "rejected", reason: reason || "", timestamp: nowIso() });
   await sendTelegramMessage(`Rejected ${draft.id}. It will not be published.`);
 }
 
-async function rewriteDraft(draftId, instruction) {
+async function rewriteDraft(draftId, instruction, rawMessage = "") {
   const draftPath = await findDraftPath(draftId, ["pending_review"]);
   if (!draftPath) {
     await sendTelegramMessage(`Cannot rewrite ${draftId}: pending review draft not found.`);
@@ -142,6 +168,7 @@ async function rewriteDraft(draftId, instruction) {
   draft.updated_at = nowIso();
   draft.review_notes = draft.review_notes || [];
   draft.review_notes.push({ type: "rewrite_instruction", text: instruction, timestamp: nowIso() });
+  await recordHumanFeedback({ draft, decision: "rewrite", instruction, rawMessage });
   draft.rewrite_count = Number(draft.rewrite_count || 0) + 1;
   draft.labels = { ...(draft.labels || {}), ...(rewritten.labels || {}) };
   draft.hook_type = draft.labels.hook_type || draft.hook_type || "";
@@ -194,13 +221,13 @@ export async function checkTelegramCommands() {
     }
 
     if (parsed.command === "approve") {
-      await approveDraft(parsed.draftId, parsed.rest);
+      await approveDraft(parsed.draftId, parsed.rest, message.text);
       processedCommands += 1;
     } else if (parsed.command === "rewrite") {
-      await rewriteDraft(parsed.draftId, parsed.rest);
+      await rewriteDraft(parsed.draftId, parsed.rest, message.text);
       processedCommands += 1;
     } else if (parsed.command === "reject") {
-      await rejectDraft(parsed.draftId, parsed.rest);
+      await rejectDraft(parsed.draftId, parsed.rest, message.text);
       processedCommands += 1;
     }
   }

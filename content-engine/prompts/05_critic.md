@@ -13,6 +13,8 @@ Check:
 8. Is it likely to be saved or shared?
 9. Is it too generic?
 10. Is it too similar to previous posts?
+11. Does it use sales jargon where simpler Cantonese would feel more human?
+12. Does it respect known human wording preferences, such as preferring 「生產力活動 / 非生產力活動」 over 「創收活動 / 非創收活動」?
 
 Output JSON only:
 

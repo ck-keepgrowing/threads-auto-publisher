@@ -37,6 +37,7 @@ async function appendLearningRules(promptPath, title, rules) {
 export async function optimizePrompt() {
   const performance = await readJson("data/performance_log.json", []);
   const telegramState = await readJson("data/telegram_state.json", { review_decisions: [] });
+  const humanFeedback = await readJson("data/human_feedback.json", []);
   const contentDna = await readJson("data/content_dna.json", {});
   const coachingPrinciples = await readJson("data/coaching_principles.json", {});
   const topPosts = percentileSlice(performance, true);
@@ -50,6 +51,7 @@ export async function optimizePrompt() {
       top_20_percent_posts: topPosts,
       bottom_20_percent_posts: bottomPosts,
       telegram_review_decisions: telegramState.review_decisions || [],
+      human_feedback: humanFeedback,
       current_content_dna: contentDna,
       current_coaching_principles: coachingPrinciples,
       safety_rules: [
@@ -77,11 +79,29 @@ export async function optimizePrompt() {
   await writeJson("data/content_dna.json", contentDna);
 
   coachingPrinciples.learned_rules = mergeUniqueList(coachingPrinciples.learned_rules || [], optimization.new_critic_rules || optimization.new_writer_rules);
+  coachingPrinciples.human_editorial_preferences = mergeUniqueList(
+    coachingPrinciples.human_editorial_preferences || [],
+    [
+      ...(optimization.human_editorial_insights || []),
+      ...(optimization.preferred_wording || []),
+      ...(optimization.wording_to_avoid || []),
+      ...(optimization.repeated_rewrite_patterns || []),
+      ...(optimization.brand_taste_rules || [])
+    ]
+  );
   await writeJson("data/coaching_principles.json", coachingPrinciples);
 
   await appendLearningRules("prompts/01_topic_generator.md", "Learned topic rules:", optimization.new_topic_rules);
   await appendLearningRules("prompts/04_coach_writer.md", "Learned writer rules:", optimization.new_writer_rules);
   await appendLearningRules("prompts/05_critic.md", "Learned critic rules:", optimization.new_critic_rules);
+  await appendLearningRules("prompts/04_coach_writer.md", "Human editorial preferences:", optimization.human_editorial_insights);
+  await appendLearningRules("prompts/04_coach_writer.md", "Preferred wording:", optimization.preferred_wording);
+  await appendLearningRules("prompts/04_coach_writer.md", "Wording to avoid:", optimization.wording_to_avoid);
+  await appendLearningRules("prompts/04_coach_writer.md", "Brand taste rules:", optimization.brand_taste_rules);
+  await appendLearningRules("prompts/06_rewriter.md", "Human editorial preferences:", optimization.human_editorial_insights);
+  await appendLearningRules("prompts/06_rewriter.md", "Preferred wording:", optimization.preferred_wording);
+  await appendLearningRules("prompts/06_rewriter.md", "Wording to avoid:", optimization.wording_to_avoid);
+  await appendLearningRules("prompts/05_critic.md", "Brand taste rules:", optimization.brand_taste_rules);
 
   await writeJson(`logs/learning-report-${nowIso().slice(0, 10)}.json`, learningReport);
   console.log("Prompt optimization completed and learning report saved.");

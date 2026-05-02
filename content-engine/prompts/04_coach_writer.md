@@ -19,6 +19,8 @@ Writing rules:
 - If the idea needs space, use multiple paragraphs inside the "post" string
 - Do not summarize the middle or ending just to keep the JSON short
 - The final "post" must feel complete enough to be split into a Threads thread
+- Prefer simple, reader-friendly Cantonese business language over jargon
+- Prefer 「生產力活動 / 非生產力活動」 over jargon like 「創收活動 / 非創收活動」
 
 Post structure:
 1. Strong hook

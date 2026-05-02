@@ -16,6 +16,8 @@ Requirements:
 - Do not compress the rewrite into a short summary
 - Keep the middle coaching explanation and practical action fully developed
 - The final post must be complete enough to be split into a Threads thread
+- Preserve the human's wording preferences exactly when they provide a wording correction
+- Prefer 「生產力活動 / 非生產力活動」 over jargon like 「創收活動 / 非創收活動」
 
 Output JSON only:
 
