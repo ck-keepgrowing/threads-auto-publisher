@@ -65,5 +65,23 @@
     "context": "fallback:03_angle_expander",
     "message": "OpenRouter response was not valid JSON.",
     "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:29:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:133:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:162:17)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:291:25)"
+  },
+  {
+    "timestamp": "2026-05-03T02:52:26.251Z",
+    "context": "threads:publish",
+    "message": "Threads API error 400: The requested resource does not exist",
+    "stack": "Error: Threads API error 400: The requested resource does not exist\n    at postForm (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:26:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async publishTextToThreads (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:119:20)\n    at async publishThreadToThreads (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:149:20)\n    at async publishApprovedDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/publish.js:16:23)\n    at async publishDueApprovedDrafts (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/checkTelegramCommands.js:233:5)\n    at async checkTelegramCommands (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/checkTelegramCommands.js:314:30)"
+  },
+  {
+    "timestamp": "2026-05-03T02:52:37.916Z",
+    "context": "threads:publish",
+    "message": "Threads API error 400: The requested resource does not exist",
+    "stack": "Error: Threads API error 400: The requested resource does not exist\n    at postForm (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:26:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async publishTextToThreads (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:119:20)\n    at async publishThreadToThreads (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:149:20)\n    at async publishApprovedDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/publish.js:16:23)\n    at async publishDueApprovedDrafts (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/checkTelegramCommands.js:233:5)\n    at async checkTelegramCommands (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/checkTelegramCommands.js:314:30)"
+  },
+  {
+    "timestamp": "2026-05-03T02:53:16.006Z",
+    "context": "threads:publish",
+    "message": "Threads API error 400: The requested resource does not exist",
+    "stack": "Error: Threads API error 400: The requested resource does not exist\n    at postForm (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:26:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async publishTextToThreads (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:119:20)\n    at async publishThreadToThreads (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:149:20)\n    at async publishApprovedDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/publish.js:16:23)\n    at async publishDueApprovedDrafts (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/checkTelegramCommands.js:233:5)\n    at async checkTelegramCommands (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/checkTelegramCommands.js:314:30)"
   }
 ]
