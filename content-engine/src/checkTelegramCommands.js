@@ -2,7 +2,7 @@ import { callPrompt } from "./openrouter.js";
 import { publishApprovedDraft } from "./publish.js";
 import { isPublishDue } from "./schedule.js";
 import { answerCallbackQuery, getTelegramUpdates, sendDraftForReview, sendTelegramMessage } from "./telegram.js";
-import { appendJsonArray, findDraftPath, isMainModule, listDrafts, moveFile, nowIso, readJson, sanitizePostText, writeJson } from "./utils.js";
+import { appendJsonArray, findDraftPath, isMainModule, listDrafts, logError, moveFile, nowIso, readJson, sanitizePostText, writeJson } from "./utils.js";
 
 async function findDraftIdFromReply(message) {
   const replyMessageId = message?.reply_to_message?.message_id;
@@ -253,6 +253,22 @@ async function resendPendingReviewDraftsIfRequested() {
   return pendingDrafts.length;
 }
 
+async function processParsedCommand(parsed, rawMessage = "") {
+  if (parsed.command === "approve") {
+    await approveDraft(parsed.draftId, parsed.rest, rawMessage);
+    return true;
+  }
+  if (parsed.command === "rewrite") {
+    await rewriteDraft(parsed.draftId, parsed.rest, rawMessage);
+    return true;
+  }
+  if (parsed.command === "reject") {
+    await rejectDraft(parsed.draftId, parsed.rest, rawMessage);
+    return true;
+  }
+  return false;
+}
+
 export async function checkTelegramCommands() {
   const state = await readJson("data/telegram_state.json", { last_update_id: 0, review_decisions: [] });
   const updates = await getTelegramUpdates(Number(state.last_update_id || 0) + 1);
@@ -275,14 +291,17 @@ export async function checkTelegramCommands() {
         continue;
       }
 
-      if (parsed.command === "approve") {
-        await answerCallbackQuery(callbackQuery.id, "Approving");
-        await approveDraft(parsed.draftId, parsed.rest, callbackQuery.data);
-        processedCommands += 1;
-      } else if (parsed.command === "reject") {
-        await answerCallbackQuery(callbackQuery.id, "Rejecting");
-        await rejectDraft(parsed.draftId, parsed.rest, callbackQuery.data);
-        processedCommands += 1;
+      await answerCallbackQuery(callbackQuery.id, parsed.command === "approve" ? "Approving" : "Rejecting");
+      try {
+        if (await processParsedCommand(parsed, callbackQuery.data)) {
+          processedCommands += 1;
+        }
+      } catch (error) {
+        await logError("telegram:process_callback_command", error, {
+          command: parsed.command,
+          draft_id: parsed.draftId
+        });
+        await sendTelegramMessage(`Command ${parsed.command} for ${parsed.draftId} failed: ${error.message}`);
       }
       continue;
     }
@@ -299,15 +318,16 @@ export async function checkTelegramCommands() {
       continue;
     }
 
-    if (parsed.command === "approve") {
-      await approveDraft(parsed.draftId, parsed.rest, message.text);
-      processedCommands += 1;
-    } else if (parsed.command === "rewrite") {
-      await rewriteDraft(parsed.draftId, parsed.rest, message.text);
-      processedCommands += 1;
-    } else if (parsed.command === "reject") {
-      await rejectDraft(parsed.draftId, parsed.rest, message.text);
-      processedCommands += 1;
+    try {
+      if (await processParsedCommand(parsed, message.text)) {
+        processedCommands += 1;
+      }
+    } catch (error) {
+      await logError("telegram:process_message_command", error, {
+        command: parsed.command,
+        draft_id: parsed.draftId
+      });
+      await sendTelegramMessage(`Command ${parsed.command} for ${parsed.draftId} failed: ${error.message}`);
     }
   }
 
