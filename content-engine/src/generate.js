@@ -1,6 +1,6 @@
 import { checkDuplicate } from "./duplicateChecker.js";
 import { callPrompt } from "./openrouter.js";
-import { COACH_SCHEDULE, getHongKongTimeParts, getSlotForReview, hasDraftForSlot } from "./schedule.js";
+import { COACH_SCHEDULE, getHongKongTimeParts, getPendingReviewDrafts, getSlotForReview, hasDraftForSlot } from "./schedule.js";
 import { sendDraftForReview } from "./telegram.js";
 import { isMainModule, logError, makeDraftId, nowIso, readJson, sanitizePostText, writeJson } from "./utils.js";
 
@@ -279,6 +279,13 @@ export async function generateDraft() {
   const slotInfo = resolveGenerationSlot();
   if (!slotInfo) {
     console.log("No coach draft is due for review now.");
+    return null;
+  }
+
+  const pendingReviews = await getPendingReviewDrafts();
+  if (pendingReviews.length > 0) {
+    const pendingList = pendingReviews.map(({ draft }) => draft.id).join(", ");
+    console.log(`Pending review draft exists (${pendingList}). Skipping new draft generation until it is approved, rejected, or rewritten.`);
     return null;
   }
 

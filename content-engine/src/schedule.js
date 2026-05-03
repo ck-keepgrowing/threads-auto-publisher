@@ -65,3 +65,7 @@ export async function hasDraftForSlot(date, slot) {
   const published = await listDrafts("../published");
   return published.some(({ draft }) => draft.scheduled_date === date && draft.scheduled_slot === slot);
 }
+
+export async function getPendingReviewDrafts() {
+  return listDrafts("pending_review");
+}
