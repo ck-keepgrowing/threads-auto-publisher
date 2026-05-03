@@ -128,7 +128,7 @@ export async function callPrompt({ promptName, promptPath, input, json = true })
   ];
   const startedAt = new Date().toISOString();
 
-  const models = fallbackModel === primaryModel ? [primaryModel, primaryModel] : [primaryModel, fallbackModel];
+  const models = fallbackModel === primaryModel ? [primaryModel] : [primaryModel, fallbackModel];
 
   for (const [index, model] of models.entries()) {
     try {
