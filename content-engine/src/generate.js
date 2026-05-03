@@ -133,6 +133,10 @@ function fallbackCritic() {
 }
 
 async function callPromptWithFallback(options, fallbackValue) {
+  if (String(process.env.COACH_FORCE_FALLBACK_DRAFT || "").toLowerCase() === "true") {
+    return typeof fallbackValue === "function" ? fallbackValue() : fallbackValue;
+  }
+
   try {
     return await callPrompt(options);
   } catch (error) {

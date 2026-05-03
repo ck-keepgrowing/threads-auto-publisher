@@ -13,6 +13,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: coach-generate
+  cancel-in-progress: true
+
 jobs:
   generate:
     if: github.event_name != 'push' || contains(github.event.head_commit.message, '[run-coach-generate]')
@@ -33,6 +37,7 @@ jobs:
           OPENROUTER_TIMEOUT_MS: 12000
           OPENROUTER_SHORT_MAX_TOKENS: 1200
           OPENROUTER_LONG_MAX_TOKENS: 3200
+          COACH_FORCE_FALLBACK_DRAFT: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[force-fallback-draft]') }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: npm run coach:generate
