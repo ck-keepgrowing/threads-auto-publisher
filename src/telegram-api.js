@@ -16,22 +16,34 @@ function requireTelegramConfig() {
   return { botToken, chatId };
 }
 
-async function requestTelegram(method, payload) {
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function requestTelegram(method, payload, { retries = 2 } = {}) {
   const { botToken } = requireTelegramConfig();
-  const response = await fetch(`${BASE_URL}/bot${botToken}/${method}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    const response = await fetch(`${BASE_URL}/bot${botToken}/${method}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
 
-  const result = await response.json().catch(() => ({}));
-  if (!response.ok || result.ok === false) {
-    throw new Error(result.description || `Telegram API error: ${response.status}`);
+    const result = await response.json().catch(() => ({}));
+    if (response.status === 429 && attempt < retries) {
+      const retryAfter = Number(result.parameters?.retry_after || 1) + 0.5;
+      await sleep(retryAfter * 1000);
+      continue;
+    }
+    if (!response.ok || result.ok === false) {
+      throw new Error(result.description || `Telegram API error: ${response.status}`);
+    }
+
+    return result.result;
   }
-
-  return result.result;
+  throw new Error(`Telegram API ${method} failed after ${retries + 1} attempts.`);
 }
 
 function buildCallbackData(action, postId, approvalToken) {
@@ -59,6 +71,8 @@ export async function sendApprovalMessage({ post, date, slot, approvalToken, aut
   const threadParts = splitThreadText(post.text);
   const totalParts = threadParts.length;
 
+  const SEND_DELAY_MS = 1200;
+
   await requestTelegram("sendMessage", {
     chat_id: chatId,
     text: header,
@@ -66,6 +80,7 @@ export async function sendApprovalMessage({ post, date, slot, approvalToken, aut
   });
 
   for (let index = 0; index < threadParts.length; index += 1) {
+    await sleep(SEND_DELAY_MS);
     const prefix = totalParts > 1 ? `[${index + 1}/${totalParts}]\n\n` : "";
     await requestTelegram("sendMessage", {
       chat_id: chatId,
@@ -81,6 +96,7 @@ export async function sendApprovalMessage({ post, date, slot, approvalToken, aut
     "revise your edit instructions"
   ].join("\n");
 
+  await sleep(SEND_DELAY_MS);
   return requestTelegram("sendMessage", {
     chat_id: chatId,
     text: footer,
