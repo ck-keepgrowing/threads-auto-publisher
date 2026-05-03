@@ -130,7 +130,6 @@ async function approveDraft(draftId, reason, rawMessage = "") {
     if (approvedPath) {
       const approvedDraft = await readJson(approvedPath);
       if (isPublishDue(approvedDraft)) {
-        await sendTelegramMessage(`Draft ${draftId} is already approved. Publishing now.`);
         await publishApprovedDraft(draftId);
       } else {
         await sendTelegramMessage(`Draft ${draftId} is already approved and scheduled for ${approvedDraft.publish_due_at_hkt || approvedDraft.scheduled_slot} HKT.`);
@@ -153,7 +152,6 @@ async function approveDraft(draftId, reason, rawMessage = "") {
   await recordDecision({ draft_id: draft.id, decision: "approved", reason: reason || "", timestamp: nowIso() });
 
   if (isPublishDue(draft)) {
-    await sendTelegramMessage(`Approved ${draft.id}. Publishing now.`);
     await publishApprovedDraft(draft.id);
   } else {
     await sendTelegramMessage(`Approved ${draft.id}. It will publish at ${draft.publish_due_at_hkt || draft.scheduled_slot} HKT.`);
@@ -229,7 +227,6 @@ async function publishDueApprovedDrafts() {
     if (!isPublishDue(draft)) {
       continue;
     }
-    await sendTelegramMessage(`Scheduled time reached. Publishing ${draft.id}.`);
     await publishApprovedDraft(draft.id);
     publishedCount += 1;
   }

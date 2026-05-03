@@ -1,4 +1,3 @@
-import { callPrompt } from "./openrouter.js";
 import { logError, requireEnv } from "./utils.js";
 
 function telegramUrl(method) {
@@ -57,44 +56,36 @@ export async function getTelegramUpdates(offset) {
 }
 
 export async function buildReviewMessage(draft) {
-  try {
-    return await callPrompt({
-      promptName: "08_telegram_review_message",
-      promptPath: "prompts/08_telegram_review_message.md",
-      input: { draft },
-      json: false
-    });
-  } catch {
-    return [
-      "New Threads Draft Pending Review",
-      "",
-      `Draft ID: ${draft.id}`,
-      "",
-      "Topic:",
-      draft.topic,
-      "",
-      "Core Pain Point:",
-      draft.core_pain_point,
-      "",
-      "Coaching Advice:",
-      draft.coaching_advice_summary,
-      "",
-      "Hook:",
-      draft.hook,
-      "",
-      "Post:",
-      draft.post,
-      "",
-      `Critic Score: ${draft.critic_score}`,
-      "",
-      "Reply with one of these commands:",
-      `/approve ${draft.id}`,
-      `/rewrite ${draft.id} your instruction here`,
-      `/reject ${draft.id} reason`,
-      "",
-      "You can also reply directly to this message with rewrite instructions, or send approve / reject when there is only one pending draft."
-    ].join("\n");
-  }
+  return [
+    "New Threads Draft Pending Review",
+    "",
+    `Draft ID: ${draft.id}`,
+    draft.publish_due_at_hkt ? `Publish Time: ${draft.publish_due_at_hkt} HKT` : "",
+    "",
+    "Topic:",
+    draft.topic,
+    "",
+    "Core Pain Point:",
+    draft.core_pain_point,
+    "",
+    "Coaching Advice:",
+    draft.coaching_advice_summary,
+    "",
+    "Hook:",
+    draft.hook,
+    "",
+    "Post:",
+    draft.post,
+    "",
+    `Critic Score: ${draft.critic_score}`,
+    "",
+    "Review:",
+    "Use the Approve / Reject buttons below, or reply directly with rewrite instructions.",
+    "Text fallback:",
+    `/approve ${draft.id}`,
+    `/rewrite ${draft.id} your instruction here`,
+    `/reject ${draft.id} reason`
+  ].filter(Boolean).join("\n");
 }
 
 export async function sendDraftForReview(draft) {

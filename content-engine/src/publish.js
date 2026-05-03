@@ -2,7 +2,22 @@ import { publishThreadToThreads } from "./threads.js";
 import { sendTelegramMessage } from "./telegram.js";
 import { appendJsonArray, findDraftPath, isMainModule, moveFile, nowIso, readJson, writeJson } from "./utils.js";
 
-export async function publishApprovedDraft(draftId) {
+export async function publishApprovedDraft(draftId, { notify = true } = {}) {
+  const publishedPath = await findDraftPath(draftId, ["published"]);
+  if (publishedPath) {
+    const publishedDraft = await readJson(publishedPath);
+    if (notify) {
+      await sendTelegramMessage([
+        "Threads post already published.",
+        "",
+        `Draft ID: ${publishedDraft.id}`,
+        publishedDraft.threads_post_id ? `Threads Post ID: ${publishedDraft.threads_post_id}` : "Threads Post ID: not returned by API",
+        `Thread parts: ${publishedDraft.thread_parts?.length || 1}`
+      ].join("\n"));
+    }
+    return publishedDraft;
+  }
+
   const draftPath = await findDraftPath(draftId, ["approved"]);
   if (!draftPath) {
     throw new Error(`Approved draft not found: ${draftId}`);
@@ -48,13 +63,17 @@ export async function publishApprovedDraft(draftId) {
     thread_parts: threadParts
   });
 
-  await sendTelegramMessage([
-    "Threads post published.",
-    "",
-    `Draft ID: ${draft.id}`,
-    postId ? `Threads Post ID: ${postId}` : "Threads Post ID: not returned by API",
-    `Thread parts: ${threadParts.length}`
-  ].join("\n"));
+  if (notify) {
+    const fallbackCount = threadParts.filter((part) => part.fallback_standalone).length;
+    await sendTelegramMessage([
+      "Threads post published.",
+      "",
+      `Draft ID: ${draft.id}`,
+      postId ? `Threads Post ID: ${postId}` : "Threads Post ID: not returned by API",
+      `Thread parts: ${threadParts.length}`,
+      fallbackCount ? `Standalone fallback parts: ${fallbackCount}` : "Thread replies: OK"
+    ].join("\n"));
+  }
 
   console.log(`Published approved draft ${draft.id}.`);
   return publishedRecord;
