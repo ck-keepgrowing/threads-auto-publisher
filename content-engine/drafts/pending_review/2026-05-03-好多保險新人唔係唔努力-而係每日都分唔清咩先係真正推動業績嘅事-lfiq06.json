@@ -10,7 +10,7 @@
   "critic_score": 2,
   "status": "pending_review",
   "created_at": "2026-05-03T02:00:52.400Z",
-  "telegram_message_id": 51,
+  "telegram_message_id": 52,
   "review_notes": [
     {
       "type": "rewrite_instruction",
@@ -97,5 +97,6 @@
   "review_due_at_hkt": "2026-05-03 07:00",
   "publish_due_at_hkt": "2026-05-03 10:00",
   "updated_at": "2026-05-03T02:15:27.974Z",
-  "rewrite_count": 3
+  "rewrite_count": 3,
+  "resent_at": "2026-05-03T02:27:05.696Z"
 }

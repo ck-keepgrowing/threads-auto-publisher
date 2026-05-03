@@ -345,5 +345,16 @@
     "repaired_json": false,
     "success": true,
     "retry_index": 0
+  },
+  {
+    "prompt_name": "08_telegram_review_message",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T02:26:42.341Z",
+    "input_summary": "{\"draft\":{\"id\":\"2026-05-03-好多保險新人唔係唔努力-而係每日都分唔清咩先係真正推動業績嘅事-lfiq06\",\"topic\":\"好多保險新人唔係唔努力，而係每日都分唔清咩先係真正推動業績嘅事\",\"category\":\"\",\"core_pain_point\":\"Feeling constantly busy and overwhelmed with tasks, but seeing little to no progress in actual sales results, leading to frustration and self-doubt about one's own effectiveness.\",\"hidden_psychology\":\"人會自然避開容易被拒絕的行動，轉去做較安全、較似有進度的準備工作。\",\"coaching_advice_summary\":\"停止將跟進視為『追問』和『索取』。將心態轉變為『提供價值』的維繫過程。每次接觸客戶前，思考你能提供什麼資訊價值（如相關文章）、人情價值（如生活交流）或解難價值（如主動研究對方疑難），絕不空手...",
+    "output_summary": "Draft for Review\n\nDraft ID: 2026-05-03-好多保險新人唔係唔努力-而係每日都分唔清咩先係真正推動業績嘅事-lfiq06\n\nTopic: 好多保險新人唔係唔努力，而係每日都分唔清咩先係真正推動業績嘅事\n\nCore Pain Point: Feeling constantly busy and overwhelmed with tasks, but seeing little to no progress in actual sales results, leading to frustration and self-doubt about one's own effectiveness.\n\nCoaching Advice Summary: Stop viewing follow-ups as 'chasing' or 'asking'. Shift your mindset to a process of 'providing value' and nurturing the relationship. Before each contact, thi...",
+    "max_tokens": 4500,
+    "repaired_json": false,
+    "success": true,
+    "retry_index": 0
   }
 ]
