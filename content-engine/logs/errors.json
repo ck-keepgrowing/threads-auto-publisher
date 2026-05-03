@@ -83,5 +83,149 @@
     "context": "threads:publish",
     "message": "Threads API error 400: The requested resource does not exist",
     "stack": "Error: Threads API error 400: The requested resource does not exist\n    at postForm (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:26:11)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async publishTextToThreads (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:119:20)\n    at async publishThreadToThreads (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/threads.js:149:20)\n    at async publishApprovedDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/publish.js:16:23)\n    at async publishDueApprovedDrafts (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/checkTelegramCommands.js:233:5)\n    at async checkTelegramCommands (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/checkTelegramCommands.js:314:30)"
+  },
+  {
+    "timestamp": "2026-05-03T10:36:57.534Z",
+    "context": "openrouter:01_topic_generator",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:145:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:298:15)"
+  },
+  {
+    "timestamp": "2026-05-03T10:36:57.535Z",
+    "context": "fallback:01_topic_generator",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:145:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:298:15)"
+  },
+  {
+    "timestamp": "2026-05-03T10:37:21.526Z",
+    "context": "openrouter:02_topic_scorer",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:151:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:298:15)"
+  },
+  {
+    "timestamp": "2026-05-03T10:37:21.527Z",
+    "context": "fallback:02_topic_scorer",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:151:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:298:15)"
+  },
+  {
+    "timestamp": "2026-05-03T10:37:47.347Z",
+    "context": "openrouter:03_angle_expander",
+    "message": "OpenRouter request timed out after 12000ms",
+    "stack": "Error: OpenRouter request timed out after 12000ms\n    at requestOpenRouter (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:73:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:142:35)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:162:17)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:298:15)"
+  },
+  {
+    "timestamp": "2026-05-03T10:37:47.348Z",
+    "context": "fallback:03_angle_expander",
+    "message": "OpenRouter request timed out after 12000ms",
+    "stack": "Error: OpenRouter request timed out after 12000ms\n    at requestOpenRouter (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:73:13)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:142:35)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:162:17)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:298:15)"
+  },
+  {
+    "timestamp": "2026-05-03T10:38:45.327Z",
+    "context": "openrouter:04_coach_writer",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:168:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:298:15)"
+  },
+  {
+    "timestamp": "2026-05-03T10:38:45.328Z",
+    "context": "fallback:04_coach_writer",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:168:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:298:15)"
+  },
+  {
+    "timestamp": "2026-05-03T10:39:08.532Z",
+    "context": "openrouter:05_critic",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:174:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:298:15)"
+  },
+  {
+    "timestamp": "2026-05-03T10:39:08.533Z",
+    "context": "fallback:05_critic",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:174:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:298:15)"
+  },
+  {
+    "timestamp": "2026-05-03T10:40:07.228Z",
+    "context": "openrouter:06_rewriter_length_expansion",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:199:15)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:298:15)"
+  },
+  {
+    "timestamp": "2026-05-03T10:40:07.228Z",
+    "context": "fallback:06_rewriter_length_expansion",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:199:15)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:298:15)"
+  },
+  {
+    "timestamp": "2026-05-03T10:40:32.811Z",
+    "context": "openrouter:01_topic_generator",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:145:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:302:25)"
+  },
+  {
+    "timestamp": "2026-05-03T10:40:32.812Z",
+    "context": "fallback:01_topic_generator",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:145:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:302:25)"
+  },
+  {
+    "timestamp": "2026-05-03T10:40:55.301Z",
+    "context": "openrouter:02_topic_scorer",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:151:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:302:25)"
+  },
+  {
+    "timestamp": "2026-05-03T10:40:55.302Z",
+    "context": "fallback:02_topic_scorer",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:151:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:302:25)"
+  },
+  {
+    "timestamp": "2026-05-03T10:41:18.484Z",
+    "context": "openrouter:03_angle_expander",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:162:17)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:302:25)"
+  },
+  {
+    "timestamp": "2026-05-03T10:41:18.486Z",
+    "context": "fallback:03_angle_expander",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:162:17)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:302:25)"
+  },
+  {
+    "timestamp": "2026-05-03T10:42:32.155Z",
+    "context": "openrouter:04_coach_writer",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:168:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:302:25)"
+  },
+  {
+    "timestamp": "2026-05-03T10:42:32.156Z",
+    "context": "fallback:04_coach_writer",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:168:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:302:25)"
+  },
+  {
+    "timestamp": "2026-05-03T10:42:57.523Z",
+    "context": "openrouter:05_critic",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:174:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:302:25)"
+  },
+  {
+    "timestamp": "2026-05-03T10:42:57.524Z",
+    "context": "fallback:05_critic",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:174:18)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:302:25)"
+  },
+  {
+    "timestamp": "2026-05-03T10:43:57.688Z",
+    "context": "openrouter:06_rewriter_length_expansion",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:199:15)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:302:25)"
+  },
+  {
+    "timestamp": "2026-05-03T10:43:57.689Z",
+    "context": "fallback:06_rewriter_length_expansion",
+    "message": "OpenRouter response was not valid JSON.",
+    "stack": "Error: OpenRouter response was not valid JSON.\n    at parseJsonContent (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:30:11)\n    at callPrompt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/openrouter.js:149:20)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async callPromptWithFallback (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:137:12)\n    at async generateDraftAttempt (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:199:15)\n    at async generateDraft (file:///home/runner/work/threads-auto-publisher/threads-auto-publisher/content-engine/src/generate.js:302:25)"
   }
 ]

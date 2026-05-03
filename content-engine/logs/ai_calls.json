@@ -356,5 +356,137 @@
     "repaired_json": false,
     "success": true,
     "retry_index": 0
+  },
+  {
+    "prompt_name": "01_topic_generator",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T10:36:31.657Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "",
+    "max_tokens": 1200,
+    "success": false,
+    "retry_index": 0,
+    "error": "OpenRouter response was not valid JSON."
+  },
+  {
+    "prompt_name": "02_topic_scorer",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T10:36:57.536Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "",
+    "max_tokens": 1200,
+    "success": false,
+    "retry_index": 0,
+    "error": "OpenRouter response was not valid JSON."
+  },
+  {
+    "prompt_name": "03_angle_expander",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T10:37:21.528Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "",
+    "max_tokens": 1200,
+    "success": false,
+    "retry_index": 0,
+    "error": "OpenRouter request timed out after 12000ms"
+  },
+  {
+    "prompt_name": "04_coach_writer",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T10:37:47.350Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "",
+    "max_tokens": 3200,
+    "success": false,
+    "retry_index": 0,
+    "error": "OpenRouter response was not valid JSON."
+  },
+  {
+    "prompt_name": "05_critic",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T10:38:45.330Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "",
+    "max_tokens": 1200,
+    "success": false,
+    "retry_index": 0,
+    "error": "OpenRouter response was not valid JSON."
+  },
+  {
+    "prompt_name": "06_rewriter_length_expansion",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T10:39:08.535Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "",
+    "max_tokens": 3200,
+    "success": false,
+    "retry_index": 0,
+    "error": "OpenRouter response was not valid JSON."
+  },
+  {
+    "prompt_name": "01_topic_generator",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T10:40:07.234Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "",
+    "max_tokens": 1200,
+    "success": false,
+    "retry_index": 0,
+    "error": "OpenRouter response was not valid JSON."
+  },
+  {
+    "prompt_name": "02_topic_scorer",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T10:40:32.813Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "",
+    "max_tokens": 1200,
+    "success": false,
+    "retry_index": 0,
+    "error": "OpenRouter response was not valid JSON."
+  },
+  {
+    "prompt_name": "03_angle_expander",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T10:40:55.303Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "",
+    "max_tokens": 1200,
+    "success": false,
+    "retry_index": 0,
+    "error": "OpenRouter response was not valid JSON."
+  },
+  {
+    "prompt_name": "04_coach_writer",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T10:41:18.487Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "",
+    "max_tokens": 3200,
+    "success": false,
+    "retry_index": 0,
+    "error": "OpenRouter response was not valid JSON."
+  },
+  {
+    "prompt_name": "05_critic",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T10:42:32.157Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "",
+    "max_tokens": 1200,
+    "success": false,
+    "retry_index": 0,
+    "error": "OpenRouter response was not valid JSON."
+  },
+  {
+    "prompt_name": "06_rewriter_length_expansion",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T10:42:57.525Z",
+    "input_summary": "{\"brand_profile\":{\"brand_name\":\"保險生存實錄\",\"long_term_goal\":\"Become a trusted insurance sales coach for agents and future agents\",\"persona\":\"冷靜、有料、懂人性、懂保險銷售、唔晒命、唔hard sell\",\"language\":\"香港廣東話\",\"tone\":[\"真實\",\"有深度\",\"溫和但直接\",\"似教練\",\"唔扮高深\",\"唔講空泛成功學\"],\"avoid\":[\"emoji\",\"炫富\",\"成功學\",\"hard sell\",\"太似保險廣告\",\"太AI味\",\"太多口號\",\"過度負面\",\"單純抱怨行業\"],\"content_goal\":\"吸引保險從業員及想入行人士，透過指出痛點及提供實用建議，建立教練型信任感\"},\"audience_profile\":{\"primary_audience\":[\"保險新人\",\"做咗1-3年但卡住嘅保險agent\",\"想入行但猶豫嘅人\",\"唔想hard sell朋友嘅agent\",\"想有系統做保險但唔知點開始嘅人\"],\"deep_...",
+    "output_summary": "",
+    "max_tokens": 3200,
+    "success": false,
+    "retry_index": 0,
+    "error": "OpenRouter response was not valid JSON."
   }
 ]

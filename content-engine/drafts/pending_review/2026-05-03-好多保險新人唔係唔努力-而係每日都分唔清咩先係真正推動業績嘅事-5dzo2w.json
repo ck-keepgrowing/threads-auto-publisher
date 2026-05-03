@@ -1,0 +1,77 @@
+{
+  "id": "2026-05-03-好多保險新人唔係唔努力-而係每日都分唔清咩先係真正推動業績嘅事-5dzo2w",
+  "topic": "好多保險新人唔係唔努力，而係每日都分唔清咩先係真正推動業績嘅事",
+  "category": "",
+  "core_pain_point": "努力很多但收入和機會不穩，內心開始自我懷疑。",
+  "hidden_psychology": "人會自然避開容易被拒絕的行動，轉去做較安全、較似有進度的準備工作。",
+  "coaching_advice_summary": "用時間審計分清生產力活動同非生產力活動，先做真正推動客戶機會的行動。",
+  "hook": "好多保險新人最危險嘅唔係懶，而係忙錯方向。",
+  "post": "好多保險新人最危險嘅唔係懶，而係忙錯方向。\n\n你可能朝早一起身已經開始覆訊息、睇產品資料、整理 proposal、開會、聽 training。成日忙到連食飯都急，但去到夜晚一靜落嚟，又會有一種好空嘅感覺：今日到底有冇真正推前過任何一個機會？\n\n呢種辛苦最磨人，因為你唔係無做嘢。你甚至比身邊好多人更勤力。但如果每日大部分時間都放喺低風險、低拒絕感嘅工作，例如準備、整理、研究、諗 caption、改 proposal，個人會好容易有一種錯覺：我已經好努力，點解仲未有成果？\n\n問題可能唔係你唔夠搏，而係你無清楚分開「生產力活動」同「非生產力活動」。生產力活動係會直接推動客戶關係、約見、跟進、轉介紹、成交機會嘅行動。非生產力活動唔係無用，但如果佢哋霸佔晒你最清醒、最有能量嘅時間，你就會變成每日好忙，但真正影響收入嘅動作反而少。\n\n背後其實有人性。主動跟進會驚被拒絕，約人見面會驚尷尬，問轉介紹會驚被覺得功利。相比之下，準備工作安全好多。你可以覺得自己有進度，又暫時唔需要面對別人反應。所以大腦會自然拉你去做舒服啲嘅事，然後包裝成「我仲準備緊」。\n\n你可以試一個好簡單嘅練習：今晚攞張紙，寫低今日做過嘅所有工作。然後分兩欄，一欄係生產力活動，一欄係非生產力活動。唔需要怪自己，先誠實睇清楚比例。明日起身，先安排一個不能逃避嘅生產力活動，例如跟進三個人、約一個見面、問一個轉介紹。其他準備工作可以做，但要放喺後面同設時限。\n\n做保險唔係叫你每日逼自己硬衝，而係要建立一套方法，令你唔使每日靠情緒決定做唔做重要嘅事。你而家最需要嘅，可能唔係再忙啲，而係先分清楚：你今日嘅努力，有幾多真係會帶你行近下一張單？",
+  "critic_score": 8,
+  "status": "pending_review",
+  "created_at": "2026-05-03T10:43:57.690Z",
+  "telegram_message_id": 62,
+  "review_notes": [],
+  "labels": {
+    "hook_type": "pain diagnosis",
+    "content_type": "System thinking",
+    "target_reader": "保險新人及卡住的 agent",
+    "emotional_trigger": "忙但無成果的自我懷疑",
+    "practical_advice_type": "time audit"
+  },
+  "hook_type": "pain diagnosis",
+  "content_type": "System thinking",
+  "target_reader": "保險新人及卡住的 agent",
+  "emotional_trigger": "忙但無成果的自我懷疑",
+  "practical_advice_type": "time audit",
+  "ai_metadata": {
+    "selected_topic": {
+      "topic": "好多保險新人唔係唔努力，而係每日都分唔清咩先係真正推動業績嘅事",
+      "score": 8,
+      "reason": "具體指出保險 agent 忙但無成果的常見困局，適合教練式拆解。",
+      "suggested_angle": "由忙碌感切入，拆解逃避高壓銷售行動的心理，再給時間審計練習。",
+      "suggested_advice_type": "daily activity audit"
+    },
+    "angle": {
+      "topic": "好多保險新人唔係唔努力，而係每日都分唔清咩先係真正推動業績嘅事",
+      "surface_problem": "每日 schedule 好滿，但月尾檢視時發現真正推進機會的行動很少。",
+      "hidden_pain": "努力很多但收入和機會不穩，內心開始自我懷疑。",
+      "why_it_happens": "人會自然避開容易被拒絕的行動，轉去做較安全、較似有進度的準備工作。",
+      "common_misunderstanding": "以為只要夠忙就等於夠勤力，卻沒有分辨行動是否真的推動業績。",
+      "coaching_reframe": "問題未必是你不夠努力，而是你的努力沒有被系統分配到最有產出的地方。",
+      "practical_advice": [
+        "每日先完成一個直接推動機會的生產力活動，例如約見、跟進、轉介紹。",
+        "把資料搜集、排版、內部討論設時限，避免變成拖延。",
+        "每晚用五分鐘檢視今日有幾多時間真正放在客戶行動。"
+      ],
+      "small_action_today": "今晚寫低今日所有工作，分成生產力活動同非生產力活動。",
+      "possible_hooks": [
+        "好多保險新人最危險嘅唔係懶，而係忙錯方向。",
+        "你以為自己好勤力，其實可能只係好擅長避開最重要嗰件事。",
+        "如果你日日好忙但月月無單，問題可能唔係努力，而係分類錯。"
+      ]
+    },
+    "critic": {
+      "score": 8,
+      "problems": [],
+      "must_fix": [],
+      "rewrite_direction": "",
+      "is_publishable_after_review": true
+    },
+    "final_post_chars": 685,
+    "min_post_chars": 800,
+    "rewrite_applied": false
+  },
+  "potential_duplicate": true,
+  "duplicate_matches": [
+    {
+      "id": "2026-05-03-好多保險新人唔係唔努力-而係每日都分唔清咩先係真正推動業績嘅事-lfiq06",
+      "topic": "好多保險新人唔係唔努力，而係每日都分唔清咩先係真正推動業績嘅事",
+      "score": 1
+    }
+  ],
+  "scheduled_date": "2026-05-03",
+  "scheduled_slot": "21:00",
+  "review_due_at_hkt": "2026-05-03 18:00",
+  "publish_due_at_hkt": "2026-05-03 21:00"
+}
