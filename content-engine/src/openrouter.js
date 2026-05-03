@@ -2,6 +2,7 @@ import { appendJsonArray, logError, readText, stripCodeFence, summarize } from "
 
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 const DEFAULT_MAX_TOKENS = 2200;
+const DEFAULT_TIMEOUT_MS = 45000;
 
 function resolveMaxTokens(promptName) {
   const explicit = process.env.OPENROUTER_MAX_TOKENS;
@@ -44,22 +45,37 @@ function normalizeMessageContent(content) {
 }
 
 async function requestOpenRouter({ model, messages, jsonMode, maxTokens }) {
-  const response = await fetch(OPENROUTER_URL, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      "Content-Type": "application/json",
-      "HTTP-Referer": process.env.OPENROUTER_HTTP_REFERER || "https://github.com/ck-keepgrowing/threads-auto-publisher",
-      "X-Title": "Insurance Coach Content Engine"
-    },
-    body: JSON.stringify({
-      model,
-      messages,
-      temperature: Number(process.env.OPENROUTER_TEMPERATURE || "0.7"),
-      max_tokens: maxTokens,
-      ...(jsonMode ? { response_format: { type: "json_object" } } : {})
-    })
-  });
+  const timeoutMs = Number(process.env.OPENROUTER_TIMEOUT_MS || DEFAULT_TIMEOUT_MS);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  let response;
+  try {
+    response = await fetch(OPENROUTER_URL, {
+      method: "POST",
+      signal: controller.signal,
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": process.env.OPENROUTER_HTTP_REFERER || "https://github.com/ck-keepgrowing/threads-auto-publisher",
+        "X-Title": "Insurance Coach Content Engine"
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        temperature: Number(process.env.OPENROUTER_TEMPERATURE || "0.7"),
+        max_tokens: maxTokens,
+        ...(jsonMode ? { response_format: { type: "json_object" } } : {})
+      })
+    });
+  } catch (error) {
+    if (error.name === "AbortError") {
+      throw new Error(`OpenRouter request timed out after ${timeoutMs}ms`);
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
 
   const payload = await response.json().catch(() => ({}));
   if (!response.ok) {
