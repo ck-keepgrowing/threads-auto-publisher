@@ -30,6 +30,19 @@ function parseJsonContent(content) {
   }
 }
 
+function normalizeMessageContent(content) {
+  if (typeof content === "string") {
+    return content;
+  }
+  if (Array.isArray(content)) {
+    return content
+      .map((part) => part?.text || part?.content || "")
+      .join("")
+      .trim();
+  }
+  return content ? JSON.stringify(content) : "";
+}
+
 async function requestOpenRouter({ model, messages, jsonMode, maxTokens }) {
   const response = await fetch(OPENROUTER_URL, {
     method: "POST",
@@ -54,7 +67,34 @@ async function requestOpenRouter({ model, messages, jsonMode, maxTokens }) {
     throw new Error(`OpenRouter error ${response.status}: ${message}`);
   }
 
-  return payload.choices?.[0]?.message?.content || "";
+  return normalizeMessageContent(payload.choices?.[0]?.message?.content);
+}
+
+async function repairJsonResponse({ model, prompt, input, invalidContent, maxTokens }) {
+  return requestOpenRouter({
+    model,
+    jsonMode: true,
+    maxTokens,
+    messages: [
+      {
+        role: "system",
+        content: [
+          "You repair invalid JSON responses.",
+          "Return valid JSON only.",
+          "Do not add markdown, explanation, or comments.",
+          "Keep the meaning and fields required by the original prompt."
+        ].join("\n")
+      },
+      {
+        role: "user",
+        content: JSON.stringify({
+          original_prompt: prompt,
+          original_input: input,
+          invalid_response: invalidContent
+        }, null, 2)
+      }
+    ]
+  });
 }
 
 export async function callPrompt({ promptName, promptPath, input, json = true }) {
@@ -77,7 +117,25 @@ export async function callPrompt({ promptName, promptPath, input, json = true })
   for (const [index, model] of models.entries()) {
     try {
       const content = await requestOpenRouter({ model, messages, jsonMode: json, maxTokens });
-      const output = json ? parseJsonContent(content) : content.trim();
+      let output;
+      let repaired = false;
+      if (json) {
+        try {
+          output = parseJsonContent(content);
+        } catch (parseError) {
+          const repairedContent = await repairJsonResponse({
+            model,
+            prompt,
+            input,
+            invalidContent: content,
+            maxTokens
+          });
+          output = parseJsonContent(repairedContent);
+          repaired = true;
+        }
+      } else {
+        output = content.trim();
+      }
       await appendJsonArray("logs/ai_calls.json", {
         prompt_name: promptName,
         model,
@@ -85,6 +143,7 @@ export async function callPrompt({ promptName, promptPath, input, json = true })
         input_summary: summarize(input),
         output_summary: summarize(output),
         max_tokens: maxTokens,
+        repaired_json: repaired,
         success: true,
         retry_index: index
       });
