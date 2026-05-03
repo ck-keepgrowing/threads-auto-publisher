@@ -1,7 +1,7 @@
 [
   {
     "id": "2026-05-02-假勤力-陷阱-點解你日日好忙-但月月冇單-unav5i",
-    "collected_at": "2026-05-02T16:05:13.839Z",
+    "collected_at": "2026-05-03T16:05:28.950Z",
     "threads_post_id": "18092842454243994",
     "topic": "『假勤力』陷阱：點解你日日好忙，但月月冇單？",
     "category": "",
@@ -16,6 +16,26 @@
     "practical_advice_type": "Productivity System / Self-Audit",
     "metrics": {
       "error": "Threads API error 400: Unsupported get request. Object with ID '18092842454243994' does not exist, cannot be loaded due to missing permissions, or does not support this operation"
+    },
+    "engagement_score": 0
+  },
+  {
+    "id": "2026-05-03-好多保險新人唔係唔努力-而係每日都分唔清咩先係真正推動業績嘅事-lfiq06",
+    "collected_at": "2026-05-03T16:05:29.028Z",
+    "threads_post_id": "17974754072867485",
+    "topic": "好多保險新人唔係唔努力，而係每日都分唔清咩先係真正推動業績嘅事",
+    "category": "",
+    "core_pain_point": "Feeling constantly busy and overwhelmed with tasks, but seeing little to no progress in actual sales results, leading to frustration and self-doubt about one's own effectiveness.",
+    "hidden_psychology": "人會自然避開容易被拒絕的行動，轉去做較安全、較似有進度的準備工作。",
+    "coaching_advice_summary": "停止將跟進視為『追問』和『索取』。將心態轉變為『提供價值』的維繫過程。每次接觸客戶前，思考你能提供什麼資訊價值（如相關文章）、人情價值（如生活交流）或解難價值（如主動研究對方疑難），絕不空手打擾。在跟進方案時，使用給予對方時間和空間的措辭，將壓力轉化為關心。這能將『跟進恐懼症』轉化為建立信任和專業形象的系統化習慣。",
+    "hook": "你望住個聯絡人名單，手指喺個名上面懸空，句「你好嗎，跟進返…」打咗又刪。最驚係咩？唔係被拒絕，而係訊息一出，朋友就變煩膠，關係從此蒙上陰影。",
+    "hook_type": "Emotional Scenario / Pain Point",
+    "content_type": "Mindset Reframe / Communication Tactic",
+    "target_reader": "New/Stuck Insurance Agents",
+    "emotional_trigger": "Fear of Annoyance / Relationship Anxiety",
+    "practical_advice_type": "Value-Based Follow-up / Communication Scripts",
+    "metrics": {
+      "error": "Threads API error 400: Unsupported get request. Object with ID '17974754072867485' does not exist, cannot be loaded due to missing permissions, or does not support this operation"
     },
     "engagement_score": 0
   }
