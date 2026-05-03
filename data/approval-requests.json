@@ -154,5 +154,23 @@
     "telegramMessageId": 59,
     "requestedAt": "2026-05-03T06:38:20.051Z",
     "reason": "revision"
+  },
+  {
+    "id": "2026-05-03-1800",
+    "date": "2026-05-03",
+    "slot": "18:00",
+    "post": {
+      "id": "2026-05-03-1800",
+      "date": "2026-05-03",
+      "slot": "18:00",
+      "text": "以前開到張幾十萬嘅單，會興奮到想即刻 call 齊啲兄弟出嚟飲嘢，慶功宴 book 定一個禮拜後。覺得自己係世界之王，掂呀，又搞掂一單。\n\n而家？開到張差唔多嘅單，個心跳都冇乜點加速。望住個電話，睇到個「ok」字，第一個反應係，哦，好，咁我要快啲返公司入單，搞掂啲 paperwork，唔好拖。\n\n個心平靜到",
+      "status": "ready",
+      "source": "ai_editor",
+      "pillar": "流程成熟",
+      "generatedAt": "2026-05-02T16:30:26.196Z"
+    },
+    "approvalToken": "mopidawq26jc",
+    "telegramMessageId": 60,
+    "requestedAt": "2026-05-03T08:28:14.632Z"
   }
 ]
