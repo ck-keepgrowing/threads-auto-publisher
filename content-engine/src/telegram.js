@@ -39,7 +39,7 @@ export async function answerCallbackQuery(callbackQueryId, text = "") {
     });
   } catch (error) {
     await logError("telegram:answerCallbackQuery", error);
-    throw error;
+    return null;
   }
 }
 
