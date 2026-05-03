@@ -1,5 +1,5 @@
 {
-  "last_update_id": 2578221,
+  "last_update_id": 2578222,
   "review_decisions": [
     {
       "draft_id": "2026-05-02-假勤力-陷阱-點解你日日好忙-但月月冇單-unav5i",
@@ -12,6 +12,12 @@
       "decision": "approved",
       "reason": "",
       "timestamp": "2026-05-02T02:37:37.426Z"
+    },
+    {
+      "draft_id": "2026-05-03-好多保險新人唔係唔努力-而係每日都分唔清咩先係真正推動業績嘅事-lfiq06",
+      "decision": "rewrite",
+      "instruction": "改：\n\n唔使講作為教練，暫時嘅身份係要隱藏，直接就咁話我想同你講\n\nthreads冇粗體，所以你打嘅文章唔應該有粗體的**\n\n第二，避免AI感，所以唔應該有原則一原則二，或者1.2.3.呢啲，應該好似人類寫文咁",
+      "timestamp": "2026-05-03T02:09:26.594Z"
     }
   ]
 }

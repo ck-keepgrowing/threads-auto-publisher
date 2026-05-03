@@ -279,5 +279,27 @@
     "repaired_json": false,
     "success": true,
     "retry_index": 0
+  },
+  {
+    "prompt_name": "06_rewriter_human_feedback",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T02:08:44.547Z",
+    "input_summary": "{\"draft\":{\"id\":\"2026-05-03-好多保險新人唔係唔努力-而係每日都分唔清咩先係真正推動業績嘅事-lfiq06\",\"topic\":\"好多保險新人唔係唔努力，而係每日都分唔清咩先係真正推動業績嘅事\",\"category\":\"\",\"core_pain_point\":\"Feeling constantly busy and overwhelmed with tasks, but seeing little to no progress in actual sales results, leading to frustration and self-doubt about one's own effectiveness.\",\"hidden_psychology\":\"人會自然避開容易被拒絕的行動，轉去做較安全、較似有進度的準備工作。\",\"coaching_advice_summary\":\"停止『為跟進而跟進』。將心態由『追數』轉為『提供價值』。每次接觸客戶都必須帶備一個理由——分享相關資訊、建立人情連結、或主動解決對方疑難，而不是空泛地問『諗成點』。透過給予對方時間和空間的措...",
+    "output_summary": "{\"final_hook\":\"你望住個聯絡人名單，手指喺個名上面懸空，句「你好嗎，跟進返…」打咗又刪。最驚係咩？唔係被拒絕，而係訊息一出，朋友就變煩膠，關係從此蒙上陰影。\",\"final_post\":\"你望住個聯絡人名單，手指喺個名上面懸空，句「你好嗎，跟進返…」打咗又刪。最驚係咩？唔係被拒絕，而係訊息一出，朋友就變煩膠，關係從此蒙上陰 chiffres。\\n\\n呢種「跟進恐懼症」，可能係做保險最磨人嘅內心戲。明明知道跟進係專業銷售流程嘅一部分，但每次要行動，罪惡感同焦慮感就湧上心頭。我哋唔想破壞關係，唔想被標籤為「為咗開單不擇手段」，結果就係一拖再拖，直到個機會凍過水。\\n\\n好多新人甚至做咗幾年嘅同事，都卡喺呢個位。佢哋將「跟進」同「騷擾」劃上等號，覺得自己嘅出現就係為咗追問「你諗成點？」「幾時決定？」。當你內心都覺得自己煩，對方又點會感覺唔到呢份壓力？\\n\\n但我想同你講，問題可能唔係你唔識跟進，而係你從一開始就對「跟進」呢件事嘅理解錯咗。你將佢睇成一個單向嘅「索取」行為，而唔係一個雙向嘅「維繫」過程。\\n\\n專業嘅跟進，從來都唔係空手而回嘅追問。佢嘅核心係「提供價值」，係喺兩次...",
+    "max_tokens": 4500,
+    "repaired_json": false,
+    "success": true,
+    "retry_index": 0
+  },
+  {
+    "prompt_name": "08_telegram_review_message",
+    "model": "google/gemini-2.5-pro",
+    "timestamp": "2026-05-03T02:09:26.596Z",
+    "input_summary": "{\"draft\":{\"id\":\"2026-05-03-好多保險新人唔係唔努力-而係每日都分唔清咩先係真正推動業績嘅事-lfiq06\",\"topic\":\"好多保險新人唔係唔努力，而係每日都分唔清咩先係真正推動業績嘅事\",\"category\":\"\",\"core_pain_point\":\"Feeling constantly busy and overwhelmed with tasks, but seeing little to no progress in actual sales results, leading to frustration and self-doubt about one's own effectiveness.\",\"hidden_psychology\":\"人會自然避開容易被拒絕的行動，轉去做較安全、較似有進度的準備工作。\",\"coaching_advice_summary\":\"停止『為跟進而跟進』。將心態由『追數』轉為『提供價值』。每次接觸客戶都應提供資訊價值（如相關文章）、人情價值（如生活交流）或解難價值（如主動研究對方疑難），絕不空手打擾。跟進方案時，使用給予...",
+    "output_summary": "📝 Draft for Review\n\nDraft ID: 2026-05-03-好多保險新人唔係唔努力-而係每日都分唔清咩先係真正推動業績嘅事-lfiq06\n\nTopic: 好多保險新人唔係唔努力，而係每日都分唔清咩先係真正推動業績嘅事\n\nCore Pain Point: Feeling constantly busy and overwhelmed with tasks, but seeing little to no progress in actual sales results, leading to frustration and self-doubt.\n\nCoaching Advice: Stop 'chasing' and start 'providing value' (informational, personal, problem-solving). Never follow up empty-handed. Use gentle language to turn pressure into care, making follow-ups a trust-bui...",
+    "max_tokens": 4500,
+    "repaired_json": false,
+    "success": true,
+    "retry_index": 0
   }
 ]
