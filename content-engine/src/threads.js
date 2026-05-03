@@ -7,6 +7,14 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function replyWaitMs() {
+  return Number(process.env.THREADS_REPLY_WAIT_MS || "10000");
+}
+
+function maxReplyAttempts() {
+  return Number(process.env.THREADS_REPLY_ATTEMPTS || "3");
+}
+
 async function postForm(url, body) {
   const response = await fetch(url, {
     method: "POST",
@@ -123,24 +131,45 @@ export async function publishThreadToThreads(text) {
   const parts = splitThreadText(text);
   const results = [];
   let replyToId = null;
+  let replyModeAvailable = true;
 
   for (const [index, part] of parts.entries()) {
-    if (replyToId) {
-      await sleep(30000);
+    if (replyToId && replyModeAvailable) {
+      await sleep(replyWaitMs());
     }
 
     let result;
-    for (let attempt = 1; attempt <= 5; attempt += 1) {
-      try {
-        result = await publishTextToThreads(part, { replyToId });
-        break;
-      } catch (error) {
-        const canRetryReply = replyToId && /requested resource does not exist/i.test(error.message);
-        if (!canRetryReply || attempt === 5) {
-          throw error;
+    let fallbackStandalone = false;
+    let fallbackReason = "";
+    const shouldReply = Boolean(replyToId && replyModeAvailable);
+
+    if (shouldReply) {
+      for (let attempt = 1; attempt <= maxReplyAttempts(); attempt += 1) {
+        try {
+          result = await publishTextToThreads(part, { replyToId });
+          break;
+        } catch (error) {
+          const canRetryReply = /requested resource does not exist/i.test(error.message);
+          if (!canRetryReply || attempt === maxReplyAttempts()) {
+            fallbackReason = error.message;
+            await logError("threads:reply_fallback", error, {
+              part_index: index + 1,
+              reply_to_id: replyToId,
+              attempts: attempt
+            });
+            break;
+          }
+          await sleep(replyWaitMs() * attempt);
         }
-        await sleep(30000 * attempt);
       }
+    }
+
+    if (!result) {
+      fallbackStandalone = shouldReply;
+      if (fallbackStandalone) {
+        replyModeAvailable = false;
+      }
+      result = await publishTextToThreads(part);
     }
 
     const postId = result.id || result.post_id || result.thread_id || result.media_id;
@@ -148,7 +177,9 @@ export async function publishThreadToThreads(text) {
       index: index + 1,
       text: part,
       threads_response: result,
-      threads_post_id: postId || null
+      threads_post_id: postId || null,
+      fallback_standalone: fallbackStandalone,
+      fallback_reason: fallbackReason
     });
 
     if (!replyToId) {
