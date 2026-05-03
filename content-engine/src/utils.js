@@ -182,3 +182,14 @@ export function stripCodeFence(text) {
     .replace(/\s*```$/i, "")
     .trim();
 }
+
+export function sanitizePostText(text) {
+  return String(text || "")
+    .replace(/\*\*/g, "")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/陰\s*chiffres/g, "陰影")
+    .replace(/蒙上陰\s*$/gm, "蒙上陰影")
+    .replace(/\bchiffres\b/gi, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}

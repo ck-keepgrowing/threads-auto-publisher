@@ -15,6 +15,11 @@ Check:
 10. Is it too similar to previous posts?
 11. Does it use sales jargon where simpler Cantonese would feel more human?
 12. Does it respect known human wording preferences, such as preferring 「生產力活動 / 非生產力活動」 over 「創收活動 / 非創收活動」?
+13. Does it avoid explicitly saying 「作為教練」 or exposing the coach identity too directly?
+14. Does it avoid Markdown formatting like **bold**, headings, numbered sections, 「原則一 / 原則二」, and 1/2/3 lesson-note structure?
+15. Does it avoid strange foreign fragments or broken mixed-language artifacts?
+
+If the post contains Markdown formatting, numbered lesson-note structure, 「作為教練」, or strange foreign fragments, score it below 7 and require a rewrite.
 
 Output JSON only:
 

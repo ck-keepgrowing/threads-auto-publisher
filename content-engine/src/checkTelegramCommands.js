@@ -2,7 +2,7 @@ import { callPrompt } from "./openrouter.js";
 import { publishApprovedDraft } from "./publish.js";
 import { isPublishDue } from "./schedule.js";
 import { getTelegramUpdates, sendDraftForReview, sendTelegramMessage } from "./telegram.js";
-import { appendJsonArray, findDraftPath, isMainModule, listDrafts, moveFile, nowIso, readJson, writeJson } from "./utils.js";
+import { appendJsonArray, findDraftPath, isMainModule, listDrafts, moveFile, nowIso, readJson, sanitizePostText, writeJson } from "./utils.js";
 
 async function findDraftIdFromReply(message) {
   const replyMessageId = message?.reply_to_message?.message_id;
@@ -173,9 +173,9 @@ async function rewriteDraft(draftId, instruction, rawMessage = "") {
     }
   });
 
-  draft.hook = rewritten.final_hook || draft.hook;
-  draft.post = rewritten.final_post || draft.post;
-  draft.coaching_advice_summary = rewritten.final_coaching_advice || draft.coaching_advice_summary;
+  draft.hook = sanitizePostText(rewritten.final_hook || draft.hook);
+  draft.post = sanitizePostText(rewritten.final_post || draft.post);
+  draft.coaching_advice_summary = sanitizePostText(rewritten.final_coaching_advice || draft.coaching_advice_summary);
   draft.status = "pending_review";
   draft.updated_at = nowIso();
   draft.review_notes = draft.review_notes || [];

@@ -2,7 +2,7 @@ import { checkDuplicate } from "./duplicateChecker.js";
 import { callPrompt } from "./openrouter.js";
 import { COACH_SCHEDULE, getHongKongTimeParts, getSlotForReview, hasDraftForSlot } from "./schedule.js";
 import { sendDraftForReview } from "./telegram.js";
-import { isMainModule, logError, makeDraftId, nowIso, readJson, writeJson } from "./utils.js";
+import { isMainModule, logError, makeDraftId, nowIso, readJson, sanitizePostText, writeJson } from "./utils.js";
 
 async function loadContext() {
   return {
@@ -219,6 +219,10 @@ async function generateDraftAttempt(context, previousDuplicate = null) {
       finalAdvice = rewrite.final_coaching_advice || finalAdvice;
     }
   }
+
+  finalHook = sanitizePostText(finalHook);
+  finalPost = sanitizePostText(finalPost);
+  finalAdvice = sanitizePostText(finalAdvice);
 
   const draft = {
     id: makeDraftId(selectedTopic.topic || angle.topic),
