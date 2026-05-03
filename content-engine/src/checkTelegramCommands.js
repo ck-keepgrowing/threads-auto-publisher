@@ -66,7 +66,19 @@ async function parseCommand(message) {
   };
 }
 
-function parseCallbackQuery(callbackQuery) {
+async function findDraftIdFromCallbackKey(key) {
+  const folders = ["pending_review", "approved"];
+  for (const folder of folders) {
+    const drafts = await listDrafts(folder);
+    const match = drafts.find(({ draft }) => draft.id === key || String(draft.id || "").endsWith(`-${key}`));
+    if (match) {
+      return match.draft.id;
+    }
+  }
+  return key;
+}
+
+async function parseCallbackQuery(callbackQuery) {
   const data = String(callbackQuery?.data || "");
   const match = data.match(/^(approve|reject):(.+)$/);
   if (!match) {
@@ -75,7 +87,7 @@ function parseCallbackQuery(callbackQuery) {
 
   return {
     command: match[1],
-    draftId: match[2],
+    draftId: await findDraftIdFromCallbackKey(match[2]),
     rest: ""
   };
 }
@@ -257,7 +269,7 @@ export async function checkTelegramCommands() {
         continue;
       }
 
-      const parsed = parseCallbackQuery(callbackQuery);
+      const parsed = await parseCallbackQuery(callbackQuery);
       if (!parsed) {
         await answerCallbackQuery(callbackQuery.id, "Unsupported action");
         continue;

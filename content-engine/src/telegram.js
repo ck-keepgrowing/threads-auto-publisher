@@ -99,6 +99,7 @@ export async function buildReviewMessage(draft) {
 
 export async function sendDraftForReview(draft) {
   const message = await buildReviewMessage(draft);
+  const draftKey = String(draft.id || "").split("-").pop();
   return telegramRequest("sendMessage", {
     chat_id: requireEnv("TELEGRAM_CHAT_ID"),
     text: message,
@@ -106,8 +107,8 @@ export async function sendDraftForReview(draft) {
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "Approve", callback_data: `approve:${draft.id}` },
-          { text: "Reject", callback_data: `reject:${draft.id}` }
+          { text: "Approve", callback_data: `approve:${draftKey}` },
+          { text: "Reject", callback_data: `reject:${draftKey}` }
         ]
       ]
     }
