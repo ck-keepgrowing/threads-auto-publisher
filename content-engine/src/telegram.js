@@ -44,11 +44,14 @@ export async function answerCallbackQuery(callbackQueryId, text = "") {
 
 export async function getTelegramUpdates(offset) {
   try {
-    return await telegramRequest("getUpdates", {
-      offset,
+    const body = {
       timeout: 0,
       allowed_updates: ["message", "callback_query"]
-    });
+    };
+    if (offset !== undefined && offset !== null) {
+      body.offset = offset;
+    }
+    return await telegramRequest("getUpdates", body);
   } catch (error) {
     await logError("telegram:getUpdates", error);
     throw error;

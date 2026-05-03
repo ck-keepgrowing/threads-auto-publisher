@@ -1,3 +1,5 @@
+import { splitThreadText } from "./post-utils.js";
+
 const BASE_URL = "https://api.telegram.org";
 
 function requireTelegramConfig() {
@@ -47,22 +49,41 @@ function parseCallbackData(data) {
 
 export async function sendApprovalMessage({ post, date, slot, approvalToken, autoPublish = false }) {
   const { chatId } = requireTelegramConfig();
-  const text = [
+
+  const header = [
     `Threads approval request (${date} ${slot} HKT)`,
     "",
-    `Post ID: ${post.id}`,
-    "",
-    post.text,
-    "",
-    "Reply with one of these:",
+    `Post ID: ${post.id}`
+  ].join("\n");
+
+  const threadParts = splitThreadText(post.text);
+  const totalParts = threadParts.length;
+
+  await requestTelegram("sendMessage", {
+    chat_id: chatId,
+    text: header,
+    disable_web_page_preview: true
+  });
+
+  for (let index = 0; index < threadParts.length; index += 1) {
+    const prefix = totalParts > 1 ? `[${index + 1}/${totalParts}]\n\n` : "";
+    await requestTelegram("sendMessage", {
+      chat_id: chatId,
+      text: `${prefix}${threadParts[index]}`,
+      disable_web_page_preview: true
+    });
+  }
+
+  const footer = [
+    "Reply to THIS message with one of these:",
     "approve",
     "reject",
     "revise your edit instructions"
-  ].filter((line) => line !== "").join("\n");
+  ].join("\n");
 
   return requestTelegram("sendMessage", {
     chat_id: chatId,
-    text,
+    text: footer,
     disable_web_page_preview: true
   });
 }

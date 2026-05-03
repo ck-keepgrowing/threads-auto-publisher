@@ -268,8 +268,12 @@ async function processParsedCommand(parsed, rawMessage = "") {
 
 export async function checkTelegramCommands() {
   const state = await readJson("data/telegram_state.json", { last_update_id: 0, review_decisions: [] });
-  const updates = await getTelegramUpdates(Number(state.last_update_id || 0) + 1);
-  let latestUpdateId = Number(state.last_update_id || 0);
+  // Fetch without offset so updates remain in Telegram's queue for the daily-threads workflow.
+  // We dedupe locally via state.last_update_id below.
+  const allUpdates = await getTelegramUpdates();
+  const lastSeenId = Number(state.last_update_id || 0);
+  const updates = allUpdates.filter((update) => Number(update.update_id || 0) > lastSeenId);
+  let latestUpdateId = lastSeenId;
   let processedCommands = 0;
 
   for (const update of updates) {
