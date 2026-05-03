@@ -23,6 +23,10 @@ async function findOnlyPendingDraftId() {
 async function parseCommand(message) {
   const text = message?.text || "";
   const trimmed = String(text || "").trim();
+  if (!trimmed) {
+    return null;
+  }
+
   const match = trimmed.match(/^\/(approve|rewrite|reject)(?:@\w+)?\s+(\S+)(?:\s+([\s\S]+))?$/i);
   if (match) {
     return {
@@ -36,8 +40,16 @@ async function parseCommand(message) {
   const fallbackDraftId = replyDraftId || await findOnlyPendingDraftId();
 
   const replyMatch = trimmed.match(/^\/?(approve|approved|ok|yes|continue|繼續|批准|通過|rewrite|revise|改|重寫|reject|rejected|唔要|不要)(?:\s+([\s\S]+))?$/i);
-  if (!replyMatch || !fallbackDraftId) {
+  if (!fallbackDraftId) {
     return null;
+  }
+
+  if (!replyMatch) {
+    return {
+      command: "rewrite",
+      draftId: fallbackDraftId,
+      rest: trimmed
+    };
   }
 
   const rawCommand = replyMatch[1].toLowerCase();

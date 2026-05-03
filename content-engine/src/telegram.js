@@ -78,7 +78,9 @@ export async function buildReviewMessage(draft) {
       "Reply with one of these commands:",
       `/approve ${draft.id}`,
       `/rewrite ${draft.id} your instruction here`,
-      `/reject ${draft.id} reason`
+      `/reject ${draft.id} reason`,
+      "",
+      "You can also reply directly to this message with rewrite instructions, or send approve / reject when there is only one pending draft."
     ].join("\n");
   }
 }
