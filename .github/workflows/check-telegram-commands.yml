@@ -32,6 +32,7 @@ jobs:
           THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
           THREADS_USER_ID: ${{ secrets.THREADS_USER_ID || 'me' }}
           THREADS_API_VERSION: ${{ secrets.THREADS_API_VERSION || 'v1.0' }}
+          COACH_RESEND_PENDING_REVIEW: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[resend-coach-review]') }}
         run: npm run coach:check-telegram
 
       - name: Commit content engine changes

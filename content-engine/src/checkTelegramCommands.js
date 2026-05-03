@@ -1,7 +1,7 @@
 import { callPrompt } from "./openrouter.js";
 import { publishApprovedDraft } from "./publish.js";
 import { isPublishDue } from "./schedule.js";
-import { getTelegramUpdates, sendDraftForReview, sendTelegramMessage } from "./telegram.js";
+import { answerCallbackQuery, getTelegramUpdates, sendDraftForReview, sendTelegramMessage } from "./telegram.js";
 import { appendJsonArray, findDraftPath, isMainModule, listDrafts, moveFile, nowIso, readJson, sanitizePostText, writeJson } from "./utils.js";
 
 async function findDraftIdFromReply(message) {
@@ -63,6 +63,20 @@ async function parseCommand(message) {
     command,
     draftId: fallbackDraftId,
     rest: (replyMatch[2] || "").trim()
+  };
+}
+
+function parseCallbackQuery(callbackQuery) {
+  const data = String(callbackQuery?.data || "");
+  const match = data.match(/^(approve|reject):(.+)$/);
+  if (!match) {
+    return null;
+  }
+
+  return {
+    command: match[1],
+    draftId: match[2],
+    rest: ""
   };
 }
 
@@ -211,6 +225,22 @@ async function publishDueApprovedDrafts() {
   return publishedCount;
 }
 
+async function resendPendingReviewDraftsIfRequested() {
+  if (String(process.env.COACH_RESEND_PENDING_REVIEW || "").toLowerCase() !== "true") {
+    return 0;
+  }
+
+  const pendingDrafts = await listDrafts("pending_review");
+  for (const { path, draft } of pendingDrafts) {
+    const result = await sendDraftForReview(draft);
+    draft.telegram_message_id = result?.message_id || draft.telegram_message_id || null;
+    draft.resent_at = nowIso();
+    await writeJson(path, draft);
+  }
+
+  return pendingDrafts.length;
+}
+
 export async function checkTelegramCommands() {
   const state = await readJson("data/telegram_state.json", { last_update_id: 0, review_decisions: [] });
   const updates = await getTelegramUpdates(Number(state.last_update_id || 0) + 1);
@@ -219,7 +249,32 @@ export async function checkTelegramCommands() {
 
   for (const update of updates) {
     latestUpdateId = Math.max(latestUpdateId, Number(update.update_id || 0));
-    const message = update.message;
+    const callbackQuery = update.callback_query;
+    const message = update.message || callbackQuery?.message;
+
+    if (callbackQuery) {
+      if (String(callbackQuery.message?.chat?.id) !== String(process.env.TELEGRAM_CHAT_ID)) {
+        continue;
+      }
+
+      const parsed = parseCallbackQuery(callbackQuery);
+      if (!parsed) {
+        await answerCallbackQuery(callbackQuery.id, "Unsupported action");
+        continue;
+      }
+
+      if (parsed.command === "approve") {
+        await answerCallbackQuery(callbackQuery.id, "Approving");
+        await approveDraft(parsed.draftId, parsed.rest, callbackQuery.data);
+        processedCommands += 1;
+      } else if (parsed.command === "reject") {
+        await answerCallbackQuery(callbackQuery.id, "Rejecting");
+        await rejectDraft(parsed.draftId, parsed.rest, callbackQuery.data);
+        processedCommands += 1;
+      }
+      continue;
+    }
+
     if (!message?.text) {
       continue;
     }
@@ -245,6 +300,7 @@ export async function checkTelegramCommands() {
   }
 
   const scheduledPublished = await publishDueApprovedDrafts();
+  const resentPending = await resendPendingReviewDraftsIfRequested();
 
   if (latestUpdateId !== Number(state.last_update_id || 0)) {
     const nextState = await readJson("data/telegram_state.json", { last_update_id: 0, review_decisions: [] });
@@ -252,7 +308,7 @@ export async function checkTelegramCommands() {
     await writeJson("data/telegram_state.json", nextState);
   }
 
-  console.log(`Checked Telegram commands. Updates: ${updates.length}. Commands processed: ${processedCommands}. Scheduled published: ${scheduledPublished}.`);
+  console.log(`Checked Telegram commands. Updates: ${updates.length}. Commands processed: ${processedCommands}. Scheduled published: ${scheduledPublished}. Pending reviews resent: ${resentPending}.`);
 }
 
 if (isMainModule(import.meta.url)) {

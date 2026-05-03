@@ -31,12 +31,24 @@ export async function sendTelegramMessage(text) {
   }
 }
 
+export async function answerCallbackQuery(callbackQueryId, text = "") {
+  try {
+    return await telegramRequest("answerCallbackQuery", {
+      callback_query_id: callbackQueryId,
+      text
+    });
+  } catch (error) {
+    await logError("telegram:answerCallbackQuery", error);
+    throw error;
+  }
+}
+
 export async function getTelegramUpdates(offset) {
   try {
     return await telegramRequest("getUpdates", {
       offset,
       timeout: 0,
-      allowed_updates: ["message"]
+      allowed_updates: ["message", "callback_query"]
     });
   } catch (error) {
     await logError("telegram:getUpdates", error);
@@ -87,5 +99,17 @@ export async function buildReviewMessage(draft) {
 
 export async function sendDraftForReview(draft) {
   const message = await buildReviewMessage(draft);
-  return sendTelegramMessage(message);
+  return telegramRequest("sendMessage", {
+    chat_id: requireEnv("TELEGRAM_CHAT_ID"),
+    text: message,
+    disable_web_page_preview: true,
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "Approve", callback_data: `approve:${draft.id}` },
+          { text: "Reject", callback_data: `reject:${draft.id}` }
+        ]
+      ]
+    }
+  });
 }
