@@ -226,5 +226,23 @@
     "approvalToken": "mor0c1fcpq48",
     "telegramMessageId": 70,
     "requestedAt": "2026-05-04T09:38:58.071Z"
+  },
+  {
+    "id": "2026-05-04-2100",
+    "date": "2026-05-04",
+    "slot": "21:00",
+    "post": {
+      "id": "2026-05-04-2100",
+      "date": "2026-05-04",
+      "slot": "21:00",
+      "text": "其實一個保險佬做得最順嘅時候，個樣係有啲悶嘅。\n\n唔係話佢冇火，更加唔係話佢冇心。而係嗰種火，收埋咗，變咗另一種能量。\n\n頭幾年入行，好多嘢都係用命去拚返嚟。半夜三點喺度諗聽日仲可以搵邊個",
+      "status": "ready",
+      "source": "ai_editor",
+      "pillar": "流程成熟",
+      "generatedAt": "2026-05-03T16:29:29.098Z"
+    },
+    "approvalToken": "mor49oim1ule",
+    "telegramMessageId": 73,
+    "requestedAt": "2026-05-04T11:29:06.499Z"
   }
 ]

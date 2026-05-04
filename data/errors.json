@@ -33,5 +33,19 @@
     "slot": "14:00",
     "message": "publish action failed: OpenRouter API error 400: 'models' array must have 3 items or fewer.",
     "failedAt": "2026-05-04T09:38:54.643Z"
+  },
+  {
+    "id": "2026-05-04-1100",
+    "date": "2026-05-04",
+    "slot": "11:00",
+    "message": "publish action failed: OpenRouter API error 400: 'models' array must have 3 items or fewer.",
+    "failedAt": "2026-05-04T11:29:02.747Z"
+  },
+  {
+    "id": "2026-05-04-1400",
+    "date": "2026-05-04",
+    "slot": "14:00",
+    "message": "publish action failed: OpenRouter API error 400: 'models' array must have 3 items or fewer.",
+    "failedAt": "2026-05-04T11:29:02.924Z"
   }
 ]
