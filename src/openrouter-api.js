@@ -9,11 +9,13 @@ function sleep(ms) {
 function parseModels() {
   const primary = process.env.OPENROUTER_MODEL || "anthropic/claude-sonnet-4.5";
   const fallbacksRaw = process.env.OPENROUTER_FALLBACK_MODELS
-    || "anthropic/claude-haiku-4.5,openai/gpt-4o,google/gemini-2.5-flash";
+    || "anthropic/claude-haiku-4.5,openai/gpt-4o";
+  // OpenRouter caps the models[] array at 3 entries total (primary + fallbacks).
   const fallbacks = fallbacksRaw
     .split(",")
     .map((slug) => slug.trim())
-    .filter((slug) => slug && slug !== primary);
+    .filter((slug) => slug && slug !== primary)
+    .slice(0, 2);
   return { primary, fallbacks };
 }
 
