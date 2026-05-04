@@ -115,6 +115,14 @@ export async function sendTelegramMessage(text) {
 
 export async function getApprovalDecision({ postId, requestedAt, telegramMessageId, approvalToken }) {
   const { chatId } = requireTelegramConfig();
+
+  // If we have no anchor (token / message id / requestedAt), refuse to act.
+  // Otherwise stale replies from earlier in the day can match a freshly
+  // regenerated post and trigger spurious revise / approve actions.
+  if (!approvalToken && !telegramMessageId && !requestedAt) {
+    return { status: "pending" };
+  }
+
   const result = await requestTelegram("getUpdates", {
     allowed_updates: ["message", "callback_query"],
     limit: 100,

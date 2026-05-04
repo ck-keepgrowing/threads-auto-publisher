@@ -77,7 +77,13 @@ async function callOpenRouter({ apiKey, primary, fallbacks, instructions, input,
       throw error;
     }
 
-    return { text: extractText(payload), modelUsed: payload.model || primary };
+    const text = extractText(payload);
+    return {
+      text,
+      modelUsed: payload.model || primary,
+      finishReason: payload.choices?.[0]?.finish_reason || "unknown",
+      length: text.length
+    };
   } catch (error) {
     if (error.name === "AbortError") {
       throw new Error(`OpenRouter request timed out after ${timeoutMs}ms`);
@@ -103,18 +109,22 @@ export async function generateText({ instructions, input }) {
   }
 
   const { primary, fallbacks } = parseModels();
-  const maxTokens = Number(process.env.OPENROUTER_MAX_TOKENS || 2200);
+  const maxTokens = Number(process.env.OPENROUTER_MAX_TOKENS || 4000);
   const timeoutMs = Number(process.env.OPENROUTER_TIMEOUT_MS || DEFAULT_TIMEOUT_MS);
   const maxRetries = Number(process.env.OPENROUTER_MAX_RETRIES || DEFAULT_MAX_RETRIES);
 
   let lastError;
   for (let attempt = 0; attempt <= maxRetries; attempt += 1) {
     try {
-      const { text, modelUsed } = await callOpenRouter({
+      const { text, modelUsed, finishReason, length } = await callOpenRouter({
         apiKey, primary, fallbacks, instructions, input, maxTokens, timeoutMs
       });
+      console.log(`OpenRouter ok: model=${modelUsed} finish=${finishReason} chars=${length}`);
       if (modelUsed && modelUsed !== primary) {
-        console.log(`OpenRouter fell back to ${modelUsed} (primary ${primary}).`);
+        console.log(`OpenRouter fell back from ${primary} to ${modelUsed}.`);
+      }
+      if (finishReason === "length") {
+        console.warn(`OpenRouter response hit max_tokens=${maxTokens}; output was truncated.`);
       }
       return text;
     } catch (error) {
