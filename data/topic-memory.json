@@ -1,6 +1,11 @@
 {
   "recentUsage": [
     {
+      "pillar": "不敢開口",
+      "date": "2026-05-05",
+      "postId": "2026-05-05-1100"
+    },
+    {
       "pillar": "系統與情緒",
       "date": "2026-05-01",
       "postId": "2026-05-01-now-2122"
@@ -13,6 +18,13 @@
       "scoredCount": 0,
       "avgEngagement": null,
       "lastUsed": "2026-05-01"
+    },
+    "不敢開口": {
+      "useCount": 1,
+      "totalScore": 0,
+      "scoredCount": 0,
+      "avgEngagement": null,
+      "lastUsed": "2026-05-05"
     }
   }
 }
